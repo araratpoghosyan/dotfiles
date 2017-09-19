@@ -1,0 +1,5 @@
+# Directory shortcuts
+
+alias p="cd ~/Projects"
+alias h="cd ~/Projects/Homestead"
+alias df="cd ~/dotfiles"
