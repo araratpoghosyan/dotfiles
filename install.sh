@@ -26,4 +26,3 @@ cp -fr ~/dotfiles/.zshrc ~/.zshrc
 cp -fr ~/dotfiles/.vimrc ~/.vimrc
 cp -fr ~/dotfiles/.gitconfig ~/.gitconfig
 cp -fr ~/dotfiles/.gitconfig ~/.gitignore
-x 
