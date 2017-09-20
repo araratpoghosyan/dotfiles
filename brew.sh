@@ -50,6 +50,10 @@ apps=(
 
 cask_apps=(
 	iterm2
+	atom
+	slack
+	vagrant
+	virtualbox
 )
 
 brew install "${apps[@]}"
