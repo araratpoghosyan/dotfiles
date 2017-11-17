@@ -30,4 +30,4 @@ cp -fr ~/dotfiles/.exports ~/.exports
 cp -fr ~/dotfiles/.zshrc ~/.zshrc
 cp -fr ~/dotfiles/.vimrc ~/.vimrc
 cp -fr ~/dotfiles/.gitconfig ~/.gitconfig
-cp -fr ~/dotfiles/.gitconfig ~/.gitignore
+cp -fr ~/dotfiles/.gitignore ~/.gitignore
