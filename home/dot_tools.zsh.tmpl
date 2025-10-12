@@ -1,0 +1,30 @@
+# Initialize chezmoi
+if command -v chezmoi &>/dev/null; then
+    eval "$(chezmoi completion zsh)"
+fi
+
+# Initialize zoxide
+if command -v zoxide &>/dev/null; then
+    eval "$(zoxide init --cmd cd zsh)"
+fi
+
+# Initialize mise
+if command -v mise &>/dev/null; then
+    eval "$(mise activate zsh)"
+fi
+
+# Configure lazygit
+if command -v lazygit &>/dev/null; then
+    export LG_CONFIG_FILE="$XDG_CONFIG_HOME/lazygit/config.yml,$XDG_CONFIG_HOME/lazygit/themes/catppuccin-{{ .theme }}.yml"
+fi
+
+# Initialize fzf
+if command -v fzf &>/dev/null; then
+    export FZF_DEFAULT_OPTS="--preview 'bat --color=always --style=numbers,changes --line-range=:500 {}'"
+    export FZF_CTRL_R_OPTS="--no-preview"
+
+    # Set FZF color theme
+    source "$XDG_CONFIG_HOME/fzf/themes/catppuccin-fzf-{{ .theme }}.sh"
+
+    source <(fzf --zsh)
+fi

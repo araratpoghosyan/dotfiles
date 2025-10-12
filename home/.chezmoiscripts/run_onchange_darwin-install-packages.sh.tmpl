@@ -1,0 +1,38 @@
+#!/bin/bash
+
+{{ if eq .chezmoi.os "darwin" -}}
+
+set -eufo pipefail
+
+echo "📦 Installing packages from packages.yaml..."
+
+# Install brews, taps, and casks via brew bundle
+echo "🍺 Installing Homebrew packages..."
+brew bundle --file=/dev/stdin <<EOF
+{{ range .packages.darwin.taps -}}
+tap {{ . | quote }}
+{{ end -}}
+{{ range .packages.darwin.brews -}}
+brew {{ . | quote }}
+{{ end -}}
+{{ range .packages.darwin.casks -}}
+cask {{ . | quote }}
+{{ end -}}
+EOF
+
+# Install Mac App Store apps with mas
+{{ if .packages.darwin.mas -}}
+echo "🍎 Installing Mac App Store apps..."
+{{ range .packages.darwin.mas -}}
+if ! mas list | grep -q "{{ .id }}"; then
+    echo "Installing {{ .name }} ({{ .id }})..."
+    mas install {{ .id }}
+else
+    echo "✅ {{ .name }} already installed"
+fi
+{{ end -}}
+{{ end -}}
+
+echo "✅ Package installation complete"
+
+{{ end -}}

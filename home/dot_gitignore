@@ -1,0 +1,35 @@
+# IDE directories
+.idea
+.vscode
+
+# AI tools
+.cursor
+.claude
+
+# Folder view configuration files
+.DS_Store
+Desktop.ini
+
+# Thumbnail cache files
+._*
+Thumbs.db
+
+# Files that might appear on external disks
+.Spotlight-V100
+.Trashes
+
+# Test files
+test.json
+test.php
+test.py
+test.rb
+test.js
+test.go
+test.txt
+test.java
+test.yaml
+test.yml
+
+# AI Tools
+.cursor/
+.claude/
