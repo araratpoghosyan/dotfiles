@@ -36,6 +36,7 @@ packages:
       - "luarocks"
       - "make"
       - "mysql-client"
+      - "neofetch"
       - "neovim"
       - "node@20"
       - "php@8.2"
