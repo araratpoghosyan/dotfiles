@@ -15,6 +15,7 @@ packages:
       - "chezmoi"
       - "composer"
       - "exiftool"
+      - "eza"
       - "ffmpeg"
       - "figlet"
       - "fzf"

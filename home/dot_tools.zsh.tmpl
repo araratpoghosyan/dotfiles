@@ -28,3 +28,15 @@ if command -v fzf &>/dev/null; then
 
     source <(fzf --zsh)
 fi
+
+# Configure eza
+if command -v eza &>/dev/null; then
+    export EZA_CONFIG_DIR="$XDG_CONFIG_HOME/eza"
+    export EZA_COLORS_FILE="$XDG_CONFIG_HOME/eza/themes/catppuccin-{{ .theme }}.yml"
+
+    # Aliases for eza
+    alias ls="eza --color=always --icons=always"
+    alias ll="eza --color=always --icons=always --long --header"
+    alias la="eza --color=always --icons=always --long --header --all"
+    alias lt="eza --color=always --icons=always --tree"
+fi
