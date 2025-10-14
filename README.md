@@ -20,6 +20,7 @@ unified the Catppuccin theming across all tools, automated package management, a
 | Tool                                                          | Purpose                                         |
 |---------------------------------------------------------------|-------------------------------------------------|
 | **[bat](https://github.com/sharkdp/bat)**                     | Cat replacement with syntax highlighting        |
+| **[btop](https://github.com/aristocratos/btop)**              | Resource monitor with intuitive interface       |
 | **[fzf](https://github.com/junegunn/fzf)**                    | Fuzzy finder for files and history              |
 | **[ghostty](https://ghostty.org/)**                           | Fast, feature-rich GPU-accelerated terminal     |
 | **[lazygit](https://github.com/jesseduffield/lazygit)**       | Terminal UI for git commands                    |
@@ -152,6 +153,7 @@ Automatically managed via mise:
 │   ├── dot_gitconfig.tmpl         # Git configuration
 │   └── private_dot_config/        # Application configs
 │       ├── private_bat/           # Bat themes and config
+│       ├── private_btop/          # Btop resource monitor config and themes
 │       ├── private_fzf/           # FZF themes
 │       ├── private_ghostty/       # Ghostty terminal config
 │       ├── private_lazygit/       # Lazygit config and themes
