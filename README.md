@@ -5,6 +5,8 @@
 A curated collection of configurations for a modern, efficient, and aesthetically pleasing development setup. Features
 unified the Catppuccin theming across all tools, automated package management, and XDG Base Directory compliance.
 
+![screenshot.jpeg](docs/screenshot.jpeg)
+
 ## Features
 
 - **Unified Theming**: Catppuccin color schemes across all tools (Frappe, Latte, Macchiato, Mocha)
