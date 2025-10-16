@@ -73,6 +73,7 @@ packages:
       - "jetbrains-toolbox"
       - "kubernetic"
       - "logi-options+"
+      - "medis"
       - "mongodb-compass"
       - "notion"
       - "postman"

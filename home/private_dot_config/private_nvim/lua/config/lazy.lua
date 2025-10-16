@@ -17,6 +17,9 @@ require("lazy").setup({
         -- AI
         { import = "lazyvim.plugins.extras.ai.copilot" },
 
+        -- Editor
+        { import = "lazyvim.plugins.extras.editor.snacks" },
+
         -- Formatting
         { import = "lazyvim.plugins.extras.formatting.prettier" },
 
