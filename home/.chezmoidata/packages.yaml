@@ -28,6 +28,7 @@ packages:
       - "helm"
       - "helmfile"
       - "htop"
+      - "httpie"
       - "imagemagick"
       - "jq"
       - "k6"
