@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# This script runs mise install after mise configuration changes.
+# It runs automatically when mise config is modified.
+
+# Hash of mise config to trigger re-runs when changed
+# mise config hash: {{ include "private_dot_config/private_mise/config.toml" | sha256sum }}
+
+set -eufo pipefail
+
+echo "📦 Running mise install..."
+
+# Check if mise is installed
+if ! command -v mise &>/dev/null; then
+    echo "⚠️  mise is not installed yet. Skipping mise install."
+    exit 0
+fi
+
+# Run mise install to ensure all tools are installed
+mise install
+
+echo "✅ mise install completed successfully"
