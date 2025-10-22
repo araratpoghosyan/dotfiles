@@ -1,0 +1,10 @@
+{{- $themeFile := printf "themes/nvim/%s.lua.tmpl" .theme -}}
+return {
+  {{- includeTemplate $themeFile . | indent 2 -}},
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "{{ .theme }}",
+    },
+  },
+}

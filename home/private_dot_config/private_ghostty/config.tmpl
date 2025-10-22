@@ -1,5 +1,13 @@
 # Theme
-theme = Catppuccin {{ title .theme }}
+{{ if eq .theme "catppuccin-frappe" }}
+theme = Catppuccin Frappe
+{{ else if eq .theme "catppuccin-macchiato" }}
+theme = Catppuccin Macchiato
+{{ else if eq .theme "catppuccin-mocha" }}
+theme = Catppuccin Mocha
+{{else if eq .theme "catppuccin-latte" }}
+theme = Catppuccini Latte
+{{ end }}
 
 # Fonts
 font-family = "JetBrainsMono Nerd Font Mono"

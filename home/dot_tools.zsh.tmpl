@@ -15,7 +15,7 @@ fi
 
 # Configure lazygit
 if command -v lazygit &>/dev/null; then
-    export LG_CONFIG_FILE="$XDG_CONFIG_HOME/lazygit/config.yml,$XDG_CONFIG_HOME/lazygit/themes/catppuccin-{{ .theme }}.yml"
+    export LG_CONFIG_FILE="$XDG_CONFIG_HOME/lazygit/config.yml,$XDG_CONFIG_HOME/lazygit/themes/{{ .theme }}.yaml"
 fi
 
 # Initialize fzf
@@ -38,7 +38,7 @@ if command -v fzf &>/dev/null; then
     }
 
     # Set FZF color theme
-    source "$XDG_CONFIG_HOME/fzf/themes/catppuccin-fzf-{{ .theme }}.sh"
+    source "$XDG_CONFIG_HOME/fzf/themes/{{ .theme }}.sh"
 
     FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS $FZF_THEME"
 
@@ -48,7 +48,7 @@ fi
 # Configure eza
 if command -v eza &>/dev/null; then
     export EZA_CONFIG_DIR="$XDG_CONFIG_HOME/eza"
-    export EZA_COLORS_FILE="$XDG_CONFIG_HOME/eza/themes/catppuccin-{{ .theme }}.yml"
+    export EZA_COLORS_FILE="$XDG_CONFIG_HOME/eza/themes/{{ .theme }}.yaml"
 
     # Aliases for eza
     alias ls="eza --color=always --icons=always"

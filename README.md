@@ -72,8 +72,7 @@ The dotfiles support four Catppuccin variants. Change the theme by editing
 
 ```toml
 [data]
-# Choose one: "frappe", "latte", "macchiato", "mocha"
-theme = "frappe"
+theme = "catppuccin-mocha"
 ```
 
 After changing the theme, reapply with the `--init` flag to regenerate the config:
@@ -86,10 +85,10 @@ chezmoi apply --init
 
 **Available Themes:**
 
-- `frappe` - Warm, cozy dark theme (default)
-- `latte` - Light theme for daytime coding
-- `macchiato` - Darker, more vibrant variant
-- `mocha` - Deepest dark theme with high contrast
+- `catppuccin-frappe`
+- `catppuccin-latte`
+- `catppuccin-macchiato`
+- `catppuccin-mocha`
 
 ### Personal Information
 
@@ -97,7 +96,7 @@ Update your personal details in the same file:
 
 ```toml
 [data]
-theme = "frappe"
+theme = "catppuccin-mocha"
 name = "Your Name"
 fullName = "Your Full Name"
 email = "your.email@example.com"
@@ -274,7 +273,7 @@ chezmoi forget ~/.someconfig
 
 ### The Theme Was Not Applied
 
-1. Verify theme name in `.chezmoi.toml.tmpl` is one of: `frappe`, `latte`, `macchiato`, `mocha`
+1. Verify theme name in `.chezmoi.toml.tmpl` is one of: `catppuccin-frappe`, `catppuccin-latte`, `catppuccin-macchiato`, `catppuccin-mocha`
 2. Reapply configuration: `chezmoi apply -v`
 3. Rebuild bat cache: `bat cache --build`
 4. Restart your shell: `exec zsh`
