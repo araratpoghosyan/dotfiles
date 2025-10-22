@@ -56,3 +56,23 @@ if command -v eza &>/dev/null; then
     alias la="eza --color=always --icons=always --long --header --all"
     alias lt="eza --color=always --icons=always --tree"
 fi
+
+# Configure neovim
+if command -v nvim &>/dev/null; then
+    alias vim="nvim"
+fi
+
+# Configure bat
+if command -v bat &>/dev/null; then
+    alias cat="bat"
+fi
+
+# Configure yazi
+if command -v yazi &>/dev/null; then
+    alias y="yazi"
+fi
+
+# Configure uuidgen
+if command -v uuidgen &>/dev/null; then
+    alias uuid="uuidgen | tr \"[:upper:]\" \"[:lower:]\""
+fi
