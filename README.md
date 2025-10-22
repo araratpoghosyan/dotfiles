@@ -20,7 +20,7 @@ unified the Catppuccin theming across all tools, automated package management, a
 ## Included Configurations
 
 | Tool                                                          | Purpose                                         |
-|---------------------------------------------------------------|-------------------------------------------------|
+| ------------------------------------------------------------- | ----------------------------------------------- |
 | **[bat](https://github.com/sharkdp/bat)**                     | Cat replacement with syntax highlighting        |
 | **[btop](https://github.com/aristocratos/btop)**              | Resource monitor with intuitive interface       |
 | **[fzf](https://github.com/junegunn/fzf)**                    | Fuzzy finder for files and history              |
@@ -182,7 +182,6 @@ On the first run, scripts automatically:
 ```bash
 # Quick navigation
 p          # cd $HOME/Projects
-ws         # cd $HOME/Projects/Wirestock
 cd         # zoxide-powered smart directory jumping
 
 # Enhanced tools
@@ -215,7 +214,7 @@ packages:
       - "your-app-name"
     mas:
       - name: "App Name"
-        id: 1234567890  # App Store ID
+        id: 1234567890 # App Store ID
 ```
 
 Then run:
@@ -308,4 +307,3 @@ Personal dotfiles - feel free to use as inspiration or fork for your own setup!
 ---
 
 🚀 Happy hacking!
-
