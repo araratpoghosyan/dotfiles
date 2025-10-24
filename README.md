@@ -3,13 +3,13 @@
 > My personal macOS development environment, managed with [chezmoi](https://www.chezmoi.io/)
 
 A curated collection of configurations for a modern, efficient, and aesthetically pleasing development setup. Features
-unified the Catppuccin theming across all tools, automated package management, and XDG Base Directory compliance.
+unified theming across all tools with multiple theme families, automated package management, and XDG Base Directory compliance.
 
 ![screenshot.jpeg](docs/screenshot.jpeg)
 
 ## Features
 
-- **Unified Theming**: Catppuccin color schemes across all tools (Frappe, Latte, Macchiato, Mocha)
+- **Unified Theming**: Multiple theme options across all tools (Catppuccin, TokyoNight, Nord, Dracula, 0x96f)
 - **Automated Setup**: One-command installation of all tools and configurations
 - **Package Management**: Declarative package installation via Homebrew (brews, casks, Mac App Store)
 - **Modern Shell**: ZSH with oh-my-zsh, syntax highlighting, and smart completions
@@ -67,7 +67,7 @@ chezmoi apply
 
 ### Setting Your Theme
 
-The dotfiles support four Catppuccin variants. Change the theme by editing
+The dotfiles support multiple theme families with variants. Change the theme by editing
 `~/.local/share/chezmoi/home/.chezmoi.toml.tmpl`:
 
 ```toml
@@ -85,10 +85,26 @@ chezmoi apply --init
 
 **Available Themes:**
 
-- `catppuccin-frappe`
-- `catppuccin-latte`
-- `catppuccin-macchiato`
-- `catppuccin-mocha`
+- **Catppuccin** (4 variants)
+  - `catppuccin-frappe` - Warm, cozy pastel theme
+  - `catppuccin-latte` - Light mode variant
+  - `catppuccin-macchiato` - Medium contrast pastel theme
+  - `catppuccin-mocha` - Dark, rich pastel theme
+- **TokyoNight** (4 variants)
+  - `tokyonight-day` - Clean light theme
+  - `tokyonight-moon` - Dark theme with purple accent
+  - `tokyonight-night` - Deep dark theme
+  - `tokyonight-storm` - Storm-inspired dark theme
+- **Nord** (1 variant)
+  - `nord` - Arctic, north-bluish color palette
+- **Dracula** (1 variant)
+  - `dracula` - Dark theme with vibrant colors
+- **0x96f** (1 variant)
+  - `0x96f` - Custom minimalist dark theme
+
+**Theme Coverage:**
+
+All themes are available for: bat, eza, lazygit, fzf, and btop. Zellij has partial support with 5 themes (0x96f, catppuccin, dracula, nord, tokyonight_day).
 
 ### Personal Information
 
@@ -273,8 +289,8 @@ chezmoi forget ~/.someconfig
 
 ### The Theme Was Not Applied
 
-1. Verify theme name in `.chezmoi.toml.tmpl` is one of: `catppuccin-frappe`, `catppuccin-latte`, `catppuccin-macchiato`, `catppuccin-mocha`
-2. Reapply configuration: `chezmoi apply -v`
+1. Verify theme name in `.chezmoi.toml.tmpl` matches one of the available themes (see Configuration section)
+2. Reapply configuration with init flag: `chezmoi apply --init -v`
 3. Rebuild bat cache: `bat cache --build`
 4. Restart your shell: `exec zsh`
 
