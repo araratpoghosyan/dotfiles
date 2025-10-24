@@ -1,0 +1,15 @@
+themes {
+    "0x96f" {
+        fg 252 252 252       // #fcfcfc
+        bg 38 36 39          // #262427
+        black 38 36 39       // #262427
+        red 255 135 135      // #ff8787
+        green 198 228 114    // #c6e472
+        yellow 255 210 113   // #ffd271
+        blue 186 235 246     // #baebf6
+        magenta 255 135 135  // #ff8787
+        cyan 186 235 246     // #baebf6
+        white 252 252 252    // #fcfcfc
+        orange 255 210 113   // #ffd271
+    }
+}

@@ -1,0 +1,126 @@
+# Theme Configuration
+[theme]
+# Theme metadata
+name = "0x96f"
+author = "0x96f Theme"
+version = "1.0.0"
+description = "A simple and pleasant dark theme"
+
+# Color palette definition
+[theme.colors]
+background = "#262427"
+current_line = "#464447"
+foreground = "#fcfcfc"
+comment = "#a5a5a5"
+green = "#c6e472"
+yellow = "#ffd271"
+red = "#ff8787"
+blue = "#baebf6"
+
+# Manager
+[manager]
+hovered = { fg = "#fcfcfc", bg = "#464447", italic = true }
+marker_copied = { fg = "#262427", bg = "#c6e472" }
+marker_cut = { fg = "#262427", bg = "#ff8787" }
+marker_selected = { fg = "#262427", bg = "#ffd271" }
+border_symbol = "│"
+border_style = { fg = "#ffd271" }
+
+# Status
+[status]
+separator_open = ""
+separator_close = ""
+separator_style = { fg = "#a5a5a5", bg = "#262427" }
+mode_normal = { fg = "#262427", bg = "#c6e472", bold = true }
+mode_select = { fg = "#262427", bg = "#ffd271", bold = true }
+mode_unset = { fg = "#262427", bg = "#baebf6", bold = true }
+progress_label = { fg = "#fcfcfc", bold = true }
+progress_normal = { fg = "#baebf6", bg = "#464447" }
+progress_error = { fg = "#ff8787", bg = "#464447" }
+permissions_t = { fg = "#c6e472" }
+permissions_r = { fg = "#ffd271" }
+permissions_w = { fg = "#ff8787" }
+permissions_x = { fg = "#baebf6" }
+permissions_s = { fg = "#a5a5a5" }
+
+# Input
+[input]
+border = { fg = "#ffd271" }
+title = { fg = "#fcfcfc" }
+value = { fg = "#fcfcfc" }
+selected = { reversed = true }
+
+# Select
+[select]
+border = { fg = "#ffd271" }
+active = { fg = "#baebf6", bold = true }
+inactive = { fg = "#fcfcfc" }
+
+# Tasks
+[tasks]
+border = { fg = "#ffd271" }
+title = { fg = "#fcfcfc" }
+hovered = { fg = "#ffd271", bold = true }
+
+# Which
+[which]
+cols = 3
+mask = { bg = "#262427" }
+cand = { fg = "#baebf6" }
+rest = { fg = "#a5a5a5" }
+desc = { fg = "#fcfcfc" }
+separator = "  "
+separator_style = { fg = "#a5a5a5" }
+
+# Help
+[help]
+on = { fg = "#c6e472" }
+run = { fg = "#baebf6" }
+hovered = { reversed = true, bold = true }
+footer = { fg = "#fcfcfc", bg = "#464447" }
+
+# Notify
+[notify]
+title_info = { fg = "#baebf6" }
+title_warn = { fg = "#ffd271" }
+title_error = { fg = "#ff8787" }
+icon_info = "  "
+icon_warn = "  "
+icon_error = "  "
+
+# File-specific
+[filetype]
+rules = [
+    # Directories
+    { name = "*/", fg = "#baebf6" },
+
+    # Executables
+    { mime = "inode/x-empty", fg = "#fcfcfc" },
+
+    # Links
+    { name = "*", is = "link", fg = "#ffd271" },
+    { name = "*", is = "orphan", fg = "#ff8787" },
+
+    # Media
+    { mime = "image/*", fg = "#ffd271" },
+    { mime = "video/*", fg = "#ff8787" },
+    { mime = "audio/*", fg = "#c6e472" },
+
+    # Archives
+    { mime = "application/*zip", fg = "#baebf6" },
+    { mime = "application/*tar", fg = "#baebf6" },
+    { mime = "application/*rar", fg = "#baebf6" },
+
+    # Documents
+    { mime = "text/*", fg = "#fcfcfc" },
+
+    # Fallback
+    { name = "*", fg = "#fcfcfc" },
+]
+
+[icon]
+rules = [
+    { name = "*/", text = " " },
+    { name = "*", is = "exec", text = " " },
+    { name = "*", is = "link", text = " " },
+]
