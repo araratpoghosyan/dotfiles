@@ -67,8 +67,9 @@ chezmoi apply
 
 ### Setting Your Theme
 
-The dotfiles support multiple theme families with variants. Change the theme by editing
-`~/.local/share/chezmoi/home/.chezmoi.toml.tmpl`:
+The dotfiles support multiple theme families with variants. Themes are centrally managed in `home/.chezmoidata/themes.yaml` and automatically validated before applying.
+
+Change the theme by editing `~/.local/share/chezmoi/home/.chezmoi.toml.tmpl`:
 
 ```toml
 [data]
@@ -81,7 +82,7 @@ After changing the theme, reapply with the `--init` flag to regenerate the confi
 chezmoi apply --init
 ```
 
-> **Note**: The `--init` flag is required when modifying `.chezmoi.toml.tmpl` to ensure template variables are re-evaluated.
+> **Note**: The `--init` flag is required when modifying `.chezmoi.toml.tmpl` to ensure template variables are re-evaluated. Invalid theme names are automatically detected with helpful error messages.
 
 **Available Themes:**
 
@@ -105,6 +106,21 @@ chezmoi apply --init
 **Theme Coverage:**
 
 All themes are available for: bat, eza, lazygit, fzf, and btop. Zellij has partial support with 5 themes (0x96f, catppuccin, dracula, nord, tokyonight_day).
+
+**Theme Management:**
+
+Themes are defined in `home/.chezmoidata/themes.yaml` with the following structure:
+
+```yaml
+themes:
+  - name: catppuccin-mocha
+    description: Dark, rich pastel theme
+    family: catppuccin
+    aliases:
+      ghostty: Catppuccin Mocha
+```
+
+This centralized approach eliminates if/else chains in configuration files and makes adding new themes straightforward.
 
 ### Personal Information
 
@@ -161,10 +177,11 @@ Automatically managed via mise:
 ├── home/                           # Files to be installed in $HOME
 │   ├── .chezmoi.toml.tmpl         # Main configuration (theme, personal info)
 │   ├── .chezmoidata/              # Data files
-│   │   └── packages.yaml          # Package definitions
+│   │   ├── packages.yaml          # Package definitions
+│   │   └── themes.yaml            # Theme definitions and aliases
 │   ├── .chezmoiexternal.toml      # External dependencies
 │   ├── .chezmoiscripts/           # Automated scripts
-│   │   ├── run_before_*           # Pre-installation scripts
+│   │   ├── run_before_*           # Pre-installation scripts (includes theme validation)
 │   │   └── run_onchange_*         # Scripts that run on file changes
 │   ├── dot_*.zsh                  # Shell configuration
 │   ├── dot_gitconfig.tmpl         # Git configuration
@@ -191,6 +208,25 @@ On the first run, scripts automatically:
 3. Set up oh-my-zsh with plugins
 4. Install programming language runtimes via mise
 5. Build theme caches (bat)
+
+### Theme Validation
+
+Before applying any configuration, the system automatically validates your selected theme:
+
+- Checks if the theme name exists in `themes.yaml`
+- Provides helpful error messages with all available themes
+- Prevents invalid configurations from being applied
+- Centralized theme management eliminates if/else chains in configs
+
+Example error output:
+```
+❌ ERROR: Invalid theme 'invalid-theme'
+
+Available themes:
+  - catppuccin-mocha (Dark, rich pastel theme)
+  - nord (Arctic, north-bluish color palette)
+  ...
+```
 
 ### Smart Shell Aliases
 
@@ -237,6 +273,33 @@ Then run:
 ```bash
 chezmoi apply
 ```
+
+### Adding Themes
+
+To add a custom theme, edit `home/.chezmoidata/themes.yaml`:
+
+```yaml
+themes:
+  - name: your-theme-name
+    description: Your theme description
+    family: your-theme-family
+    aliases:
+      ghostty: Ghostty Theme Name
+      # Add more tool aliases as needed
+```
+
+The theme structure includes:
+- `name`: The canonical theme identifier used in `.chezmoi.toml.tmpl`
+- `description`: Brief description shown in validation errors
+- `family`: Theme family for grouping
+- `aliases`: Tool-specific theme names
+  - `ghostty`: Theme name for Ghostty terminal
+
+After adding a theme:
+
+1. Add corresponding theme files to tool directories (bat, eza, lazygit, etc.)
+2. Run `chezmoi apply --init` to regenerate configurations
+3. The validation script will automatically include your new theme
 
 ### Adding Shell Aliases
 

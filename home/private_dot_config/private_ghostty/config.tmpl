@@ -1,27 +1,9 @@
 # Theme
-{{ if eq .theme "catppuccin-frappe" }}
-theme = Catppuccin Frappe
-{{ else if eq .theme "catppuccin-macchiato" }}
-theme = Catppuccin Macchiato
-{{ else if eq .theme "catppuccin-mocha" }}
-theme = Catppuccin Mocha
-{{else if eq .theme "catppuccin-latte" }}
-theme = Catppuccini Latte
-{{else if eq .theme "dracula" }}
-theme = Dracula
-{{else if eq .theme "tokyonight-day" }}
-theme = TokyoNight Day
-{{else if eq .theme "tokyonight-moon" }}
-theme = TokyoNight Moon
-{{else if eq .theme "tokyonight-night" }}
-theme = TokyoNight Night
-{{else if eq .theme "tokyonight-storm" }}
-theme = TokyoNight Storm
-{{else if eq .theme "0x96f" }}
-theme = 0x96f
-{{ else if eq .theme "nord" }}
-theme = Nord
-{{ end }}
+{{- range .themes }}
+{{- if eq .name $.theme }}
+theme = {{ .aliases.ghostty }}
+{{- end }}
+{{- end }}
 
 # Fonts
 font-family = "JetBrainsMono Nerd Font Mono"

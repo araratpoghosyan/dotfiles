@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -eufo pipefail
+
+echo "🎨 Validating theme configuration..."
+
+# Define valid themes (loaded from .chezmoidata/themes.yaml)
+VALID_THEMES=(
+{{- range .themes }}
+    "{{ .name }}"
+{{- end }}
+)
+
+# Get the current theme from chezmoi data
+CURRENT_THEME="{{ .theme }}"
+
+# Check if theme is valid
+is_valid=false
+for valid_theme in "${VALID_THEMES[@]}"; do
+    if [[ "$CURRENT_THEME" == "$valid_theme" ]]; then
+        is_valid=true
+        break
+    fi
+done
+
+if [[ "$is_valid" == false ]]; then
+    echo ""
+    echo "❌ ERROR: Invalid theme '$CURRENT_THEME'"
+    echo ""
+    echo "Available themes:"
+    echo ""
+{{- range .themes }}
+    echo "  - {{ .name }}{{ if .description }} ({{ .description }}){{ end }}"
+{{- end }}
+    echo ""
+    echo "Please update the theme in:"
+    echo "  ~/.local/share/chezmoi/home/.chezmoi.toml.tmpl"
+    echo ""
+    echo "Then run: chezmoi apply --init"
+    echo ""
+    exit 1
+fi
+
+echo "✅ Theme '$CURRENT_THEME' is valid"

@@ -1,0 +1,61 @@
+themes:
+  # Catppuccin themes
+  - name: catppuccin-frappe
+    description: Warm, cozy pastel theme
+    family: catppuccin
+    aliases:
+      ghostty: Catppuccin Frappe
+  - name: catppuccin-latte
+    description: Light mode variant
+    family: catppuccin
+    aliases:
+      ghostty: Catppuccin Latte
+  - name: catppuccin-macchiato
+    description: Medium contrast pastel theme
+    family: catppuccin
+    aliases:
+      ghostty: Catppuccin Macchiato
+  - name: catppuccin-mocha
+    description: Dark, rich pastel theme
+    family: catppuccin
+    aliases:
+      ghostty: Catppuccin Mocha
+
+  # TokyoNight themes
+  - name: tokyonight-day
+    description: Clean light theme
+    family: tokyonight
+    aliases:
+      ghostty: TokyoNight Day
+  - name: tokyonight-moon
+    description: Dark theme with purple accent
+    family: tokyonight
+    aliases:
+      ghostty: TokyoNight Moon
+  - name: tokyonight-night
+    description: Deep dark theme
+    family: tokyonight
+    aliases:
+      ghostty: TokyoNight Night
+  - name: tokyonight-storm
+    description: Storm-inspired dark theme
+    family: tokyonight
+    aliases:
+      ghostty: TokyoNight Storm
+
+  # Other themes
+  - name: nord
+    description: Arctic, north-bluish color palette
+    family: nord
+    aliases:
+      ghostty: Nord
+  - name: dracula
+    description: Dark theme with vibrant colors
+    family: dracula
+    aliases:
+      ghostty: Dracula
+  - name: "0x96f"
+    description: Custom minimalist dark theme
+    family: "0x96f"
+    aliases:
+      ghostty: "0x96f"
