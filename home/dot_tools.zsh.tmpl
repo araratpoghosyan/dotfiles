@@ -40,8 +40,6 @@ if command -v fzf &>/dev/null; then
     # Set FZF color theme
     source "$XDG_CONFIG_HOME/fzf/themes/{{ .theme }}.sh"
 
-    FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS $FZF_THEME"
-
     source <(fzf --zsh)
 fi
 

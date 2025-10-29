@@ -1,4 +1,4 @@
-FZF_THEME=" \
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS" \
   --highlight-line \
   --info=inline-right \
   --ansi \

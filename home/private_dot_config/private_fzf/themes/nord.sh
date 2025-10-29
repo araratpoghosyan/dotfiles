@@ -1,4 +1,4 @@
-FZF_THEME=" \
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS" \
   --color=bg+:#3B4252 \
   --color=bg:#2E3440 \
   --color=spinner:#88C0D0 \
