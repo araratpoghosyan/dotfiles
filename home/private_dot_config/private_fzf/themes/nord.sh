@@ -1,14 +1,14 @@
 FZF_THEME=" \
-  --color=bg+:#3b4252 \
-  --color=bg:#3b4252 \
-  --color=spinner:#b48dac \
-  --color=hl:#81a1c1 \
-  --color=fg:#e5e9f0 \
-  --color=header:#a3be8b \
-  --color=info:#eacb8a \
-  --color=pointer:#b48dac \
-  --color=marker:#a3be8b \
-  --color=fg+:#e5e9f0 \
-  --color=prompt:#bf6069 \
-  --color=hl+:#81a1c1 \
+  --color=bg+:#3B4252 \
+  --color=bg:#2E3440 \
+  --color=spinner:#88C0D0 \
+  --color=hl:#81A1C1 \
+  --color=fg:#D8DEE9 \
+  --color=header:#81A1C1 \
+  --color=info:#81A1C1 \
+  --color=pointer:#88C0D0 \
+  --color=marker:#88C0D0 \
+  --color=fg+:#D8DEE9 \
+  --color=prompt:#81A1C1 \
+  --color=hl+:#88C0D0 \
 "
