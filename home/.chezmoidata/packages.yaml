@@ -17,6 +17,7 @@ packages:
       - "exiftool"
       - "eza"
       - "ffmpeg"
+      - fd
       - "figlet"
       - "fzf"
       - "gemini-cli"
