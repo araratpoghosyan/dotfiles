@@ -5,6 +5,7 @@ packages:
       - "symfony-cli/tap"
 
     brews:
+      - "ast-grep"
       - "ansible"
       - "argo"
       - "aws-sam-cli"
@@ -16,8 +17,8 @@ packages:
       - "composer"
       - "exiftool"
       - "eza"
+      - "fd"
       - "ffmpeg"
-      - fd
       - "figlet"
       - "fzf"
       - "gemini-cli"
@@ -51,6 +52,8 @@ packages:
       - "terraform"
       - "tig"
       - "tree"
+      - "tree-sitter"
+      - "tree-sitter-cli"
       - "trino"
       - "vips"
       - "watch"
