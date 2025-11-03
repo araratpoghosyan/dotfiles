@@ -22,6 +22,10 @@ require("lazy").setup({
     -- AI
     { import = "lazyvim.plugins.extras.ai.copilot" },
 
+    -- Coding
+    { import = "lazyvim.plugins.extras.coding.mini-surround" },
+    { import = "lazyvim.plugins.extras.coding.yanky" },
+
     -- Languages
     { import = "lazyvim.plugins.extras.lang.go" },
     { import = "lazyvim.plugins.extras.lang.json" },
@@ -39,9 +43,8 @@ require("lazy").setup({
     -- UI
     { import = "lazyvim.plugins.extras.ui.mini-indentscope" },
 
-    -- Coding
-    { import = "lazyvim.plugins.extras.coding.mini-surround" },
-    { import = "lazyvim.plugins.extras.coding.yanky" },
+    -- UI
+    { import = "lazyvim.plugins.extras.util.chezmoi" },
 
     -- import/override with your plugins
     { import = "plugins" },
