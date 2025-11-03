@@ -2,17 +2,19 @@ return {
   {
     "folke/snacks.nvim",
     opts = {
+      picker = {
+        sources = {
+          files = {
+            hidden = true,
+          },
+          explorer = {
+            hidden = true,
+            ignored = true,
+          },
+        },
+      },
       image = {
         enabled = true,
-        formats = {
-          "png",
-          "jpg",
-          "jpeg",
-          "gif",
-          "bmp",
-          "webp",
-          "tiff",
-        },
       },
     },
   },

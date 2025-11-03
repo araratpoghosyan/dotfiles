@@ -18,3 +18,6 @@ vim.g.loaded_python3_provider = 0
 
 -- Set ruler
 vim.opt.colorcolumn = "120"
+
+-- Do not auto-detect project roots
+vim.g.root_spec = { "cwd" }
