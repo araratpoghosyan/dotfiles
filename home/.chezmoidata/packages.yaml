@@ -43,6 +43,7 @@ packages:
       - "neofetch"
       - "neovim"
       - "node@20"
+      - "opencode"
       - "php@8.2"
       - "protobuf"
       - "rclone"
