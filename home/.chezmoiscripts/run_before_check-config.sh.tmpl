@@ -4,15 +4,15 @@
 set -e
 
 CHEZMOI_SOURCE_DIR="{{ .chezmoi.sourceDir }}"
-CONFIG_FILE="${CHEZMOI_SOURCE_DIR}/.chezmoi.toml"
+CONFIG_FILE="${CHEZMOI_SOURCE_DIR}/.chezmoi.toml.tmpl"
 EXAMPLE_FILE="${CHEZMOI_SOURCE_DIR}/.chezmoi.toml.example"
 
-# Check if .chezmoi.toml exists
+# Check if .chezmoi.toml.tmpl exists
 if [ ! -f "${CONFIG_FILE}" ]; then
     echo ""
     echo "❌ ERROR: Configuration file not found!"
     echo ""
-    echo "The file '.chezmoi.toml' is required but does not exist."
+    echo "The file '.chezmoi.toml.tmpl' is required but does not exist."
     echo ""
     echo "To fix this:"
     echo "  1. Copy the example configuration:"
@@ -35,7 +35,7 @@ fi
 # Optional: Validate that required fields are not using example values
 if grep -q "Your Name" "${CONFIG_FILE}" || grep -q "your.email@example.com" "${CONFIG_FILE}"; then
     echo ""
-    echo "⚠️  WARNING: It looks like you're still using example values in .chezmoi.toml"
+    echo "⚠️  WARNING: It looks like you're still using example values in .chezmoi.toml.tmpl"
     echo ""
     echo "Please update the following fields with your actual information:"
     echo "  - name"

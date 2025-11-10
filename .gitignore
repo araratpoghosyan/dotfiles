@@ -2,4 +2,4 @@
 .claude/
 
 # Personal configuration (copy from home/.chezmoi.toml.example and customize)
-home/.chezmoi.toml
+home/.chezmoi.toml.tmpl

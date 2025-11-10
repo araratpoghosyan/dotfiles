@@ -46,9 +46,7 @@ unified theming across all tools with multiple theme families, automated package
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init ararat-poghosyan
 
 # Set up your personal configuration
-cd ~/.local/share/chezmoi/home
-cp .chezmoi.toml.example .chezmoi.toml
-${EDITOR} .chezmoi.toml  # Update with your theme, name, and email
+${EDITOR} ~/.local/share/chezmoi/home/.chezmoi.toml.tmpl  # Update with your theme, name, and email
 
 # Preview and apply changes
 chezmoi diff
@@ -71,25 +69,24 @@ chezmoi apply
 
 ### Initial Setup
 
-**IMPORTANT**: Before using chezmoi, you must create your personal configuration file:
+**IMPORTANT**: Before using chezmoi, you must configure your personal settings in the template file:
 
 ```bash
-cd ~/.local/share/chezmoi/home
-cp .chezmoi.toml.example .chezmoi.toml
-${EDITOR} .chezmoi.toml
+${EDITOR} ~/.local/share/chezmoi/home/.chezmoi.toml.tmpl
 ```
 
-This file is **required** and contains:
+This file contains:
 - Your chosen theme
 - Personal information (name, email)
+- 1Password account (optional)
 
-The `.chezmoi.toml` file is **git-ignored** so your personal settings won't be committed to version control.
+Update the values in this template file with your personal information.
 
 ### Setting Your Theme
 
 The dotfiles support multiple theme families with variants. Themes are centrally managed in `home/.chezmoidata/themes.yaml` and automatically validated before applying.
 
-Change the theme by editing `~/.local/share/chezmoi/home/.chezmoi.toml`:
+Change the theme by editing `~/.local/share/chezmoi/home/.chezmoi.toml.tmpl`:
 
 ```toml
 [data]
@@ -144,19 +141,23 @@ This centralized approach eliminates if/else chains in configuration files and m
 
 ### Personal Information
 
-Update your personal details in `~/.local/share/chezmoi/home/.chezmoi.toml`:
+Update your personal details in `~/.local/share/chezmoi/home/.chezmoi.toml.tmpl`:
 
 ```toml
 [data]
-theme = "catppuccin-mocha"
+# Theme for all the tools that support it
+theme = "catppuccin-macchiato"
+
+# Personal information
 name = "Your Name"
 fullName = "Your Full Name"
 email = "your.email@example.com"
+
+# Your 1Password account (optional)
+onePasswordAccount = "your.email@example.com"
 ```
 
 These values are used for git configuration and other personalized settings.
-
-> **Note**: The `.chezmoi.toml` file is git-ignored, so your personal information stays private and won't be committed to the repository.
 
 ## What Gets Installed
 
@@ -197,8 +198,8 @@ Automatically managed via mise:
 ```text
 ~/.local/share/chezmoi/
 ├── home/                          # Files to be installed in $HOME (chezmoi root)
-│   ├── .chezmoi.toml.example      # Example configuration (copy to .chezmoi.toml)
-│   ├── .chezmoi.toml              # Your personal config (git-ignored, REQUIRED)
+│   ├── .chezmoi.toml.example      # Example configuration for reference
+│   ├── .chezmoi.toml.tmpl         # Your personal config template (REQUIRED)
 │   ├── .chezmoidata/              # Data files
 │   │   ├── packages.yaml          # Package definitions
 │   │   └── themes.yaml            # Theme definitions and aliases
@@ -312,7 +313,7 @@ themes:
 ```
 
 The theme structure includes:
-- `name`: The canonical theme identifier used in `.chezmoi.toml`
+- `name`: The canonical theme identifier used in `.chezmoi.toml.tmpl`
 - `description`: Brief description shown in validation errors
 - `family`: Theme family for grouping
 - `aliases`: Tool-specific theme names
@@ -375,7 +376,7 @@ chezmoi forget ~/.someconfig
 
 ### The Theme Was Not Applied
 
-1. Verify theme name in `home/.chezmoi.toml` matches one of the available themes (see Configuration section)
+1. Verify theme name in `home/.chezmoi.toml.tmpl` matches one of the available themes (see Configuration section)
 2. Reapply configuration with init flag: `chezmoi apply --init -v`
 3. Rebuild bat cache: `bat cache --build`
 4. Restart your shell: `exec zsh`
