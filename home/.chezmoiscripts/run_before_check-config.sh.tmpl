@@ -3,7 +3,7 @@
 
 set -e
 
-CHEZMOI_SOURCE_DIR="${HOME}/.local/share/chezmoi/home"
+CHEZMOI_SOURCE_DIR="{{ .chezmoi.sourceDir }}"
 CONFIG_FILE="${CHEZMOI_SOURCE_DIR}/.chezmoi.toml"
 EXAMPLE_FILE="${CHEZMOI_SOURCE_DIR}/.chezmoi.toml.example"
 
