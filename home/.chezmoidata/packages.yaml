@@ -67,8 +67,6 @@ packages:
       - "zsh"
 
     casks:
-      - "1password"
-      - "1password-cli"
       - "appcleaner"
       - "cyberduck"
       - "discord"

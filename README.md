@@ -36,6 +36,70 @@ unified theming across all tools with multiple theme families, automated package
 
 - macOS (Apple Silicon or Intel)
 - Command Line Tools: `xcode-select --install`
+- Homebrew (see installation below)
+- 1Password and 1Password CLI (see installation below)
+- mas CLI (see installation below)
+
+### Manual Installation Steps
+
+These tools must be installed **before** running chezmoi for the first time:
+
+#### 1. Install Homebrew
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Add Homebrew to PATH (Apple Silicon)
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> "$HOME/.zprofile"
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Or for Intel Macs
+echo 'eval "$(/usr/local/bin/brew shellenv)"' >> "$HOME/.zprofile"
+eval "$(/usr/local/bin/brew shellenv)"
+```
+
+#### 2. Install 1Password
+
+Download and install from [1password.com](https://1password.com/downloads/mac/):
+
+```bash
+# Or use Homebrew
+brew install --cask 1password
+```
+
+**Important:** Launch 1Password and sign in to your account before proceeding.
+
+#### 3. Install and Configure 1Password CLI
+
+```bash
+# Install 1Password CLI
+brew install --cask 1password-cli
+
+# Verify installation
+op --version
+
+# Add your 1Password account
+op account add --address <your-subdomain>.1password.com --email <your-email>
+
+# Sign in (if not using biometric unlock)
+eval $(op signin --account <your-subdomain>)
+
+# Enable biometric unlock for seamless integration
+# Go to 1Password app → Settings → Developer →
+# Enable "Connect with 1Password CLI" and "Use biometric unlock"
+```
+
+With biometric unlock enabled, chezmoi can access 1Password secrets without manual authentication.
+
+#### 4. Install mas CLI
+
+The `mas` CLI is required for automated Mac App Store app installation:
+
+```bash
+brew install mas
+```
+
+**Important:** Sign in to the Mac App Store app **before** running chezmoi, otherwise mas cannot install apps.
 
 ## Quick Start
 
@@ -159,6 +223,65 @@ onePasswordAccount = "your.email@example.com"
 
 These values are used for git configuration and other personalized settings.
 
+### 1Password Integration
+
+This dotfiles repository leverages 1Password CLI for secure secrets management. With 1Password integration, you can:
+
+- Store sensitive data (API keys, tokens, credentials) securely in 1Password
+- Reference secrets in your dotfiles using chezmoi templates
+- Avoid committing secrets to version control
+
+#### Using 1Password in Templates
+
+chezmoi provides several template functions to access 1Password data:
+
+**onepasswordRead** - Direct secret retrieval using secret references:
+```tmpl
+{{ onepasswordRead "op://Private/GitHub/personal-access-token" }}
+```
+
+**onepassword** - Retrieve full item details as JSON:
+```tmpl
+{{ (onepassword "your-item-uuid").fields.password.value }}
+```
+
+**onepasswordDetailsFields** - Simplified field access:
+```tmpl
+{{ (onepasswordDetailsFields "your-item-uuid").password.value }}
+```
+
+#### Example Usage
+
+In any `.tmpl` file in your dotfiles:
+
+```toml
+# ~/.config/app/config.toml.tmpl
+api_key = "{{ onepasswordRead "op://Private/MyApp/api-key" }}"
+```
+
+```yaml
+# ~/.config/service/credentials.yaml.tmpl
+token: {{ onepasswordRead "op://Work/ServiceToken/credential" }}
+```
+
+#### Configuration
+
+To disable interactive prompts (useful for automated workflows), add to `~/.config/chezmoi/chezmoi.toml`:
+
+```toml
+[onepassword]
+prompt = false
+```
+
+⚠️ **Warning:** Only use `prompt = false` on trusted, personal machines. This allows chezmoi to access secrets without confirmation.
+
+#### Best Practices
+
+1. **Use secret references**: Prefer `op://vault/item/field` format for clarity
+2. **Enable biometric unlock**: Eliminates manual authentication during `chezmoi apply`
+3. **Organize vaults**: Use separate vaults (Private, Work, etc.) for different contexts
+4. **Document secret locations**: Add comments in templates indicating which 1Password item is referenced
+
 ## What Gets Installed
 
 ### CLI Tools (Homebrew)
@@ -177,11 +300,13 @@ Development tools, languages, and utilities including:
 Essential macOS applications:
 
 - **Development**: Visual Studio Code, JetBrains Toolbox, Docker Desktop
-- **Productivity**: Raycast, Notion, 1Password
+- **Productivity**: Raycast, Notion
 - **Communication**: Slack, Discord, Telegram, Zoom
 - **Browsers**: Google Chrome, Firefox
 - **Media**: Spotify, VLC
 - **Utilities**: AppCleaner, Cyberduck, Tower (Git client)
+
+> **Note**: 1Password and 1Password CLI must be installed manually before initial setup (see Prerequisites)
 
 ### Runtime Versions (mise)
 
@@ -225,13 +350,17 @@ Automatically managed via mise:
 
 ### Automated Package Installation
 
-On the first run, scripts automatically:
+After prerequisites are met, scripts automatically:
 
-1. Install Homebrew (if not present)
-2. Install all brew packages, casks, and Mac App Store apps
-3. Set up oh-my-zsh with plugins
-4. Install programming language runtimes via mise
-5. Build theme caches (bat)
+1. Install all brew packages and casks from `packages.yaml`
+2. Set up oh-my-zsh with plugins
+3. Install programming language runtimes via mise
+4. Build theme caches (bat)
+
+**Prerequisites** (must be installed manually):
+- Homebrew
+- 1Password and 1Password CLI
+- mas CLI (for Mac App Store apps)
 
 ### Theme Validation
 
@@ -289,13 +418,19 @@ packages:
       - "your-app-name"
     mas:
       - name: "App Name"
-        id: 1234567890 # App Store ID
+        id: 1234567890  # App Store ID
 ```
 
 Then run:
 
 ```bash
 chezmoi apply
+```
+
+To find Mac App Store app IDs:
+
+```bash
+mas search "App Name"
 ```
 
 ### Adding Themes
@@ -394,6 +529,29 @@ bash ~/.local/share/chezmoi/home/.chezmoiscripts/run_onchange_darwin-install-pac
 # Reload shell configuration
 source ~/.zshrc
 ```
+
+### 1Password CLI Not Working
+
+If chezmoi cannot access 1Password secrets:
+
+```bash
+# Verify 1Password CLI is installed
+op --version
+
+# Check if you're signed in
+op account list
+
+# Sign in if needed
+eval $(op signin --account <your-subdomain>)
+
+# Enable biometric unlock in 1Password app
+# Settings → Developer → Enable "Connect with 1Password CLI"
+
+# Test access
+op read "op://Private/test-item/password"
+```
+
+If you see `prompt = false` errors, ensure biometric unlock is enabled or remove that setting from `~/.config/chezmoi/chezmoi.toml`.
 
 ## License
 
