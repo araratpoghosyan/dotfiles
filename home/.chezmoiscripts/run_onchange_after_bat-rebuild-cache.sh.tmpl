@@ -5,10 +5,7 @@
 
 # Hash of bat config to trigger re-runs when changed
 # bat config hash: {{ include "private_dot_config/private_bat/config.tmpl" | sha256sum }}
-# bat themes hash: {{ include "private_dot_config/private_bat/themes/catppuccin-frappe.tmTheme" | sha256sum }}
-# bat themes hash: {{ include "private_dot_config/private_bat/themes/catppuccin-latte.tmTheme" | sha256sum }}
-# bat themes hash: {{ include "private_dot_config/private_bat/themes/catppuccin-macchiato.tmTheme" | sha256sum }}
-# bat themes hash: {{ include "private_dot_config/private_bat/themes/catppuccin-mocha.tmTheme" | sha256sum }}
+# bat themes hash: {{ glob "private_dot_config/private_bat/themes/*" | join "" | sha256sum }}
 
 set -eufo pipefail
 
