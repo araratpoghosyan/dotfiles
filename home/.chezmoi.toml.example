@@ -1,0 +1,12 @@
+[data]
+# Theme for all the tools that support it
+# Available themes: catppuccin-mocha, catppuccin-macchiato, catppuccin-frappe, catppuccin-latte,
+#                   tokyonight-night, tokyonight-storm, tokyonight-moon, tokyonight-day,
+#                   nord, dracula, 0x96f
+theme = "catppuccin-macchiato"
+
+# Personal information
+# Used for git configuration and other personalized settings
+name = "Your Name"
+fullName = "Your Full Name"
+email = "your.email@example.com"

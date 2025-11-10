@@ -42,11 +42,15 @@ unified theming across all tools with multiple theme families, automated package
 ### Fresh Installation
 
 ```bash
-# Install chezmoi and apply dotfiles
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ararat-poghosyan
+# Install chezmoi and initialize dotfiles
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init ararat-poghosyan
 
-# Or if you prefer to review changes first
-chezmoi init ararat-poghosyan
+# Set up your personal configuration
+cd ~/.local/share/chezmoi/home
+cp .chezmoi.toml.example .chezmoi.toml
+${EDITOR} .chezmoi.toml  # Update with your theme, name, and email
+
+# Preview and apply changes
 chezmoi diff
 chezmoi apply
 ```
@@ -65,24 +69,40 @@ chezmoi apply
 
 ## Configuration
 
+### Initial Setup
+
+**IMPORTANT**: Before using chezmoi, you must create your personal configuration file:
+
+```bash
+cd ~/.local/share/chezmoi/home
+cp .chezmoi.toml.example .chezmoi.toml
+${EDITOR} .chezmoi.toml
+```
+
+This file is **required** and contains:
+- Your chosen theme
+- Personal information (name, email)
+
+The `.chezmoi.toml` file is **git-ignored** so your personal settings won't be committed to version control.
+
 ### Setting Your Theme
 
 The dotfiles support multiple theme families with variants. Themes are centrally managed in `home/.chezmoidata/themes.yaml` and automatically validated before applying.
 
-Change the theme by editing `~/.local/share/chezmoi/home/.chezmoi.toml.tmpl`:
+Change the theme by editing `~/.local/share/chezmoi/home/.chezmoi.toml`:
 
 ```toml
 [data]
 theme = "catppuccin-mocha"
 ```
 
-After changing the theme, reapply with the `--init` flag to regenerate the config:
+After changing the theme, reapply your configuration:
 
 ```bash
-chezmoi apply --init
+chezmoi apply
 ```
 
-> **Note**: The `--init` flag is required when modifying `.chezmoi.toml.tmpl` to ensure template variables are re-evaluated. Invalid theme names are automatically detected with helpful error messages.
+> **Note**: Invalid theme names are automatically detected with helpful error messages.
 
 **Available Themes:**
 
@@ -124,7 +144,7 @@ This centralized approach eliminates if/else chains in configuration files and m
 
 ### Personal Information
 
-Update your personal details in the same file:
+Update your personal details in `~/.local/share/chezmoi/home/.chezmoi.toml`:
 
 ```toml
 [data]
@@ -135,6 +155,8 @@ email = "your.email@example.com"
 ```
 
 These values are used for git configuration and other personalized settings.
+
+> **Note**: The `.chezmoi.toml` file is git-ignored, so your personal information stays private and won't be committed to the repository.
 
 ## What Gets Installed
 
@@ -174,8 +196,9 @@ Automatically managed via mise:
 
 ```text
 ~/.local/share/chezmoi/
-├── home/                           # Files to be installed in $HOME
-│   ├── .chezmoi.toml.tmpl         # Main configuration (theme, personal info)
+├── home/                          # Files to be installed in $HOME (chezmoi root)
+│   ├── .chezmoi.toml.example      # Example configuration (copy to .chezmoi.toml)
+│   ├── .chezmoi.toml              # Your personal config (git-ignored, REQUIRED)
 │   ├── .chezmoidata/              # Data files
 │   │   ├── packages.yaml          # Package definitions
 │   │   └── themes.yaml            # Theme definitions and aliases
@@ -289,7 +312,7 @@ themes:
 ```
 
 The theme structure includes:
-- `name`: The canonical theme identifier used in `.chezmoi.toml.tmpl`
+- `name`: The canonical theme identifier used in `.chezmoi.toml`
 - `description`: Brief description shown in validation errors
 - `family`: Theme family for grouping
 - `aliases`: Tool-specific theme names
@@ -352,7 +375,7 @@ chezmoi forget ~/.someconfig
 
 ### The Theme Was Not Applied
 
-1. Verify theme name in `.chezmoi.toml.tmpl` matches one of the available themes (see Configuration section)
+1. Verify theme name in `home/.chezmoi.toml` matches one of the available themes (see Configuration section)
 2. Reapply configuration with init flag: `chezmoi apply --init -v`
 3. Rebuild bat cache: `bat cache --build`
 4. Restart your shell: `exec zsh`
