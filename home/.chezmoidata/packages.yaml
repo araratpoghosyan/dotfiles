@@ -3,6 +3,7 @@ packages:
     taps:
       - "aws/tap"
       - "symfony-cli/tap"
+      - "hashicorp/tap"
 
     brews:
       - "ast-grep"
@@ -53,7 +54,6 @@ packages:
       - "stow"
       - "symfony-cli/tap/symfony-cli"
       - "tectonic"
-      - "terraform"
       - "tig"
       - "tree"
       - "tree-sitter"
@@ -79,7 +79,6 @@ packages:
       - "iterm2"
       - "jetbrains-toolbox"
       - "kubernetic"
-      - "logi-options+"
       - "medis"
       - "mongodb-compass"
       - "notion"

@@ -7,5 +7,4 @@ lua = ['5.1']
 
 "npm:cdk" = "latest"
 "npm:prettier" = "latest"
-"npm:@anthropic-ai/claude-code" = "latest"
 "npm:@mermaid-js/mermaid-cli" = "latest"
