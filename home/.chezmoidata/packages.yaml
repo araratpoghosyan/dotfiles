@@ -1,14 +1,16 @@
 packages:
   darwin:
     taps:
+      - "anomalyco/tap"
       - "aws/tap"
-      - "symfony-cli/tap"
       - "hashicorp/tap"
+      - "symfony-cli/tap"
 
     brews:
-      - "ast-grep"
+      - "anomalyco/tap/opencode"
       - "ansible"
       - "argo"
+      - "ast-grep"
       - "aws-sam-cli"
       - "aws-shell"
       - "awscli"
@@ -45,7 +47,6 @@ packages:
       - "neofetch"
       - "neovim"
       - "node@20"
-      - "opencode"
       - "php@8.2"
       - "protobuf"
       - "rclone"
