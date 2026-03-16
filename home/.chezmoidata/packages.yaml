@@ -27,6 +27,7 @@ packages:
       - "gemini-cli"
       - "ghostscript"
       - "git-delta"
+      - "glab"
       - "glow"
       - "gnu-sed"
       - "gnumeric"
