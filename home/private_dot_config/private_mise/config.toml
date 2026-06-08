@@ -5,6 +5,7 @@ rust = ['latest']
 dotnet = ['8.0', '9.0']
 lua = ['5.1']
 
+"npm:bun" = "latest"
 "npm:cdk" = "latest"
 "npm:prettier" = "latest"
 "npm:@mermaid-js/mermaid-cli" = "latest"
