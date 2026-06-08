@@ -96,7 +96,6 @@ packages:
       - "transmission"
       - "visual-studio-code"
       - "vlc"
-      - "whatsapp"
       - "zoom"
 
     mas:
