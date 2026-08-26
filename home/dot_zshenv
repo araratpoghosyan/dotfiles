@@ -11,5 +11,5 @@ export CLICOLOR=YES
 # Do not upgrade homebrew on every install
 export HOMEBREW_NO_AUTO_UPDATE=1
 
-# Prefer using GNU coreutils over macOS built-in tools
+# Base directory for user configuration files (XDG Base Directory spec)
 export XDG_CONFIG_HOME="$HOME/.config"
