@@ -1,3 +1,9 @@
+# macOS system files
+.DS_Store
+
+# IDE directories
+.idea/
+
 # AI assistant data
 .claude/
 
