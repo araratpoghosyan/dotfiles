@@ -37,8 +37,9 @@ unified theming across all tools with multiple theme families, automated package
 - macOS (Apple Silicon or Intel)
 - Command Line Tools: `xcode-select --install`
 - Homebrew (see installation below)
-- 1Password and 1Password CLI (see installation below)
-- mas CLI (see installation below)
+- 1Password and 1Password CLI, signed in (see installation below — required during the first
+  apply because the SSH config is pulled from 1Password)
+- Signed in to the Mac App Store (for MAS apps; the `mas` CLI itself installs automatically)
 
 ### Manual Installation Steps
 
@@ -91,15 +92,11 @@ eval $(op signin --account <your-subdomain>)
 
 With biometric unlock enabled, chezmoi can access 1Password secrets without manual authentication.
 
-#### 4. Install mas CLI
+#### 4. Sign in to the Mac App Store
 
-The `mas` CLI is required for automated Mac App Store app installation:
-
-```bash
-brew install mas
-```
-
-**Important:** Sign in to the Mac App Store app **before** running chezmoi, otherwise mas cannot install apps.
+The `mas` CLI (used for Mac App Store apps) is installed automatically from `packages.yaml`,
+but it can only install apps while you are signed in to the App Store app.
+If you skip this, MAS apps are skipped on the first apply and installed on a later one.
 
 ## Quick Start
 
@@ -109,10 +106,12 @@ brew install mas
 # Install chezmoi and initialize dotfiles
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init ararat-poghosyan
 
-# Set up your personal configuration
+# Set up your personal configuration (copy the example, then edit)
+cp ~/.local/share/chezmoi/home/.chezmoi.toml.example ~/.local/share/chezmoi/home/.chezmoi.toml.tmpl
 ${EDITOR} ~/.local/share/chezmoi/home/.chezmoi.toml.tmpl  # Update with your theme, name, and email
 
-# Preview and apply changes
+# Regenerate the config from the template, preview, and apply
+chezmoi init
 chezmoi diff
 chezmoi apply
 ```
@@ -157,10 +156,11 @@ Change the theme by editing `~/.local/share/chezmoi/home/.chezmoi.toml.tmpl`:
 theme = "catppuccin-mocha"
 ```
 
-After changing the theme, reapply your configuration:
+After changing the theme, regenerate the config and reapply (a plain `chezmoi apply`
+does **not** re-read the config template):
 
 ```bash
-chezmoi apply
+chezmoi init --apply
 ```
 
 > **Note**: Invalid theme names are automatically detected with helpful error messages.
@@ -186,7 +186,7 @@ chezmoi apply
 
 **Theme Coverage:**
 
-All themes are available for: bat, eza, lazygit, fzf, and btop. Zellij has partial support with 5 themes (0x96f, catppuccin, dracula, nord, tokyonight_day).
+All 11 themes are available for every themed tool: bat, btop, eza, fzf, ghostty, lazygit, neovim, opencode, yazi, and zellij. The light themes (`catppuccin-latte`, `tokyonight-day`) also switch delta/lazygit to light mode and keep macOS in light appearance (via the `light` flag in `themes.yaml`).
 
 **Theme Management:**
 
@@ -195,6 +195,7 @@ Themes are defined in `home/.chezmoidata/themes.yaml` with the following structu
 ```yaml
 themes:
   - name: catppuccin-mocha
+    light: false
     description: Dark, rich pastel theme
     family: catppuccin
     aliases:
@@ -288,9 +289,9 @@ prompt = false
 
 Development tools, languages, and utilities including:
 
-- **Languages**: Node.js, Go, PHP, Rust
-- **DevOps**: Docker, Kubernetes (kubectl, helm), Terraform, Ansible
-- **AWS**: AWS CLI, SAM CLI, AWS Shell
+- **Languages**: PHP (Node.js, Go, and Rust are managed by mise — see below)
+- **DevOps**: Docker, Kubernetes (kubectl, helm, helmfile), Ansible
+- **AWS**: AWS CLI, SAM CLI
 - **Database**: MySQL Client, MongoDB Compass, Trino
 - **Media**: FFmpeg, ImageMagick, ExifTool
 - **Productivity**: bat, fzf, ripgrep, tree, jq
@@ -306,17 +307,21 @@ Essential macOS applications:
 - **Media**: Spotify, VLC
 - **Utilities**: AppCleaner, Cyberduck, Tower (Git client)
 
-> **Note**: 1Password and 1Password CLI must be installed manually before initial setup (see Prerequisites)
+> **Note**: The 1Password casks are declared in `packages.yaml` for completeness, but 1Password
+> and its CLI must be installed and signed in manually **before** the first apply (see Prerequisites)
 
 ### Runtime Versions (mise)
 
-Automatically managed via mise:
+Automatically managed via mise (the single owner of language runtimes — brew does not install Node/Go/Rust):
 
 - Node.js 24.9
 - Go (latest)
 - Rust (latest)
 - .NET 8.0 & 9.0
-- Global NPM packages: AWS CDK, Claude Code
+- Lua 5.1 (for Neovim)
+- Global NPM packages: bun, AWS CDK, Prettier, Mermaid CLI
+
+> **Note**: Claude Code is installed separately via its official install script (`run_once_install-claude-code`).
 
 ## Directory Structure
 
@@ -332,17 +337,23 @@ Automatically managed via mise:
 │   ├── .chezmoiscripts/           # Automated scripts
 │   │   ├── run_before_*           # Pre-installation scripts (includes theme validation)
 │   │   └── run_onchange_*         # Scripts that run on file changes
+│   ├── .chezmoitemplates/         # Shared templates (per-theme neovim colorschemes)
 │   ├── dot_*.zsh                  # Shell configuration
 │   ├── dot_gitconfig.tmpl         # Git configuration
+│   ├── dot_claude/                # Claude Code settings and statusline
+│   ├── private_dot_ssh/           # SSH config (content pulled from 1Password)
 │   └── private_dot_config/        # Application configs
 │       ├── private_bat/           # Bat themes and config
 │       ├── private_btop/          # Btop resource monitor config and themes
+│       ├── private_eza/           # Eza themes (theme.yml generated from selection)
 │       ├── private_fzf/           # FZF themes
 │       ├── private_ghostty/       # Ghostty terminal config
 │       ├── private_lazygit/       # Lazygit config and themes
 │       ├── private_mise/          # Mise runtime versions
 │       ├── private_nvim/          # Neovim configuration
-│       └── private_yazi/          # Yazi file manager config
+│       ├── private_opencode/      # OpenCode config and themes
+│       ├── private_yazi/          # Yazi file manager config and flavors
+│       └── private_zellij/        # Zellij config, layouts, and themes
 └── README.md
 ```
 
@@ -352,15 +363,14 @@ Automatically managed via mise:
 
 After prerequisites are met, scripts automatically:
 
-1. Install all brew packages and casks from `packages.yaml`
-2. Set up oh-my-zsh with plugins
+1. Install all brew packages, casks, and Mac App Store apps from `packages.yaml`
+2. Install oh-my-zsh and its plugins (as chezmoi externals)
 3. Install programming language runtimes via mise
 4. Build theme caches (bat)
 
 **Prerequisites** (must be installed manually):
 - Homebrew
-- 1Password and 1Password CLI
-- mas CLI (for Mac App Store apps)
+- 1Password and 1Password CLI (signed in)
 
 ### Theme Validation
 
@@ -519,8 +529,12 @@ chezmoi forget ~/.someconfig
 ### Packages Not Installing
 
 ```bash
-# Re-run installation script manually
-bash ~/.local/share/chezmoi/home/.chezmoiscripts/run_onchange_darwin-install-packages.sh.tmpl
+# The package script runs on every apply; re-run with verbose output
+chezmoi apply -v
+
+# If a script is stuck in a bad recorded state, clear chezmoi's script state and re-apply
+chezmoi state delete-bucket --bucket=scriptState
+chezmoi apply
 ```
 
 ### Shell Completions Missing
