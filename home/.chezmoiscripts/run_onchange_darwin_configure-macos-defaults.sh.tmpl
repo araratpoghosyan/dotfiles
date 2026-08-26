@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+{{ if eq .chezmoi.os "darwin" -}}
+
 # macOS System Preferences Configuration
 # Customize macOS defaults to improve UX
 
@@ -7,8 +9,9 @@ set -euo pipefail
 
 echo "Configuring macOS system preferences..."
 
-# Close System Preferences to prevent conflicts
-osascript -e 'tell application "System Preferences" to quit'
+# Close System Settings to prevent conflicts (older macOS: System Preferences)
+osascript -e 'tell application "System Settings" to quit' &>/dev/null ||
+    osascript -e 'tell application "System Preferences" to quit' &>/dev/null || true
 
 # ----------------------------------------------------------------------------------------------------------------------
 # General UI/UX
@@ -16,15 +19,16 @@ osascript -e 'tell application "System Preferences" to quit'
 
 echo "Setting general UI/UX preferences..."
 
-# Set appearance to dark mode (may require logout/restart to take effect)
+{{ $light := false -}}
+{{ range .themes }}{{ if eq .name $.theme }}{{ $light = .light }}{{ end }}{{ end -}}
+{{ if $light -}}
+# Selected theme is light: use light appearance (may require logout/restart to take effect)
+defaults delete NSGlobalDomain AppleInterfaceStyle &>/dev/null || true
+{{ else -}}
+# Selected theme is dark: use dark appearance (may require logout/restart to take effect)
 defaults write NSGlobalDomain AppleInterfaceStyle Dark
+{{ end -}}
 defaults write NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically -bool false
-
-# ----------------------------------------------------------------------------------------------------------------------
-# Trackpad, mouse, keyboard
-# ----------------------------------------------------------------------------------------------------------------------
-
-echo "Configuring trackpad, mouse, and keyboard..."
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Finder
@@ -85,12 +89,12 @@ defaults write com.apple.screencapture location -string "${HOME}/Desktop/Screens
 
 echo "Restarting affected applications..."
 
-for app in "Activity Monitor" \
-    "Dock" \
+for app in "Dock" \
     "Finder" \
-    "Safari" \
     "SystemUIServer"; do
     killall "${app}" &>/dev/null || true
 done
 
 echo "macOS defaults configured successfully!"
+
+{{ end -}}
