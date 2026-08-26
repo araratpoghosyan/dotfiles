@@ -2,8 +2,6 @@ packages:
   darwin:
     taps:
       - "anomalyco/tap"
-      - "aws/tap"
-      - "hashicorp/tap"
       - "symfony-cli/tap"
 
     brews:
@@ -12,7 +10,6 @@ packages:
       - "argo"
       - "ast-grep"
       - "aws-sam-cli"
-      - "aws-shell"
       - "awscli"
       - "bat"
       - "btop"
@@ -20,6 +17,7 @@ packages:
       - "composer"
       - "exiftool"
       - "eza"
+      - "fastfetch"
       - "fd"
       - "ffmpeg"
       - "figlet"
@@ -31,7 +29,6 @@ packages:
       - "glow"
       - "gnu-sed"
       - "gnumeric"
-      - "go"
       - "graphviz"
       - "helm"
       - "helmfile"
@@ -44,16 +41,13 @@ packages:
       - "lazygit"
       - "luarocks"
       - "make"
+      - "mas"
       - "mysql-client"
-      - "neofetch"
       - "neovim"
-      - "node@20"
       - "php@8.2"
       - "protobuf"
       - "rclone"
       - "ripgrep"
-      - "rustup"
-      - "stow"
       - "symfony-cli/tap/symfony-cli"
       - "tectonic"
       - "tig"
@@ -69,6 +63,8 @@ packages:
       - "zsh"
 
     casks:
+      - "1password"
+      - "1password-cli"
       - "appcleaner"
       - "cyberduck"
       - "discord"
@@ -88,7 +84,6 @@ packages:
       - "obsidian"
       - "postman"
       - "raycast"
-      - "skype"
       - "slack"
       - "spotify"
       - "telegram"
