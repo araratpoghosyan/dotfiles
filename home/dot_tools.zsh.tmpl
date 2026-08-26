@@ -31,7 +31,7 @@ if command -v fzf &>/dev/null; then
 
       case "$command" in
         cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
-        export|unset) fzf --preview "eval 'echo ${}'"         "$@" ;;
+        export|unset) fzf --preview "eval 'echo \${}'"         "$@" ;;
         ssh)          fzf --preview 'dig {}'                   "$@" ;;
         *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
       esac
@@ -45,14 +45,14 @@ fi
 
 # Configure eza
 if command -v eza &>/dev/null; then
+    # eza loads its theme from $EZA_CONFIG_DIR/theme.yml (generated from the selected theme)
     export EZA_CONFIG_DIR="$XDG_CONFIG_HOME/eza"
-    export EZA_COLORS_FILE="$XDG_CONFIG_HOME/eza/themes/{{ .theme }}.yaml"
 
     # Aliases for eza
-    alias ls="eza --color=always --icons=always"
-    alias ll="eza --color=always --icons=always --long --header"
-    alias la="eza --color=always --icons=always --long --header --all"
-    alias lt="eza --color=always --icons=always --tree"
+    alias ls="eza --color=auto --icons=auto"
+    alias ll="eza --color=auto --icons=auto --long --header"
+    alias la="eza --color=auto --icons=auto --long --header --all"
+    alias lt="eza --color=auto --icons=auto --tree"
 fi
 
 # Configure neovim
