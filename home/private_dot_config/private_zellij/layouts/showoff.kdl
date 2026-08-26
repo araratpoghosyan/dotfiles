@@ -7,7 +7,7 @@ layout {
                 args "home/private_dot_config/private_nvim/lua/config/options.lua"
             }
             pane {
-                command "neofetch"
+                command "fastfetch"
             }
         }
         pane split_direction="vertical" {
