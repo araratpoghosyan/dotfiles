@@ -1,3 +1,4 @@
+{{- $light := false }}{{ range .themes }}{{ if eq .name $.theme }}{{ $light = .light }}{{ end }}{{ end -}}
 [user]
   name = {{ .fullName }}
   email = {{ .email }}
@@ -12,7 +13,7 @@
 
 [delta]
   navigate = true    # use n and N to move between diff sections
-  light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+  light = {{ $light }}      # derived from the selected theme's light flag in .chezmoidata/themes.yaml
   side-by-side = true
 
 [merge]
