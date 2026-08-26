@@ -3,9 +3,11 @@
 # This script rebuilds the bat cache after bat configuration changes.
 # It runs automatically when bat config or themes are modified.
 
-# Hash of bat config to trigger re-runs when changed
+# Hash of bat config and theme contents to trigger re-runs when changed
 # bat config hash: {{ include "private_dot_config/private_bat/config.tmpl" | sha256sum }}
-# bat themes hash: {{ glob "private_dot_config/private_bat/themes/*" | join "" | sha256sum }}
+{{- range glob (joinPath .chezmoi.sourceDir "private_dot_config/private_bat/themes/*.tmTheme") }}
+# {{ base . }} hash: {{ include . | sha256sum }}
+{{- end }}
 
 set -eufo pipefail
 
