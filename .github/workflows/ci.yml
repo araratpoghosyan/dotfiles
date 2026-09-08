@@ -24,10 +24,11 @@ jobs:
   themes:
     name: List themes
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       matrix: ${{ steps.list.outputs.themes }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - name: Install chezmoi
         run: |
           curl -fsSLo chezmoi.deb "https://github.com/twpayne/chezmoi/releases/download/v${CHEZMOI_VERSION}/chezmoi_${CHEZMOI_VERSION}_linux_amd64.deb"
@@ -45,12 +46,13 @@ jobs:
     name: Render (${{ matrix.theme }})
     needs: themes
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
         theme: ${{ fromJSON(needs.themes.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Install chezmoi, zsh and lua
         run: |
@@ -93,11 +95,13 @@ jobs:
       - name: shellcheck rendered scripts (errors fail the build)
         run: |
           find "$RUNNER_TEMP/scripts" -type f -size +0 -print0 | xargs -0 shellcheck --severity=error
+          shellcheck --severity=error home/dot_local/bin/executable_chezmoi-drift-check
 
       - name: shellcheck rendered scripts (warnings, informational)
         continue-on-error: true
         run: |
           find "$RUNNER_TEMP/scripts" -type f -size +0 -print0 | xargs -0 shellcheck
+          shellcheck home/dot_local/bin/executable_chezmoi-drift-check
 
       - name: Syntax-check rendered zsh and Lua
         run: |
@@ -105,16 +109,17 @@ jobs:
           for f in "$H/.zshenv" "$H/.config/zsh/.zshenv" "$H/.config/zsh/.zprofile" "$H/.config/zsh/.zshrc" "$H"/.config/zsh/conf.d/*.zsh; do
             zsh -n "$f" && echo "ok  ${f#"$H"/}"
           done
-          luac5.1 -p "$H"/.config/nvim/lua/plugins/*.lua "$H"/.config/nvim/lua/config/*.lua && echo "ok  nvim lua"
+          luac5.1 -p "$H"/.config/nvim/lua/plugins/*.lua "$H"/.config/nvim/lua/config/*.lua "$H"/.config/yazi/init.lua && echo "ok  lua"
 
   macos:
     name: macOS pass
     runs-on: macos-latest
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      - name: Install chezmoi
-        run: brew install chezmoi
+      - name: Install chezmoi and stylua
+        run: brew install chezmoi stylua
 
       - name: Write chezmoi config
         run: |
@@ -129,3 +134,6 @@ jobs:
 
       - name: Brewfile parses
         run: brew bundle list --all --file="$RUNNER_TEMP/home/.config/homebrew/Brewfile"
+
+      - name: Lua formatting (stylua)
+        run: stylua --check --config-path home/dot_config/nvim/stylua.toml home/dot_config

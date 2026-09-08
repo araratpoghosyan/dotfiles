@@ -224,8 +224,8 @@ chezmoi: template: ... error calling fail: theme registry has themes without ass
 
 `.github/workflows/ci.yml` renders the tree once per theme on a Linux runner into a scratch
 directory: apply, verify, render every script and check it with `bash -n` and shellcheck,
-syntax-check the rendered zsh and Lua. A single macOS job repeats the apply and parses the
-Brewfile with `brew bundle list`. Scripts never execute, externals are skipped, and no 1Password
+syntax-check the rendered zsh and Lua. A single macOS job repeats the apply, parses the
+Brewfile with `brew bundle list`, and runs `stylua --check` on the Lua sources. Scripts never execute, externals are skipped, and no 1Password
 account is configured, so CI needs no secrets and touches no real machine.
 
 ### Drift detection
@@ -243,6 +243,7 @@ file test; the check itself never runs in the shell.
 ~/.local/share/chezmoi/
 ├── .github/workflows/ci.yml       # CI (see Guard rails)
 ├── docs/                          # Screenshot
+├── .editorconfig                  # Indentation rules; stylua and CI enforce the Lua ones
 ├── LICENSE                        # MIT
 ├── home/                          # chezmoi source root (.chezmoiroot)
 │   ├── .chezmoi.toml.tmpl         # Prompts once; writes ~/.config/chezmoi/chezmoi.toml
