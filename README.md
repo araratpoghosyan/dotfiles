@@ -8,8 +8,6 @@ One theme across every terminal tool, one declarative package list, an XDG-clean
 and a set of guards (template-time assertions, CI, daily drift detection) that keep the machine and
 the repository from quietly diverging.
 
-![Terminal screenshot](docs/screenshot.jpeg)
-
 ## Highlights
 
 - **One theme, eleven choices.** Pick from Catppuccin, TokyoNight, Nord, Dracula or 0x96f once;
@@ -242,7 +240,6 @@ file test; the check itself never runs in the shell.
 ```text
 ~/.local/share/chezmoi/
 ├── .github/workflows/ci.yml       # CI (see Guard rails)
-├── docs/                          # Screenshot
 ├── .editorconfig                  # Indentation rules; stylua and CI enforce the Lua ones
 ├── LICENSE                        # MIT
 ├── home/                          # chezmoi source root (.chezmoiroot)
