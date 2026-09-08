@@ -102,7 +102,7 @@ jobs:
       - name: Syntax-check rendered zsh and Lua
         run: |
           H="$RUNNER_TEMP/home"
-          for f in "$H/.zshenv" "$H/.config/zsh/.zprofile" "$H/.config/zsh/.zshrc" "$H"/.config/zsh/conf.d/*.zsh; do
+          for f in "$H/.zshenv" "$H/.config/zsh/.zshenv" "$H/.config/zsh/.zprofile" "$H/.config/zsh/.zshrc" "$H"/.config/zsh/conf.d/*.zsh; do
             zsh -n "$f" && echo "ok  ${f#"$H"/}"
           done
           luac5.1 -p "$H"/.config/nvim/lua/plugins/*.lua "$H"/.config/nvim/lua/config/*.lua && echo "ok  nvim lua"

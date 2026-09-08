@@ -17,8 +17,3 @@ fi
 if [ -d "$HOME/Library/Application Support/JetBrains/Toolbox/scripts" ]; then
     export PATH="$PATH:$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
 fi
-
-# OrbStack command-line tools and integration
-if [ -f "$HOME/.orbstack/shell/init.zsh" ]; then
-    source "$HOME/.orbstack/shell/init.zsh"
-fi

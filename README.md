@@ -18,8 +18,8 @@ the repository from quietly diverging.
 - **Declarative packages.** `packages.yaml` renders a Brewfile (2 taps, 55 formulae, 30 casks,
   1 App Store app) that `brew bundle` applies on every `chezmoi apply`. Language runtimes come
   from mise.
-- **XDG-native shell.** `~/.zshenv` is the only shell file left in the home directory; everything
-  else lives under `~/.config/zsh` as small, single-purpose fragments.
+- **XDG-native shell.** A two-line `~/.zshenv` hands over to `~/.config/zsh`, where the
+  environment, login PATH, oh-my-zsh setup and small single-purpose fragments live.
 - **Guard rails.** A template-time assertion refuses to apply a broken theme registry, CI renders
   the whole tree for every theme on each push, and a daily LaunchAgent reports drift between the
   machine and the source.
@@ -159,12 +159,15 @@ Code is the one tool installed by its own script, since it is not packaged for e
 
 ## Shell
 
-`~/.zshenv` sets environment only: locale, editor, XDG directories, `ZDOTDIR=~/.config/zsh`,
-`FZF_DEFAULT_OPTS_FILE` and `HOMEBREW_BUNDLE_FILE`. Under `~/.config/zsh`:
+`~/.zshenv` only sets `ZDOTDIR=~/.config/zsh` and sources the `.zshenv` there. That indirection
+matters: a nested shell starts with `ZDOTDIR` already set and reads `$ZDOTDIR/.zshenv` directly,
+never `~/.zshenv`, so keeping the environment in `ZDOTDIR` is what makes nested shells behave like
+the first one. Under `~/.config/zsh`:
 
 | File | Purpose |
 | --- | --- |
-| `.zprofile` | Login PATH: Homebrew, Docker Desktop CLI, JetBrains Toolbox, OrbStack, each guarded |
+| `.zshenv` | Environment only: locale, editor, XDG directories, `FZF_DEFAULT_OPTS_FILE`, `HOMEBREW_BUNDLE_FILE`, and `typeset -U path` so PATH never accumulates duplicates |
+| `.zprofile` | Login PATH: Homebrew, Docker Desktop CLI, JetBrains Toolbox, each guarded |
 | `.zshrc` | oh-my-zsh, then sources `conf.d/*.zsh` in name order |
 | `conf.d/10-path.zsh` | `~/.local/bin` |
 | `conf.d/20-tools.zsh` | chezmoi completions, zoxide, mise, fzf key bindings and previews, eza config dir |
@@ -256,7 +259,7 @@ file test; the check itself never runs in the shell.
 │   ├── dot_gitconfig.tmpl         # git + delta
 │   ├── dot_gitignore              # Global gitignore
 │   ├── dot_local/bin/             # chezmoi-drift-check
-│   ├── dot_zshenv                 # Environment only
+│   ├── dot_zshenv                 # Bootstrap: sets ZDOTDIR, sources ~/.config/zsh/.zshenv
 │   ├── empty_dot_hushlogin        # Silences the login banner
 │   ├── private_Library/LaunchAgents/  # io.chezmoi.drift-check.plist
 │   └── private_dot_ssh/           # SSH config from 1Password (optional)
