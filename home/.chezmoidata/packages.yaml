@@ -3,15 +3,17 @@
 packages:
   taps:
     - "anomalyco/tap"
+    - "hashicorp/tap"
     - "symfony-cli/tap"
 
   brews:
-    - "anomalyco/tap/opencode"
     - "ansible"
     - "argo"
     - "ast-grep"
     - "aws-sam-cli"
+    - "aws-shell"
     - "awscli"
+    - "azcopy"
     - "bat"
     - "btop"
     - "chezmoi"
@@ -43,14 +45,18 @@ packages:
     - "luarocks"
     - "make"
     - "mas"
+    - "mise"
+    - "mongodb-atlas-cli"
     - "mysql-client"
     - "neovim"
+    - "anomalyco/tap/opencode"
     - "php@8.2"
     - "protobuf"
     - "rclone"
     - "ripgrep"
     - "symfony-cli/tap/symfony-cli"
     - "tectonic"
+    - "hashicorp/tap/terraform"
     - "tig"
     - "tree"
     - "tree-sitter"
@@ -59,6 +65,7 @@ packages:
     - "vips"
     - "watch"
     - "wget"
+    - "yazi"
     - "zoxide"
 
   casks:
@@ -77,6 +84,7 @@ packages:
     - "iterm2"
     - "jetbrains-toolbox"
     - "kubernetic"
+    - "logi-options+"
     - "medis"
     - "mongodb-compass"
     - "notion"
