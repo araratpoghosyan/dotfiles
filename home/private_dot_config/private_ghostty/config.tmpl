@@ -1,9 +1,5 @@
 # Theme
-{{- range .themes }}
-{{- if eq .name $.theme }}
-theme = {{ .aliases.ghostty }}
-{{- end }}
-{{- end }}
+theme = {{ (index .themes .theme).aliases.ghostty }}
 
 # Fonts
 font-family = "JetBrainsMono Nerd Font Mono"

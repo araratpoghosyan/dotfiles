@@ -1,6 +1,6 @@
-{{- $light := false }}{{ range .themes }}{{ if eq .name $.theme }}{{ $light = .light }}{{ end }}{{ end -}}
+{{- $activeTheme := index .themes .theme -}}
 git:
   paging:
     colorArg: always
-    pager: delta {{ if $light }}--light{{ else }}--dark{{ end }} --paging=never
+    pager: delta {{ if $activeTheme.light }}--light{{ else }}--dark{{ end }} --paging=never
 disableStartupPopups: true

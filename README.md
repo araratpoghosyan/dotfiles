@@ -193,7 +193,7 @@ Themes are defined in `home/.chezmoidata/themes.yaml` with the following structu
 
 ```yaml
 themes:
-  - name: catppuccin-mocha
+  catppuccin-mocha:
     light: false
     description: Dark, rich pastel theme
     family: catppuccin
@@ -447,7 +447,8 @@ To add a custom theme, edit `home/.chezmoidata/themes.yaml`:
 
 ```yaml
 themes:
-  - name: your-theme-name
+  your-theme-name:
+    light: false
     description: Your theme description
     family: your-theme-family
     aliases:
@@ -456,7 +457,8 @@ themes:
 ```
 
 The theme structure includes:
-- `name`: The canonical theme identifier used in `~/.config/chezmoi/chezmoi.toml`
+- key: The canonical theme identifier used in `~/.config/chezmoi/chezmoi.toml`
+- `light`: Whether the theme is a light theme (drives delta, lazygit, and macOS appearance)
 - `description`: Brief description shown in validation errors
 - `family`: Theme family for grouping
 - `aliases`: Tool-specific theme names

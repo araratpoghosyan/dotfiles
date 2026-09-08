@@ -7,7 +7,7 @@
 */ -}}
 {{- $registry := include ".chezmoidata/themes.yaml" | fromYaml -}}
 {{- $themeNames := list -}}
-{{- range $registry.themes }}{{ $themeNames = append $themeNames .name }}{{ end -}}
+{{- range $name, $_ := $registry.themes }}{{ $themeNames = append $themeNames $name }}{{ end -}}
 
 {{- $theme    := promptChoiceOnce . "theme" "Theme" $themeNames "catppuccin-mocha" -}}
 {{- $name     := promptStringOnce . "name" "Short name (used in prompts and greetings)" -}}

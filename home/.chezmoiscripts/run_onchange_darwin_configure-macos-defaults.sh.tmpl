@@ -19,9 +19,8 @@ osascript -e 'tell application "System Settings" to quit' &>/dev/null ||
 
 echo "Setting general UI/UX preferences..."
 
-{{ $light := false -}}
-{{ range .themes }}{{ if eq .name $.theme }}{{ $light = .light }}{{ end }}{{ end -}}
-{{ if $light -}}
+{{ $activeTheme := index .themes .theme -}}
+{{ if $activeTheme.light -}}
 # Selected theme is light: use light appearance (may require logout/restart to take effect)
 defaults delete NSGlobalDomain AppleInterfaceStyle &>/dev/null || true
 {{ else -}}

@@ -1,4 +1,4 @@
-{{- $light := false }}{{ range .themes }}{{ if eq .name $.theme }}{{ $light = .light }}{{ end }}{{ end -}}
+{{- $activeTheme := index .themes .theme -}}
 [user]
   name = {{ .fullName }}
   email = {{ .email }}
@@ -13,7 +13,7 @@
 
 [delta]
   navigate = true    # use n and N to move between diff sections
-  light = {{ $light }}      # derived from the selected theme's light flag in .chezmoidata/themes.yaml
+  light = {{ $activeTheme.light }}      # derived from the selected theme's light flag in .chezmoidata/themes.yaml
   side-by-side = true
 
 [merge]
