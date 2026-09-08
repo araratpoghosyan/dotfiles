@@ -89,6 +89,13 @@ The first apply:
 3. Runs `brew bundle` against the rendered Brewfile, installs Claude Code, runs `mise install`,
    rebuilds the bat theme cache, applies macOS defaults, and loads the drift-check LaunchAgent.
 
+Expect the first apply to take 30 to 90 minutes, most of it Homebrew downloading casks and mise
+downloading runtimes, and stay near the keyboard: some cask installers ask for your password, the
+drift check's first run makes macOS ask whether it may send notifications (allow it), and the
+defaults script restarts the Dock and Finder near the end. If 1Password is configured, Touch ID is
+requested once for the SSH config. Should Homebrew stop on a package, see Troubleshooting; a second
+`chezmoi apply` picks up where it left off.
+
 Open a new terminal when it finishes.
 
 ## Everyday use
