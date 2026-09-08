@@ -1,0 +1,33 @@
+# Where each themed tool keeps its per-theme asset. %s is the theme name.
+#
+#   source  path in the chezmoi source directory; read by the coverage assertion and by
+#           cache-rebuild hashes
+#   target  path in $HOME; only for tools that read the theme file themselves. Drives
+#           .chezmoiignore (deploy only the active theme) and the prune script (remove the
+#           previous theme's files after a switch)
+#
+# Tools without a target (eza, fzf, lazygit) get the theme merged into their main config at
+# render time, so their assets are template inputs under .chezmoitemplates/themes/ and never
+# reach $HOME on their own.
+themeAssets:
+  bat:
+    source: private_dot_config/private_bat/themes/%s.tmTheme
+    target: .config/bat/themes/%s.tmTheme
+  btop:
+    source: private_dot_config/private_btop/themes/%s.theme
+    target: .config/btop/themes/%s.theme
+  opencode:
+    source: private_dot_config/private_opencode/themes/%s.json
+    target: .config/opencode/themes/%s.json
+  yazi:
+    source: private_dot_config/private_yazi/flavors/%s.yazi/flavor.toml
+    target: .config/yazi/flavors/%s.yazi
+  zellij:
+    source: private_dot_config/private_zellij/themes/%s.kdl
+    target: .config/zellij/themes/%s.kdl
+  eza:
+    source: .chezmoitemplates/themes/eza/%s.yaml
+  fzf:
+    source: .chezmoitemplates/themes/fzf/%s.fzfrc
+  lazygit:
+    source: .chezmoitemplates/themes/lazygit/%s.yaml

@@ -1,6 +1,0 @@
-# macOS system files
-.DS_Store
-
-# Example configuration file (should not be applied to home directory)
-# Users should copy this to .chezmoi.toml and customize it
-.chezmoi.toml.example

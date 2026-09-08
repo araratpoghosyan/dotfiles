@@ -184,7 +184,9 @@ Alternatively, delete the `theme` line and run `chezmoi init --apply` to pick fr
 
 **Theme Coverage:**
 
-All 11 themes are available for every themed tool: bat, btop, eza, fzf, ghostty, lazygit, neovim, opencode, yazi, and zellij. The light themes (`catppuccin-latte`, `tokyonight-day`) also switch delta/lazygit to light mode and keep macOS in light appearance (via the `light` flag in `themes.yaml`).
+All 11 themes are available for every themed tool: bat, btop, eza, fzf, ghostty, lazygit, neovim, opencode, yazi, and zellij.
+Only the active theme's files are deployed to `~/.config`; the other themes stay in the source tree
+(`home/.chezmoiignore` hides them). Switching themes deploys the new theme and removes the previous one's files. The light themes (`catppuccin-latte`, `tokyonight-day`) also switch delta/lazygit to light mode and keep macOS in light appearance (via the `light` flag in `themes.yaml`).
 
 **Theme Management:**
 
@@ -196,6 +198,7 @@ themes:
     light: false
     description: Dark, rich pastel theme
     family: catppuccin
+    bat: catppuccin-mocha
     ghostty: Catppuccin Mocha
     nvim:
       repo: catppuccin/nvim
@@ -332,29 +335,32 @@ Automatically managed via mise (the single owner of language runtimes — brew d
 │   ├── .chezmoi.toml.tmpl         # Config template; prompts once and writes ~/.config/chezmoi/chezmoi.toml
 │   ├── .chezmoidata/              # Data files
 │   │   ├── packages.yaml          # Package definitions
-│   │   └── themes.yaml            # Theme registry (light flag, ghostty name, nvim spec)
+│   │   ├── theme-assets.yaml      # Where each tool keeps its per-theme asset
+│   │   └── themes.yaml            # Theme registry (light flag, bat/ghostty names, nvim spec)
 │   ├── .chezmoiexternal.toml      # External dependencies
 │   ├── .chezmoiscripts/           # Automated scripts
 │   │   ├── run_before_*           # Pre-apply assertions (theme registry coverage)
-│   │   └── run_onchange_*         # Scripts that run on file changes
+│   │   └── run_onchange_*         # Scripts that run on file changes (bat cache, mise, prune inactive themes, macOS defaults)
+│   ├── .chezmoitemplates/themes/  # eza, fzf and lazygit theme inputs, merged into their configs at render time
+│   ├── .chezmoiignore             # Hides every theme except the active one
 │   ├── .chezmoiremove             # Old targets to delete on apply
 │   ├── dot_zshenv                 # Environment only; sets ZDOTDIR and FZF_DEFAULT_OPTS_FILE
 │   ├── dot_gitconfig.tmpl         # Git configuration
 │   ├── dot_claude/                # Claude Code settings and statusline
 │   ├── private_dot_ssh/           # SSH config (content pulled from 1Password)
 │   └── private_dot_config/        # Application configs
-│       ├── private_bat/           # Bat themes and config
-│       ├── private_btop/          # Btop resource monitor config and themes
-│       ├── private_eza/           # Eza themes (theme.yml generated from selection)
-│       ├── private_fzf/           # fzfrc (rendered from the active theme) and themes
+│       ├── private_bat/           # Bat config and themes (active one deployed)
+│       ├── private_btop/          # Btop resource monitor config and themes (active one deployed)
+│       ├── private_eza/           # Eza theme.yml, rendered from the active theme
+│       ├── private_fzf/           # fzfrc, rendered from the active theme
 │       ├── private_ghostty/       # Ghostty terminal config
-│       ├── private_lazygit/       # Lazygit config (theme merged in at render time) and themes
+│       ├── private_lazygit/       # Lazygit config, theme merged in at render time
 │       ├── private_mise/          # Mise runtime versions
 │       ├── private_nvim/          # Neovim configuration
-│       ├── private_opencode/      # OpenCode config and themes
-│       ├── private_yazi/          # Yazi file manager config and flavors
+│       ├── private_opencode/      # OpenCode config and themes (active one deployed)
+│       ├── private_yazi/          # Yazi file manager config and flavors (active one deployed)
 │       ├── private_zsh/           # ZDOTDIR: .zprofile, .zshrc, conf.d/ fragments
-│       └── private_zellij/        # Zellij config, layouts, and themes
+│       └── private_zellij/        # Zellij config, layouts, and themes (active one deployed)
 └── README.md
 ```
 
@@ -392,8 +398,8 @@ chezmoi: template: ... error calling fail: theme registry has themes without ass
   - my-new-theme           zellij    private_dot_config/private_zellij/themes/my-new-theme.kdl
 ```
 
-The list of per-tool asset paths lives at the top of the assertion file. When a new themed tool
-is added, add its path pattern there.
+The per-tool asset locations live in `home/.chezmoidata/theme-assets.yaml`, shared with `.chezmoiignore`
+and the prune script. When a new themed tool is added, add its entry there.
 
 ### Smart Shell Aliases
 
@@ -460,6 +466,7 @@ themes:
     light: false
     description: Your theme description
     family: your-theme-family
+    bat: Name inside your-theme-name.tmTheme
     ghostty: Ghostty Theme Name
     nvim:
       repo: owner/your-theme.nvim
@@ -472,13 +479,15 @@ The theme structure includes:
 - `light`: Whether the theme is a light theme (drives delta, lazygit, and macOS appearance)
 - `description`: Brief description shown in the theme picker and in assertion errors
 - `family`: Theme family for grouping
+- `bat`: Theme name as written inside the `.tmTheme` file (bat selects by that name, not by file name)
 - `ghostty`: Theme name as Ghostty spells it
 - `nvim`: lazy.nvim spec for the colorscheme plugin (`repo`, optional `module`, `opts`, `lazy`);
   the Neovim colorscheme file is rendered from this, no per-theme Lua file is needed
 
 After adding a theme:
 
-1. Add corresponding theme files to tool directories (bat, btop, eza, fzf, lazygit, opencode, yazi, zellij)
+1. Add the theme's asset for every tool listed in `home/.chezmoidata/theme-assets.yaml` (that file
+   says where each one lives)
 2. Run `chezmoi apply` to regenerate configurations
 3. The theme picker picks up the new theme automatically, and the coverage assertion fails
    `chezmoi apply` until every tool has its asset

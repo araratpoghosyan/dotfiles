@@ -5,6 +5,7 @@
 #   light        true for light themes (drives delta, lazygit, macOS appearance)
 #   description  shown in the theme picker / validation errors
 #   family       upstream theme family, for grouping
+#   bat          theme name as written inside the .tmTheme file (bat selects by that, not by file name)
 #   ghostty      theme name as ghostty spells it
 #   nvim         lazy.nvim spec for the colorscheme plugin:
 #                  repo    GitHub "owner/repo"
@@ -17,6 +18,7 @@ themes:
     light: false
     description: Warm, cozy pastel theme
     family: catppuccin
+    bat: catppuccin-frappe
     ghostty: Catppuccin Frappe
     nvim:
       repo: catppuccin/nvim
@@ -26,6 +28,7 @@ themes:
     light: true
     description: Light mode variant
     family: catppuccin
+    bat: catppuccin-latte
     ghostty: Catppuccin Latte
     nvim:
       repo: catppuccin/nvim
@@ -35,6 +38,7 @@ themes:
     light: false
     description: Medium contrast pastel theme
     family: catppuccin
+    bat: catppuccin-macchiato
     ghostty: Catppuccin Macchiato
     nvim:
       repo: catppuccin/nvim
@@ -44,6 +48,7 @@ themes:
     light: false
     description: Dark, rich pastel theme
     family: catppuccin
+    bat: catppuccin-mocha
     ghostty: Catppuccin Mocha
     nvim:
       repo: catppuccin/nvim
@@ -55,6 +60,7 @@ themes:
     light: true
     description: Clean light theme
     family: tokyonight
+    bat: TokyoNight
     ghostty: TokyoNight Day
     nvim:
       repo: folke/tokyonight.nvim
@@ -64,6 +70,7 @@ themes:
     light: false
     description: Dark theme with purple accent
     family: tokyonight
+    bat: TokyoNight
     ghostty: TokyoNight Moon
     nvim:
       repo: folke/tokyonight.nvim
@@ -73,6 +80,7 @@ themes:
     light: false
     description: Deep dark theme
     family: tokyonight
+    bat: TokyoNight
     ghostty: TokyoNight Night
     nvim:
       repo: folke/tokyonight.nvim
@@ -82,6 +90,7 @@ themes:
     light: false
     description: Storm-inspired dark theme
     family: tokyonight
+    bat: TokyoNight
     ghostty: TokyoNight Storm
     nvim:
       repo: folke/tokyonight.nvim
@@ -93,6 +102,7 @@ themes:
     light: false
     description: Arctic, north-bluish color palette
     family: nord
+    bat: Nord
     ghostty: Nord
     nvim:
       repo: gbprod/nord.nvim
@@ -101,6 +111,7 @@ themes:
     light: false
     description: Dark theme with vibrant colors
     family: dracula
+    bat: Dracula
     ghostty: Dracula
     nvim:
       repo: Mofiqul/dracula.nvim
@@ -108,6 +119,7 @@ themes:
     light: false
     description: Custom minimalist dark theme
     family: "0x96f"
+    bat: "0x96f"
     ghostty: "0x96f"
     nvim:
       repo: filipjanevski/0x96f.nvim

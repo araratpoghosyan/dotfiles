@@ -9,19 +9,10 @@
 */ -}}
 {{- $src := .chezmoi.sourceDir -}}
 
-{{- /* tool -> path of its per-theme asset, relative to the source dir; %s is the theme name */ -}}
-{{- $assets := dict
-      "bat"      "private_dot_config/private_bat/themes/%s.tmTheme"
-      "btop"     "private_dot_config/private_btop/themes/%s.theme"
-      "eza"      "private_dot_config/private_eza/themes/%s.yaml"
-      "fzf"      "private_dot_config/private_fzf/themes/%s.fzfrc"
-      "lazygit"  "private_dot_config/private_lazygit/themes/%s.yaml"
-      "opencode" "private_dot_config/private_opencode/themes/%s.json"
-      "yazi"     "private_dot_config/private_yazi/flavors/%s.yazi/flavor.toml"
-      "zellij"   "private_dot_config/private_zellij/themes/%s.kdl" -}}
+{{- /* per-tool asset locations come from .chezmoidata/theme-assets.yaml */ -}}
 
 {{- /* registry fields that tools render from directly, so they need no file */ -}}
-{{- $fields := list "ghostty" "nvim" -}}
+{{- $fields := list "bat" "ghostty" "nvim" -}}
 
 {{- /* Formatting rule for fail messages: no line may end with ":" because chezmoi collapses the
      line break that follows a colon-terminated line into a single space. */ -}}
@@ -38,8 +29,8 @@
 {{- /* 2. every registered theme has every asset and field */ -}}
 {{- $missing := list -}}
 {{- range $name, $meta := .themes -}}
-{{-   range $tool, $pattern := $assets -}}
-{{-     $path := printf $pattern $name -}}
+{{-   range $tool, $asset := $.themeAssets -}}
+{{-     $path := printf $asset.source $name -}}
 {{-     if not (stat (joinPath $src $path)) -}}
 {{-       $missing = append $missing (printf "  - %-22s %-9s %s" $name $tool $path) -}}
 {{-     end -}}
@@ -56,8 +47,8 @@
 
 {{- /* 3. every asset on disk belongs to a registered theme */ -}}
 {{- $orphans := list -}}
-{{- range $tool, $pattern := $assets -}}
-{{-   $parts := splitList "%s" $pattern -}}
+{{- range $tool, $asset := $.themeAssets -}}
+{{-   $parts := splitList "%s" $asset.source -}}
 {{-   $prefix := printf "%s/%s" $src (index $parts 0) -}}{{- /* not joinPath: it would strip the trailing slash */ -}}
 {{-   $suffix := index $parts 1 -}}
 {{-   range glob (printf "%s*%s" $prefix $suffix) -}}

@@ -1,0 +1,28 @@
+#!/bin/bash
+{{/*
+  chezmoi never removes an ignored target (see .chezmoiignore), so this removes the tool assets
+  of every registered theme other than the active one. run_onchange: the rendered content
+  changes whenever the active theme or the registry changes, which is exactly when it must run.
+*/ -}}
+
+# Active theme: {{ .theme }}
+
+set -eufo pipefail
+
+removed=0
+{{ range $name, $_ := .themes -}}
+{{-   if ne $name $.theme -}}
+{{-     range $tool, $asset := $.themeAssets -}}
+{{-       if hasKey $asset "target" }}
+if [ -e "$HOME/{{ printf $asset.target $name }}" ]; then
+    rm -rf "$HOME/{{ printf $asset.target $name }}"
+    removed=$((removed + 1))
+fi
+{{-       end -}}
+{{-     end -}}
+{{-   end -}}
+{{- end }}
+
+if [ "$removed" -gt 0 ]; then
+    echo "🧹 Removed $removed inactive theme asset(s)"
+fi

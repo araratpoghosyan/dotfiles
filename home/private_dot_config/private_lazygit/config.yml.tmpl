@@ -7,6 +7,6 @@ git:
     pager: delta %s --paging=never
 disableStartupPopups: true
 ` (ternary "--light" "--dark" $activeTheme.light) | fromYaml -}}
-{{- $themeConfig := include (printf "private_dot_config/private_lazygit/themes/%s.yaml" .theme) | fromYaml -}}
+{{- $themeConfig := include (printf .themeAssets.lazygit.source .theme) | fromYaml -}}
 # Rendered by chezmoi: base settings merged with themes/{{ .theme }}.yaml. Edit the source template, not this file.
 {{ mergeOverwrite $base $themeConfig | toYaml -}}

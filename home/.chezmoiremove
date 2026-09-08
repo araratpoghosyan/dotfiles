@@ -2,3 +2,8 @@
 .zshrc
 .tools.zsh
 .aliases.zsh
+
+# Theme inputs for eza, fzf and lazygit moved to .chezmoitemplates (merged at render time)
+.config/eza/themes
+.config/fzf/themes
+.config/lazygit/themes
