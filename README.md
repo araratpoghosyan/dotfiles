@@ -367,24 +367,25 @@ Automatically managed via mise (the single owner of language runtimes — brew d
 │   │   └── run_onchange_*         # Scripts that run on file changes (bat cache, mise, prune inactive themes, macOS defaults)
 │   ├── .chezmoitemplates/themes/  # eza, fzf and lazygit theme inputs, merged into their configs at render time
 │   ├── .chezmoiignore             # Hides every theme except the active one
+│   ├── .chezmoiversion            # Minimum chezmoi version required by these templates
 │   ├── .chezmoiremove             # Old targets to delete on apply
 │   ├── dot_zshenv                 # Environment only; sets ZDOTDIR and FZF_DEFAULT_OPTS_FILE
 │   ├── dot_gitconfig.tmpl         # Git configuration
 │   ├── dot_claude/                # Claude Code settings and statusline
 │   ├── private_dot_ssh/           # SSH config (pulled from 1Password; skipped when no account is set)
-│   └── private_dot_config/        # Application configs
-│       ├── private_bat/           # Bat config and themes (active one deployed)
-│       ├── private_btop/          # Btop resource monitor config and themes (active one deployed)
-│       ├── private_eza/           # Eza theme.yml, rendered from the active theme
-│       ├── private_fzf/           # fzfrc, rendered from the active theme
-│       ├── private_ghostty/       # Ghostty terminal config
-│       ├── private_lazygit/       # Lazygit config, theme merged in at render time
-│       ├── private_mise/          # Mise runtime versions
-│       ├── private_nvim/          # Neovim configuration
-│       ├── private_opencode/      # OpenCode config and themes (active one deployed)
-│       ├── private_yazi/          # Yazi file manager config and flavors (active one deployed)
-│       ├── private_zsh/           # ZDOTDIR: .zprofile, .zshrc, conf.d/ fragments
-│       └── private_zellij/        # Zellij config, layouts, and themes (active one deployed)
+│   └── dot_config/                # Application configs (only ~/.ssh is marked private_)
+│       ├── bat/           # Bat config and themes (active one deployed)
+│       ├── btop/          # Btop resource monitor config and themes (active one deployed)
+│       ├── eza/           # Eza theme.yml, rendered from the active theme
+│       ├── fzf/           # fzfrc, rendered from the active theme
+│       ├── ghostty/       # Ghostty terminal config
+│       ├── lazygit/       # Lazygit config, theme merged in at render time
+│       ├── mise/          # Mise runtime versions
+│       ├── nvim/          # Neovim configuration
+│       ├── opencode/      # OpenCode config and themes (active one deployed)
+│       ├── yazi/          # Yazi file manager config and flavors (active one deployed)
+│       ├── zsh/           # ZDOTDIR: .zprofile, .zshrc, conf.d/ fragments
+│       └── zellij/        # Zellij config, layouts, and themes (active one deployed)
 └── README.md
 ```
 
@@ -418,8 +419,8 @@ Example error output:
 ```
 chezmoi: template: ... error calling fail: theme registry has themes without assets (theme / tool / expected path)
 
-  - my-new-theme           bat       private_dot_config/private_bat/themes/my-new-theme.tmTheme
-  - my-new-theme           zellij    private_dot_config/private_zellij/themes/my-new-theme.kdl
+  - my-new-theme           bat       dot_config/bat/themes/my-new-theme.tmTheme
+  - my-new-theme           zellij    dot_config/zellij/themes/my-new-theme.kdl
 ```
 
 The per-tool asset locations live in `home/.chezmoidata/theme-assets.yaml`, shared with `.chezmoiignore`
@@ -518,12 +519,12 @@ After adding a theme:
 
 ### Adding Shell Aliases
 
-Edit `home/private_dot_config/private_zsh/conf.d/30-aliases.zsh` and run `chezmoi apply`.
+Edit `home/dot_config/zsh/conf.d/30-aliases.zsh` and run `chezmoi apply`.
 Tool initialization lives in `20-tools.zsh`, PATH entries in `10-path.zsh`.
 
 ### Modifying Tool Configs
 
-All tool configurations are in `home/private_dot_config/`. After editing, run:
+All tool configurations are in `home/dot_config/`. After editing, run:
 
 ```bash
 chezmoi apply

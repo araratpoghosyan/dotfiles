@@ -4,7 +4,7 @@
 # It runs automatically when the bat config or the active theme file changes.
 
 # Hash of bat config and theme contents to trigger re-runs when changed
-# bat config hash: {{ include "private_dot_config/private_bat/config.tmpl" | sha256sum }}
+# bat config hash: {{ include "dot_config/bat/config.tmpl" | sha256sum }}
 # active theme ({{ .theme }}) hash: {{ include (printf .themeAssets.bat.source .theme) | sha256sum }}
 
 set -eufo pipefail

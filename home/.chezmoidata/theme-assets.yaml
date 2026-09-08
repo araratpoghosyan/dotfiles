@@ -11,19 +11,19 @@
 # reach $HOME on their own.
 themeAssets:
   bat:
-    source: private_dot_config/private_bat/themes/%s.tmTheme
+    source: dot_config/bat/themes/%s.tmTheme
     target: .config/bat/themes/%s.tmTheme
   btop:
-    source: private_dot_config/private_btop/themes/%s.theme
+    source: dot_config/btop/themes/%s.theme
     target: .config/btop/themes/%s.theme
   opencode:
-    source: private_dot_config/private_opencode/themes/%s.json
+    source: dot_config/opencode/themes/%s.json
     target: .config/opencode/themes/%s.json
   yazi:
-    source: private_dot_config/private_yazi/flavors/%s.yazi/flavor.toml
+    source: dot_config/yazi/flavors/%s.yazi/flavor.toml
     target: .config/yazi/flavors/%s.yazi
   zellij:
-    source: private_dot_config/private_zellij/themes/%s.kdl
+    source: dot_config/zellij/themes/%s.kdl
     target: .config/zellij/themes/%s.kdl
   eza:
     source: .chezmoitemplates/themes/eza/%s.yaml
