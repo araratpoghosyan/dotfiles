@@ -1,0 +1,28 @@
+{{- /*
+  Generates ~/.config/chezmoi/chezmoi.toml on `chezmoi init`.
+  Every prompt is a *Once variant: values already present in the existing config are
+  reused silently, so re-running `chezmoi init` only asks for keys that are missing.
+  To change a value, edit ~/.config/chezmoi/chezmoi.toml directly or delete the key and
+  run `chezmoi init` again.
+*/ -}}
+{{- $registry := include ".chezmoidata/themes.yaml" | fromYaml -}}
+{{- $themeNames := list -}}
+{{- range $registry.themes }}{{ $themeNames = append $themeNames .name }}{{ end -}}
+
+{{- $theme    := promptChoiceOnce . "theme" "Theme" $themeNames "catppuccin-mocha" -}}
+{{- $name     := promptStringOnce . "name" "Short name (used in prompts and greetings)" -}}
+{{- $fullName := promptStringOnce . "fullName" "Full name (used for git commits)" -}}
+{{- $email    := promptStringOnce . "email" "Email (used for git commits)" -}}
+{{- $opAcct   := promptStringOnce . "onePasswordAccount" "1Password account (used by onepasswordRead)" -}}
+
+[data]
+# Theme for all the tools that support it (see .chezmoidata/themes.yaml)
+theme = {{ $theme | quote }}
+
+# Personal information
+name = {{ $name | quote }}
+fullName = {{ $fullName | quote }}
+email = {{ $email | quote }}
+
+# 1Password account used by onepasswordRead
+onePasswordAccount = {{ $opAcct | quote }}
