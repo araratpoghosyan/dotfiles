@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Runs on every `chezmoi apply` (deliberately not run_onchange) so packages.yaml stays the source
+# of truth even after something was uninstalled by hand. `brew bundle check` keeps the common
+# no-op case fast; the slow install path only runs when something is missing.
+# The Brewfile is a managed file rendered from packages.yaml (see ~/.config/homebrew/Brewfile),
+# which is why this script runs in the `after` phase.
+
+set -eufo pipefail
+
+BREWFILE="${XDG_CONFIG_HOME:-$HOME/.config}/homebrew/Brewfile"
+
+if ! command -v brew &>/dev/null; then
+    echo "⚠️  Homebrew is not installed yet. Skipping package installation."
+    exit 0
+fi
+
+# Homebrew refuses to load formulae/casks from untrusted third-party taps, which
+# aborts the whole bundle run. Trust exactly the taps declared in packages.yaml.
+{{ range .packages.taps -}}
+brew trust --tap {{ . | quote }} >/dev/null
+{{ end }}
+if brew bundle check --file="$BREWFILE" --no-upgrade &>/dev/null; then
+    echo "✅ Homebrew packages already up to date"
+else
+    echo "🍺 Installing missing packages from $BREWFILE..."
+    brew bundle install --file="$BREWFILE" --no-upgrade
+fi
+
+echo "✅ Package installation complete"

@@ -22,3 +22,6 @@ export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 # fzf default options, rendered by chezmoi for the active theme
 export FZF_DEFAULT_OPTS_FILE="$XDG_CONFIG_HOME/fzf/fzfrc"
+
+# Brewfile rendered by chezmoi from packages.yaml, so `brew bundle` works without --file
+export HOMEBREW_BUNDLE_FILE="$XDG_CONFIG_HOME/homebrew/Brewfile"

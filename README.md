@@ -350,7 +350,7 @@ Automatically managed via mise (the single owner of language runtimes — brew d
 - Lua 5.1 (for Neovim)
 - Global NPM packages: bun, AWS CDK, Prettier, Mermaid CLI
 
-> **Note**: Claude Code is installed separately via its official install script (`run_once_install-claude-code`).
+> **Note**: Claude Code is installed separately via its official install script (`run_once_after_20-install-claude-code`).
 
 ## Directory Structure
 
@@ -363,9 +363,14 @@ Automatically managed via mise (the single owner of language runtimes — brew d
 │   │   ├── theme-assets.yaml      # Where each tool keeps its per-theme asset
 │   │   └── themes.yaml            # Theme registry (light flag, bat/ghostty names, nvim spec)
 │   ├── .chezmoiexternal.toml      # External dependencies
-│   ├── .chezmoiscripts/           # Automated scripts
-│   │   ├── run_before_*           # Pre-apply assertions (theme registry coverage)
-│   │   └── run_onchange_*         # Scripts that run on file changes (bat cache, mise, prune inactive themes, macOS defaults)
+│   ├── .chezmoiscripts/           # Scripts, numbered in execution order
+│   │   ├── run_before_00-assert-theme-coverage      # Template-only assertion; aborts apply on a bad registry
+│   │   ├── run_after_10-install-packages            # brew bundle from the managed Brewfile (every apply)
+│   │   ├── run_once_after_20-install-claude-code    # Claude Code installer (first apply only)
+│   │   ├── run_onchange_after_30-mise-install       # mise install when mise config changes
+│   │   ├── run_onchange_after_40-bat-rebuild-cache  # bat cache when bat config or active theme changes
+│   │   ├── run_onchange_after_50-prune-inactive-themes  # remove the previous theme's files after a switch
+│   │   └── run_onchange_after_60-configure-macos-defaults  # macOS defaults, appearance follows the theme
 │   ├── .chezmoitemplates/themes/  # eza, fzf and lazygit theme inputs, merged into their configs at render time
 │   ├── .chezmoiignore             # Hides every theme except the active one
 │   ├── .chezmoiversion            # Minimum chezmoi version required by these templates
@@ -380,6 +385,7 @@ Automatically managed via mise (the single owner of language runtimes — brew d
 │       ├── eza/           # Eza theme.yml, rendered from the active theme
 │       ├── fzf/           # fzfrc, rendered from the active theme
 │       ├── ghostty/       # Ghostty terminal config
+│       ├── homebrew/      # Brewfile rendered from packages.yaml
 │       ├── lazygit/       # Lazygit config, theme merged in at render time
 │       ├── mise/          # Mise runtime versions
 │       ├── nvim/          # Neovim configuration
@@ -396,7 +402,8 @@ Automatically managed via mise (the single owner of language runtimes — brew d
 
 After prerequisites are met, scripts automatically:
 
-1. Install all brew packages, casks, and Mac App Store apps from `packages.yaml`
+1. Install all brew packages, casks, and Mac App Store apps from `packages.yaml`, via a managed
+   Brewfile at `~/.config/homebrew/Brewfile`
 2. Install oh-my-zsh and its plugins (as chezmoi externals)
 3. Install programming language runtimes via mise
 4. Build theme caches (bat)
@@ -407,7 +414,7 @@ After prerequisites are met, scripts automatically:
 
 ### Theme Validation
 
-`home/.chezmoiscripts/run_before_assert-theme-coverage.sh.tmpl` is a template-only assertion.
+`home/.chezmoiscripts/run_before_00-assert-theme-coverage.sh.tmpl` is a template-only assertion.
 It renders to nothing on success (so no script runs), and on failure it aborts `chezmoi apply`
 before any file is written. It checks three things on every apply:
 
@@ -449,6 +456,7 @@ All configurations respect the XDG Base Directory specification:
 - `$ZDOTDIR` - `~/.config/zsh`; zsh reads `.zprofile`, `.zshrc` and `conf.d/` from there, so only
   `~/.zshenv` remains in the home directory
 - `$FZF_DEFAULT_OPTS_FILE` - `~/.config/fzf/fzfrc`, rendered for the active theme
+- `$HOMEBREW_BUNDLE_FILE` - `~/.config/homebrew/Brewfile`, rendered from `packages.yaml`
 - `$HOME` - Explicit references for non-XDG paths
 - No hardcoded paths or tilde expansion
 
@@ -479,6 +487,14 @@ To find Mac App Store app IDs:
 
 ```bash
 mas search "App Name"
+```
+
+The rendered Brewfile lives at `~/.config/homebrew/Brewfile` and `HOMEBREW_BUNDLE_FILE` points at
+it, so `brew bundle` commands work without `--file`:
+
+```bash
+brew bundle check                # anything declared but not installed?
+brew bundle cleanup --dry-run    # anything installed but not declared?
 ```
 
 ### Adding Themes

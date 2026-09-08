@@ -1,4 +1,4 @@
-# Homebrew taps, formulae, casks and Mac App Store apps installed by run_install-packages.
+# Homebrew taps, formulae, casks and Mac App Store apps rendered into ~/.config/homebrew/Brewfile and applied by run_after_10-install-packages.
 # This repository is macOS-only by design.
 packages:
   taps:

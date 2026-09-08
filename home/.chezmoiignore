@@ -2,7 +2,7 @@
   Deploy only the active theme. The tool assets of every other registered theme are ignored,
   so ~/.config carries one theme per tool. chezmoi never removes an ignored target, so after a
   theme switch the previous theme's files are cleaned up by
-  .chezmoiscripts/run_onchange_after_prune-inactive-themes.sh.tmpl.
+  .chezmoiscripts/run_onchange_after_50-prune-inactive-themes.sh.tmpl.
 */ -}}
 {{- range $name, $_ := .themes }}
 {{-   if ne $name $.theme }}

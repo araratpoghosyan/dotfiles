@@ -1,0 +1,16 @@
+# Rendered by chezmoi from .chezmoidata/packages.yaml; edit that file, not this one.
+# Applied on every `chezmoi apply` by run_after_10-install-packages, and picked up by
+# `brew bundle` / `brew bundle check` / `brew bundle cleanup --dry-run` via HOMEBREW_BUNDLE_FILE.
+
+{{ range .packages.taps -}}
+tap {{ . | quote }}
+{{ end }}
+{{ range .packages.brews -}}
+brew {{ . | quote }}
+{{ end }}
+{{ range .packages.casks -}}
+cask {{ . | quote }}
+{{ end }}
+{{ range .packages.mas -}}
+mas {{ .name | quote }}, id: {{ .id }}
+{{ end -}}
