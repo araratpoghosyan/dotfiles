@@ -29,7 +29,6 @@ require("lazy").setup({
     -- Languages
     { import = "lazyvim.plugins.extras.lang.go" },
     { import = "lazyvim.plugins.extras.lang.json" },
-    { import = "lazyvim.plugins.extras.lang.json" },
     { import = "lazyvim.plugins.extras.lang.python" },
     { import = "lazyvim.plugins.extras.lang.rust" },
     { import = "lazyvim.plugins.extras.lang.svelte" },
@@ -43,7 +42,7 @@ require("lazy").setup({
     -- UI
     { import = "lazyvim.plugins.extras.ui.mini-indentscope" },
 
-    -- UI
+    -- Utilities
     { import = "lazyvim.plugins.extras.util.chezmoi" },
 
     -- import/override with your plugins

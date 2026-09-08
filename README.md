@@ -13,9 +13,9 @@ the repository from quietly diverging.
 ## Highlights
 
 - **One theme, eleven choices.** Pick from Catppuccin, TokyoNight, Nord, Dracula or 0x96f once;
-  bat, btop, eza, fzf, ghostty, lazygit, neovim, opencode, yazi, zellij, delta and the macOS
+  bat, btop, eza, fzf, ghostty, lazygit, neovim, opencode, yazi, delta and the macOS
   appearance all follow. Only the active theme's files are deployed.
-- **Declarative packages.** `packages.yaml` renders a Brewfile (2 taps, 56 formulae, 30 casks,
+- **Declarative packages.** `packages.yaml` renders a Brewfile (2 taps, 55 formulae, 30 casks,
   1 App Store app) that `brew bundle` applies on every `chezmoi apply`. Language runtimes come
   from mise.
 - **XDG-native shell.** `~/.zshenv` is the only shell file left in the home directory; everything
@@ -42,7 +42,6 @@ the repository from quietly diverging.
 | [opencode](https://opencode.ai/) | AI coding agent, themed |
 | ssh | `~/.ssh/config` pulled from 1Password (optional) |
 | [yazi](https://github.com/sxyazi/yazi) | Terminal file manager, themed flavor |
-| [zellij](https://zellij.dev/) | Terminal multiplexer, themed, with a `showoff` layout |
 | zsh | [oh-my-zsh](https://ohmyz.sh/) (git, docker, helm, kubectl, syntax highlighting), [zoxide](https://github.com/ajeetdsouza/zoxide) as `cd` |
 
 Everything else in `packages.yaml` (Docker Desktop, JetBrains Toolbox, kubectl tooling, AWS CLI,
@@ -128,7 +127,7 @@ Available: `catppuccin-frappe`, `catppuccin-latte` (light), `catppuccin-macchiat
 
 | Mechanism | Tools |
 | --- | --- |
-| Theme file deployed next to the tool's config; the tool selects it by name | bat, btop, opencode, yazi, zellij |
+| Theme file deployed next to the tool's config; the tool selects it by name | bat, btop, opencode, yazi |
 | Theme merged into the tool's config at render time | eza, fzf, lazygit |
 | Value read straight from the registry | ghostty (`ghostty`), neovim (`nvim`), delta and macOS appearance (`light`) |
 
@@ -172,8 +171,8 @@ Code is the one tool installed by its own script, since it is not packaged for e
 | `conf.d/30-aliases.zsh` | `p` (Projects), `ls`/`ll`/`la`/`lt` (eza), `vim` (nvim), `cat` (bat), `y` (yazi), `uuid` |
 | `conf.d/40-drift-notice.zsh` | One-line notice when the last drift check found differences |
 
-oh-my-zsh itself is an exact mirror of upstream (`.chezmoiexternal.toml`); custom plugins and
-themes live in `~/.config/oh-my-zsh`, and runtime caches go to `~/.cache`, so the mirror stays
+oh-my-zsh itself is an exact mirror of upstream (`.chezmoiexternal.toml`); the syntax-highlighting
+plugin lives in `~/.config/oh-my-zsh`, and runtime caches go to `~/.cache`, so the mirror stays
 pristine. Completion dumps go to `~/.cache/zsh`.
 
 ## Secrets
@@ -214,7 +213,7 @@ theme. Failure looks like:
 chezmoi: template: ... error calling fail: theme registry has themes without assets (theme / tool / expected path)
 
   - my-new-theme           bat       dot_config/bat/themes/my-new-theme.tmTheme
-  - my-new-theme           zellij    dot_config/zellij/themes/my-new-theme.kdl
+  - my-new-theme           yazi      dot_config/yazi/flavors/my-new-theme.yazi/flavor.toml
 ```
 
 ### Continuous integration
@@ -253,7 +252,7 @@ file test; the check itself never runs in the shell.
 │   ├── .chezmoitemplates/themes/  # eza, fzf, lazygit theme inputs (merged, never deployed)
 │   ├── .chezmoiversion            # Minimum chezmoi version
 │   ├── dot_config/                # ~/.config: bat, btop, eza, fzf, ghostty, homebrew, lazygit,
-│   │                              #   mise, nvim, oh-my-zsh (custom), opencode, yazi, zellij, zsh
+│   │                              #   mise, nvim, opencode, yazi, zsh
 │   ├── dot_gitconfig.tmpl         # git + delta
 │   ├── dot_gitignore              # Global gitignore
 │   ├── dot_local/bin/             # chezmoi-drift-check

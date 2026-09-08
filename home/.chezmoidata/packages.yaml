@@ -59,7 +59,6 @@ packages:
     - "vips"
     - "watch"
     - "wget"
-    - "zellij"
     - "zoxide"
     - "zsh"
 

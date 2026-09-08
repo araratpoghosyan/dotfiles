@@ -18,14 +18,5 @@ Thumbs.db
 .Spotlight-V100
 .Trashes
 
-# Test files
-test.json
-test.php
-test.py
-test.rb
-test.js
-test.go
-test.txt
-test.java
-test.yaml
-test.yml
+# Personal scratch files (never a legitimate project file name)
+*.scratch.*

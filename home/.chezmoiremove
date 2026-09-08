@@ -7,3 +7,6 @@
 .config/eza/themes
 .config/fzf/themes
 .config/lazygit/themes
+
+# zellij is no longer used (September 2026)
+.config/zellij

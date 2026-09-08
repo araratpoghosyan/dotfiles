@@ -4,24 +4,11 @@ return {
     opts = {
       picker = {
         sources = {
-          files = {
-            hidden = true,
-          },
-          explorer = {
-            hidden = true,
-            ignored = true,
-          },
+          files = { hidden = true },
+          explorer = { hidden = true, ignored = true },
         },
       },
-      image = {
-        enabled = true,
-      },
+      image = { enabled = true },
     },
-    config = function(_, opts)
-      require("snacks").setup(opts)
-
-      -- Set custom highlight groups for explorer
-      vim.api.nvim_set_hl(0, "SnacksPickerPathHidden", { link = "Text" })
-    end,
   },
 }

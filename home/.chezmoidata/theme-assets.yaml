@@ -22,9 +22,6 @@ themeAssets:
   yazi:
     source: dot_config/yazi/flavors/%s.yazi/flavor.toml
     target: .config/yazi/flavors/%s.yazi
-  zellij:
-    source: dot_config/zellij/themes/%s.kdl
-    target: .config/zellij/themes/%s.kdl
   eza:
     source: .chezmoitemplates/themes/eza/%s.yaml
   fzf:

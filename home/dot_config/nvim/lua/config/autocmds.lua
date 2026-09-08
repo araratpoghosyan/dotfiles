@@ -6,3 +6,11 @@
 --
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
+
+-- Dim hidden files in the snacks explorer/picker the same way in every colorscheme
+vim.api.nvim_create_autocmd("ColorScheme", {
+  group = vim.api.nvim_create_augroup("user_snacks_hl", { clear = true }),
+  callback = function()
+    vim.api.nvim_set_hl(0, "SnacksPickerPathHidden", { link = "Comment" })
+  end,
+})
