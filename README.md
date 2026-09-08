@@ -162,7 +162,8 @@ chezmoi apply
 
 Alternatively, delete the `theme` line and run `chezmoi init --apply` to pick from the list again.
 
-> **Note**: Invalid theme names are automatically detected with helpful error messages.
+> **Note**: An unknown theme name, or a theme missing an asset for any tool, aborts `chezmoi apply`
+> before anything is written, with a message listing what is wrong.
 
 **Available Themes:**
 
@@ -336,7 +337,7 @@ Automatically managed via mise (the single owner of language runtimes — brew d
 │   │   └── themes.yaml            # Theme registry (light flag, ghostty name, nvim spec)
 │   ├── .chezmoiexternal.toml      # External dependencies
 │   ├── .chezmoiscripts/           # Automated scripts
-│   │   ├── run_before_*           # Pre-installation scripts (includes theme validation)
+│   │   ├── run_before_*           # Pre-apply assertions (theme registry coverage)
 │   │   └── run_onchange_*         # Scripts that run on file changes
 │   ├── dot_*.zsh                  # Shell configuration
 │   ├── dot_gitconfig.tmpl         # Git configuration
@@ -374,22 +375,25 @@ After prerequisites are met, scripts automatically:
 
 ### Theme Validation
 
-Before applying any configuration, the system automatically validates your selected theme:
+`home/.chezmoiscripts/run_before_assert-theme-coverage.sh.tmpl` is a template-only assertion.
+It renders to nothing on success (so no script runs), and on failure it aborts `chezmoi apply`
+before any file is written. It checks three things on every apply:
 
-- Checks if the theme name exists in `themes.yaml`
-- Provides helpful error messages with all available themes
-- Prevents invalid configurations from being applied
-- Centralized theme management eliminates if/else chains in configs
+- The selected theme exists in `themes.yaml`
+- Every theme in `themes.yaml` has an asset for every themed tool (bat, btop, eza, fzf, lazygit,
+  opencode, yazi, zellij) and the `ghostty` and `nvim` registry fields
+- No tool directory contains a theme asset for a theme that is not in `themes.yaml`
 
 Example error output:
 ```
-❌ ERROR: Invalid theme 'invalid-theme'
+chezmoi: template: ... error calling fail: theme registry has themes without assets (theme / tool / expected path)
 
-Available themes:
-  - catppuccin-mocha (Dark, rich pastel theme)
-  - nord (Arctic, north-bluish color palette)
-  ...
+  - my-new-theme           bat       private_dot_config/private_bat/themes/my-new-theme.tmTheme
+  - my-new-theme           zellij    private_dot_config/private_zellij/themes/my-new-theme.kdl
 ```
+
+The list of per-tool asset paths lives at the top of the assertion file. When a new themed tool
+is added, add its path pattern there.
 
 ### Smart Shell Aliases
 
@@ -463,7 +467,7 @@ themes:
 The theme structure includes:
 - key: The canonical theme identifier used in `~/.config/chezmoi/chezmoi.toml`
 - `light`: Whether the theme is a light theme (drives delta, lazygit, and macOS appearance)
-- `description`: Brief description shown in validation errors
+- `description`: Brief description shown in the theme picker and in assertion errors
 - `family`: Theme family for grouping
 - `ghostty`: Theme name as Ghostty spells it
 - `nvim`: lazy.nvim spec for the colorscheme plugin (`repo`, optional `module`, `opts`, `lazy`);
@@ -473,7 +477,8 @@ After adding a theme:
 
 1. Add corresponding theme files to tool directories (bat, btop, eza, fzf, lazygit, opencode, yazi, zellij)
 2. Run `chezmoi apply` to regenerate configurations
-3. The theme picker and the validation script pick up the new theme automatically
+3. The theme picker picks up the new theme automatically, and the coverage assertion fails
+   `chezmoi apply` until every tool has its asset
 
 ### Adding Shell Aliases
 

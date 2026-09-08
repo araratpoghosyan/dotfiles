@@ -1,0 +1,72 @@
+{{- /*
+  Template-time theme assertions.
+
+  On success this file renders to nothing, so chezmoi never runs it as a script.
+  On failure `fail` aborts the whole apply before any file is written. Checks:
+    1. the selected theme exists in .chezmoidata/themes.yaml
+    2. every registered theme has an asset for every themed tool
+    3. no tool has a theme asset that is missing from the registry (orphan)
+*/ -}}
+{{- $src := .chezmoi.sourceDir -}}
+
+{{- /* tool -> path of its per-theme asset, relative to the source dir; %s is the theme name */ -}}
+{{- $assets := dict
+      "bat"      "private_dot_config/private_bat/themes/%s.tmTheme"
+      "btop"     "private_dot_config/private_btop/themes/%s.theme"
+      "eza"      "private_dot_config/private_eza/themes/%s.yaml"
+      "fzf"      "private_dot_config/private_fzf/themes/%s.sh"
+      "lazygit"  "private_dot_config/private_lazygit/themes/%s.yaml"
+      "opencode" "private_dot_config/private_opencode/themes/%s.json"
+      "yazi"     "private_dot_config/private_yazi/flavors/%s.yazi/flavor.toml"
+      "zellij"   "private_dot_config/private_zellij/themes/%s.kdl" -}}
+
+{{- /* registry fields that tools render from directly, so they need no file */ -}}
+{{- $fields := list "ghostty" "nvim" -}}
+
+{{- /* Formatting rule for fail messages: no line may end with ":" because chezmoi collapses the
+     line break that follows a colon-terminated line into a single space. */ -}}
+
+{{- /* 1. selected theme is registered */ -}}
+{{- if not (hasKey .themes .theme) -}}
+{{-   $lines := list (printf "unknown theme %q in ~/.config/chezmoi/chezmoi.toml" .theme) "" "Pick one of the registered themes" -}}
+{{-   range $name, $meta := .themes -}}
+{{-     $lines = append $lines (printf "  - %s (%s)" $name $meta.description) -}}
+{{-   end -}}
+{{-   fail (join "\n" $lines) -}}
+{{- end -}}
+
+{{- /* 2. every registered theme has every asset and field */ -}}
+{{- $missing := list -}}
+{{- range $name, $meta := .themes -}}
+{{-   range $tool, $pattern := $assets -}}
+{{-     $path := printf $pattern $name -}}
+{{-     if not (stat (joinPath $src $path)) -}}
+{{-       $missing = append $missing (printf "  - %-22s %-9s %s" $name $tool $path) -}}
+{{-     end -}}
+{{-   end -}}
+{{-   range $fields -}}
+{{-     if not (hasKey $meta .) -}}
+{{-       $missing = append $missing (printf "  - %-22s %-9s .chezmoidata/themes.yaml is missing the %q field" $name . .) -}}
+{{-     end -}}
+{{-   end -}}
+{{- end -}}
+{{- if $missing -}}
+{{-   fail (join "\n" (concat (list "theme registry has themes without assets (theme / tool / expected path)" "") $missing)) -}}
+{{- end -}}
+
+{{- /* 3. every asset on disk belongs to a registered theme */ -}}
+{{- $orphans := list -}}
+{{- range $tool, $pattern := $assets -}}
+{{-   $parts := splitList "%s" $pattern -}}
+{{-   $prefix := printf "%s/%s" $src (index $parts 0) -}}{{- /* not joinPath: it would strip the trailing slash */ -}}
+{{-   $suffix := index $parts 1 -}}
+{{-   range glob (printf "%s*%s" $prefix $suffix) -}}
+{{-     $name := . | trimPrefix $prefix | trimSuffix $suffix -}}
+{{-     if not (hasKey $.themes $name) -}}
+{{-       $orphans = append $orphans (printf "  - %-22s %-9s %s" $name $tool (trimPrefix (printf "%s/" $src) .)) -}}
+{{-     end -}}
+{{-   end -}}
+{{- end -}}
+{{- if $orphans -}}
+{{-   fail (join "\n" (concat (list "theme assets on disk belong to themes that are not in .chezmoidata/themes.yaml (theme / tool / path)" "") $orphans)) -}}
+{{- end -}}
