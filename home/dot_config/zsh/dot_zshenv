@@ -10,10 +10,10 @@ typeset -U path PATH
 export LANG='en_US.UTF-8'
 
 # Preferred editor for local and remote sessions
-export EDITOR='nvim';
+export EDITOR='nvim'
 
-# Enable color support of ls and also add handy aliases
-export CLICOLOR=YES
+# Colour output from BSD tools (ls, grep) where eza is not in use
+export CLICOLOR=1
 
 # Do not upgrade homebrew on every install
 export HOMEBREW_NO_AUTO_UPDATE=1

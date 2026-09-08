@@ -15,7 +15,7 @@ the repository from quietly diverging.
 - **One theme, eleven choices.** Pick from Catppuccin, TokyoNight, Nord, Dracula or 0x96f once;
   bat, btop, eza, fzf, ghostty, lazygit, neovim, opencode, yazi, delta and the macOS
   appearance all follow. Only the active theme's files are deployed.
-- **Declarative packages.** `packages.yaml` renders a Brewfile (2 taps, 55 formulae, 30 casks,
+- **Declarative packages.** `packages.yaml` renders a Brewfile (2 taps, 54 formulae, 30 casks,
   1 App Store app) that `brew bundle` applies on every `chezmoi apply`. Language runtimes come
   from mise.
 - **XDG-native shell.** A two-line `~/.zshenv` hands over to `~/.config/zsh`, where the
@@ -110,7 +110,6 @@ themes:
   catppuccin-mocha:
     light: false                   # drives delta, lazygit and macOS appearance
     description: Dark, rich pastel theme
-    family: catppuccin
     bat: catppuccin-mocha          # name inside the .tmTheme file; bat selects by that, not by file name
     ghostty: Catppuccin Mocha      # name as ghostty spells it
     nvim:                          # lazy.nvim spec; the colorscheme file is rendered from this
@@ -244,6 +243,7 @@ file test; the check itself never runs in the shell.
 ~/.local/share/chezmoi/
 ├── .github/workflows/ci.yml       # CI (see Guard rails)
 ├── docs/                          # Screenshot
+├── LICENSE                        # MIT
 ├── home/                          # chezmoi source root (.chezmoiroot)
 │   ├── .chezmoi.toml.tmpl         # Prompts once; writes ~/.config/chezmoi/chezmoi.toml
 │   ├── .chezmoidata/
@@ -312,4 +312,4 @@ empty `onePasswordAccount` in the chezmoi config.
 [Nord](https://www.nordtheme.com/) · [Dracula](https://draculatheme.com/) ·
 [0x96f](https://github.com/filipjanevski/0x96f.nvim)
 
-Personal dotfiles. Take whatever is useful.
+MIT licensed. Take whatever is useful.

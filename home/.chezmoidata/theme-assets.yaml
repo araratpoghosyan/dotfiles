@@ -6,6 +6,9 @@
 #           .chezmoiignore (deploy only the active theme) and the prune script (remove the
 #           previous theme's files after a switch)
 #
+# Path convention across the tree: shell scripts use $HOME at run time; formats with no variable
+# expansion (plist, JSON, TOML) use {{ .chezmoi.homeDir }} at render time.
+#
 # Tools without a target (eza, fzf, lazygit) get the theme merged into their main config at
 # render time, so their assets are template inputs under .chezmoitemplates/themes/ and never
 # reach $HOME on their own.

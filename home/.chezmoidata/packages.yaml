@@ -60,7 +60,6 @@ packages:
     - "watch"
     - "wget"
     - "zoxide"
-    - "zsh"
 
   casks:
     - "1password"

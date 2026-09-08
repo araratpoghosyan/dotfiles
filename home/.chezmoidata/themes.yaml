@@ -4,7 +4,6 @@
 # Fields:
 #   light        true for light themes (drives delta, lazygit, macOS appearance)
 #   description  shown in the theme picker / validation errors
-#   family       upstream theme family, for grouping
 #   bat          theme name as written inside the .tmTheme file (bat selects by that, not by file name)
 #   ghostty      theme name as ghostty spells it
 #   nvim         lazy.nvim spec for the colorscheme plugin:
@@ -17,7 +16,6 @@ themes:
   catppuccin-frappe:
     light: false
     description: Warm, cozy pastel theme
-    family: catppuccin
     bat: catppuccin-frappe
     ghostty: Catppuccin Frappe
     nvim:
@@ -27,7 +25,6 @@ themes:
   catppuccin-latte:
     light: true
     description: Light mode variant
-    family: catppuccin
     bat: catppuccin-latte
     ghostty: Catppuccin Latte
     nvim:
@@ -37,7 +34,6 @@ themes:
   catppuccin-macchiato:
     light: false
     description: Medium contrast pastel theme
-    family: catppuccin
     bat: catppuccin-macchiato
     ghostty: Catppuccin Macchiato
     nvim:
@@ -47,7 +43,6 @@ themes:
   catppuccin-mocha:
     light: false
     description: Dark, rich pastel theme
-    family: catppuccin
     bat: catppuccin-mocha
     ghostty: Catppuccin Mocha
     nvim:
@@ -59,7 +54,6 @@ themes:
   tokyonight-day:
     light: true
     description: Clean light theme
-    family: tokyonight
     bat: TokyoNight
     ghostty: TokyoNight Day
     nvim:
@@ -69,7 +63,6 @@ themes:
   tokyonight-moon:
     light: false
     description: Dark theme with purple accent
-    family: tokyonight
     bat: TokyoNight
     ghostty: TokyoNight Moon
     nvim:
@@ -79,7 +72,6 @@ themes:
   tokyonight-night:
     light: false
     description: Deep dark theme
-    family: tokyonight
     bat: TokyoNight
     ghostty: TokyoNight Night
     nvim:
@@ -89,7 +81,6 @@ themes:
   tokyonight-storm:
     light: false
     description: Storm-inspired dark theme
-    family: tokyonight
     bat: TokyoNight
     ghostty: TokyoNight Storm
     nvim:
@@ -101,7 +92,6 @@ themes:
   nord:
     light: false
     description: Arctic, north-bluish color palette
-    family: nord
     bat: Nord
     ghostty: Nord
     nvim:
@@ -110,7 +100,6 @@ themes:
   dracula:
     light: false
     description: Dark theme with vibrant colors
-    family: dracula
     bat: Dracula
     ghostty: Dracula
     nvim:
@@ -118,7 +107,6 @@ themes:
   "0x96f":
     light: false
     description: Custom minimalist dark theme
-    family: "0x96f"
     bat: "0x96f"
     ghostty: "0x96f"
     nvim:

@@ -1,12 +1,14 @@
-# Former shell files, replaced by ~/.config/zsh/ (ZDOTDIR) in September 2026
+# Former shell files, replaced by ~/.config/zsh/ (ZDOTDIR) in September 2026.
+# Remove this block after 2026-12-01, once every machine has applied at least once.
 .zshrc
 .tools.zsh
 .aliases.zsh
 
-# Theme inputs for eza, fzf and lazygit moved to .chezmoitemplates (merged at render time)
+# Theme inputs for eza, fzf and lazygit moved to .chezmoitemplates (merged at render time).
+# Remove this block after 2026-12-01.
 .config/eza/themes
 .config/fzf/themes
 .config/lazygit/themes
 
-# zellij is no longer used (September 2026)
+# zellij is no longer used (September 2026). Remove this block after 2026-12-01.
 .config/zellij

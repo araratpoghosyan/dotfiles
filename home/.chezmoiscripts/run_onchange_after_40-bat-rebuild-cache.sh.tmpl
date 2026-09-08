@@ -3,8 +3,7 @@
 # This script rebuilds the bat cache after bat configuration changes.
 # It runs automatically when the bat config or the active theme file changes.
 
-# Hash of bat config and theme contents to trigger re-runs when changed
-# bat config hash: {{ include "dot_config/bat/config.tmpl" | sha256sum }}
+# Re-runs when the deployed theme file changes (bat cache --build reads themes only, not the config)
 # active theme ({{ .theme }}) hash: {{ include (printf .themeAssets.bat.source .theme) | sha256sum }}
 
 set -eufo pipefail

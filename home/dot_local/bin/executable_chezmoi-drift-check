@@ -5,6 +5,7 @@
 #
 # Exit status: 0 no drift, 1 drift found, 2 chezmoi unavailable.
 
+# No -e: `chezmoi status` exit codes are informational here; the script reports drift itself.
 set -uo pipefail
 
 cache="${XDG_CACHE_HOME:-$HOME/.cache}/chezmoi"
