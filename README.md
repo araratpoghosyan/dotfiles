@@ -372,7 +372,8 @@ Automatically managed via mise (the single owner of language runtimes — brew d
 │   │   ├── run_onchange_after_30-mise-install       # mise install when mise config changes
 │   │   ├── run_onchange_after_40-bat-rebuild-cache  # bat cache when bat config or active theme changes
 │   │   ├── run_onchange_after_50-prune-inactive-themes  # remove the previous theme's files after a switch
-│   │   └── run_onchange_after_60-configure-macos-defaults  # macOS defaults, appearance follows the theme
+│   │   ├── run_onchange_after_60-configure-macos-defaults  # macOS defaults, appearance follows the theme
+│   │   └── run_onchange_after_70-load-drift-check-agent    # (re)load the daily drift-check LaunchAgent
 │   ├── .chezmoitemplates/themes/  # eza, fzf and lazygit theme inputs, merged into their configs at render time
 │   ├── .chezmoiignore             # Hides every theme except the active one
 │   ├── .chezmoiversion            # Minimum chezmoi version required by these templates
@@ -380,6 +381,8 @@ Automatically managed via mise (the single owner of language runtimes — brew d
 │   ├── dot_zshenv                 # Environment only; sets ZDOTDIR and FZF_DEFAULT_OPTS_FILE
 │   ├── dot_gitconfig.tmpl         # Git configuration
 │   ├── dot_claude/                # Claude Code settings and statusline
+│   ├── dot_local/bin/             # chezmoi-drift-check
+│   ├── Library/LaunchAgents/      # io.chezmoi.drift-check (daily)
 │   ├── private_dot_ssh/           # SSH config (pulled from 1Password; skipped when no account is set)
 │   └── dot_config/                # Application configs (only ~/.ssh is marked private_)
 │       ├── bat/           # Bat config and themes (active one deployed)
@@ -423,6 +426,16 @@ conditions). Each run applies and verifies the tree, renders every script and ch
 apply and parses the rendered Brewfile with `brew bundle list`. Scripts are never executed,
 externals are skipped, and the 1Password account is left empty, so nothing touches a real machine
 and no secret is needed.
+
+### Drift Detection
+
+A user LaunchAgent (`io.chezmoi.drift-check`) runs `~/.local/bin/chezmoi-drift-check` once a day
+(10:00, or at the next wake). The script runs `chezmoi status` over every managed target except
+`~/.ssh` (whose content comes from 1Password and would prompt), so it catches both local edits that
+never made it back to the source tree and source changes that were pulled but not applied. On
+drift it posts a macOS notification and writes the list to `~/.cache/chezmoi/drift`; the next
+interactive shell prints a one-line notice pointing at `chezmoi diff`. Run `chezmoi-drift-check`
+by hand at any time; exit status 1 means drift.
 
 ### Theme Validation
 
@@ -548,7 +561,7 @@ After adding a theme:
 ### Adding Shell Aliases
 
 Edit `home/dot_config/zsh/conf.d/30-aliases.zsh` and run `chezmoi apply`.
-Tool initialization lives in `20-tools.zsh`, PATH entries in `10-path.zsh`.
+Tool initialization lives in `20-tools.zsh`, PATH entries in `10-path.zsh`, the drift notice in `40-drift-notice.zsh`.
 
 ### Modifying Tool Configs
 
@@ -612,6 +625,13 @@ chezmoi apply -v
 chezmoi state delete-bucket --bucket=scriptState
 chezmoi apply
 ```
+
+### Drift Notice Keeps Appearing
+
+The notice reflects the last daily check. After you reconcile (`chezmoi apply`, or `chezmoi add`
+for edits you want to keep), run `chezmoi-drift-check` to clear it immediately. To inspect the
+agent: `launchctl print gui/$(id -u)/io.chezmoi.drift-check`; its log is
+`~/.cache/chezmoi/drift-check.log`.
 
 ### Shell Completions Missing
 

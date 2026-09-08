@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# (Re)loads the daily drift-check LaunchAgent whenever its plist changes.
+# plist hash: {{ include "private_Library/private_LaunchAgents/io.chezmoi.drift-check.plist.tmpl" | sha256sum }}
+
+set -eufo pipefail
+
+PLIST="$HOME/Library/LaunchAgents/io.chezmoi.drift-check.plist"
+DOMAIN="gui/$(id -u)"
+
+mkdir -p "${XDG_CACHE_HOME:-$HOME/.cache}/chezmoi"
+launchctl bootout "$DOMAIN" "$PLIST" 2>/dev/null || true
+launchctl bootstrap "$DOMAIN" "$PLIST"
+
+echo "✅ Drift check agent loaded (runs daily at 10:00; run chezmoi-drift-check to check now)"

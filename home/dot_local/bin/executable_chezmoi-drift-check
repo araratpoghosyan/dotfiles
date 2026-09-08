@@ -1,0 +1,39 @@
+#!/bin/bash
+# Compares every managed target with the chezmoi source state and records the result for the
+# shell notice (conf.d/40-drift-notice.zsh). Run daily by the io.chezmoi.drift-check LaunchAgent,
+# or by hand. ~/.ssh is skipped because its content comes from 1Password and would prompt.
+#
+# Exit status: 0 no drift, 1 drift found, 2 chezmoi unavailable.
+
+set -uo pipefail
+
+cache="${XDG_CACHE_HOME:-$HOME/.cache}/chezmoi"
+report="$cache/drift"
+log="$cache/drift-check.log"
+mkdir -p "$cache"
+
+if ! command -v chezmoi &>/dev/null; then
+    echo "chezmoi not on PATH" >>"$log"
+    exit 2
+fi
+
+status="$(
+    chezmoi managed --path-style=absolute --exclude=externals,scripts |
+        grep -v "^$HOME/\.ssh\(/\|$\)" |
+        xargs chezmoi status --exclude=externals,scripts 2>>"$log"
+)"
+
+if [ -z "$status" ]; then
+    rm -f "$report"
+    echo "$(date '+%F %T') no drift" >>"$log"
+    exit 0
+fi
+
+printf '%s\n' "$status" >"$report"
+count="$(wc -l <"$report" | tr -d ' ')"
+echo "$(date '+%F %T') drift in $count target(s)" >>"$log"
+
+if command -v osascript &>/dev/null; then
+    osascript -e "display notification \"$count managed file(s) differ from the source. Run: chezmoi diff\" with title \"chezmoi drift\"" >/dev/null 2>&1 || true
+fi
+exit 1
