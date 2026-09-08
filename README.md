@@ -56,8 +56,9 @@ browsers, chat apps, fonts, and so on) is installed but not configured by this r
   eval "$(/opt/homebrew/bin/brew shellenv)"   # /usr/local/bin/brew on Intel
   ```
 
-  Do not edit `~/.zprofile`; chezmoi manages `~/.config/zsh/.zprofile`, which loads Homebrew for
-  every future login shell.
+  Ignore the installer's closing "Next steps" about `~/.zprofile`. chezmoi manages
+  `~/.config/zsh/.zprofile`, which loads Homebrew for every future login shell, and once `ZDOTDIR`
+  is set zsh never reads `~/.zprofile` again. If you already pasted those lines, they do no harm.
 - Optional: [1Password](https://1password.com/downloads/mac/) and its CLI, signed in, with
   *Settings → Developer → Connect with 1Password CLI* enabled. Needed only for the SSH config.
 - Optional: signed in to the Mac App Store, so `brew bundle` can install App Store apps. If you
