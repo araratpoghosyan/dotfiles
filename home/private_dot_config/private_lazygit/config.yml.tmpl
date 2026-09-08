@@ -1,6 +1,12 @@
+{{- /* Base settings merged with the active theme's gui.theme block, so lazygit needs no LG_CONFIG_FILE chain */ -}}
 {{- $activeTheme := index .themes .theme -}}
+{{- $base := printf `
 git:
   paging:
     colorArg: always
-    pager: delta {{ if $activeTheme.light }}--light{{ else }}--dark{{ end }} --paging=never
+    pager: delta %s --paging=never
 disableStartupPopups: true
+` (ternary "--light" "--dark" $activeTheme.light) | fromYaml -}}
+{{- $themeConfig := include (printf "private_dot_config/private_lazygit/themes/%s.yaml" .theme) | fromYaml -}}
+# Rendered by chezmoi: base settings merged with themes/{{ .theme }}.yaml. Edit the source template, not this file.
+{{ mergeOverwrite $base $themeConfig | toYaml -}}

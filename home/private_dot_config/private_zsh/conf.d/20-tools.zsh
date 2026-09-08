@@ -1,24 +1,23 @@
-# Initialize chezmoi
+# Tool initialization: completions, shell hooks, per-tool environment.
+# Aliases belong in 30-aliases.zsh. Theming is handled by each tool's own config,
+# rendered by chezmoi for the active theme; nothing here knows which theme is active.
+
+# chezmoi completions
 if command -v chezmoi &>/dev/null; then
     eval "$(chezmoi completion zsh)"
 fi
 
-# Initialize zoxide
+# zoxide replaces cd
 if command -v zoxide &>/dev/null; then
     eval "$(zoxide init --cmd cd zsh)"
 fi
 
-# Initialize mise
+# mise runtime manager
 if command -v mise &>/dev/null; then
     eval "$(mise activate zsh)"
 fi
 
-# Configure lazygit
-if command -v lazygit &>/dev/null; then
-    export LG_CONFIG_FILE="$XDG_CONFIG_HOME/lazygit/config.yml,$XDG_CONFIG_HOME/lazygit/themes/{{ .theme }}.yaml"
-fi
-
-# Initialize fzf
+# fzf: key bindings, completion and previews (colors come from $FZF_DEFAULT_OPTS_FILE)
 if command -v fzf &>/dev/null; then
     show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
 
@@ -37,40 +36,10 @@ if command -v fzf &>/dev/null; then
       esac
     }
 
-    # Set FZF color theme
-    source "$XDG_CONFIG_HOME/fzf/themes/{{ .theme }}.sh"
-
     source <(fzf --zsh)
 fi
 
-# Configure eza
+# eza reads its theme from $EZA_CONFIG_DIR/theme.yml (rendered for the active theme)
 if command -v eza &>/dev/null; then
-    # eza loads its theme from $EZA_CONFIG_DIR/theme.yml (generated from the selected theme)
     export EZA_CONFIG_DIR="$XDG_CONFIG_HOME/eza"
-
-    # Aliases for eza
-    alias ls="eza --color=auto --icons=auto"
-    alias ll="eza --color=auto --icons=auto --long --header"
-    alias la="eza --color=auto --icons=auto --long --header --all"
-    alias lt="eza --color=auto --icons=auto --tree"
-fi
-
-# Configure neovim
-if command -v nvim &>/dev/null; then
-    alias vim="nvim"
-fi
-
-# Configure bat
-if command -v bat &>/dev/null; then
-    alias cat="bat"
-fi
-
-# Configure yazi
-if command -v yazi &>/dev/null; then
-    alias y="yazi"
-fi
-
-# Configure uuidgen
-if command -v uuidgen &>/dev/null; then
-    alias uuid="uuidgen | tr \"[:upper:]\" \"[:lower:]\""
 fi

@@ -1,0 +1,4 @@
+# Former shell files, replaced by ~/.config/zsh/ (ZDOTDIR) in September 2026
+.zshrc
+.tools.zsh
+.aliases.zsh

@@ -1,11 +1,8 @@
-# ----------------------------------------------------------------------------------------------------------------------
-# Path
-# ----------------------------------------------------------------------------------------------------------------------
-
-export PATH="$HOME/.local/bin:$PATH"
+# Interactive-shell setup. Environment lives in ~/.zshenv, login PATH in .zprofile,
+# and everything tool- or alias-related in conf.d/ fragments sourced at the bottom.
 
 # ----------------------------------------------------------------------------------------------------------------------
-# Setup zsh and oh-my-zsh
+# oh-my-zsh
 # ----------------------------------------------------------------------------------------------------------------------
 
 # Path to your oh-my-zsh installation.
@@ -14,6 +11,10 @@ export ZSH="$HOME/.oh-my-zsh"
 # Custom themes and plugins live outside $ZSH so chezmoi can manage them
 # ($ZSH itself is an exact mirror of the upstream archive)
 export ZSH_CUSTOM="$XDG_CONFIG_HOME/oh-my-zsh"
+
+# Keep the completion dump out of $ZDOTDIR (oh-my-zsh would otherwise write it there)
+export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-${ZSH_VERSION}"
+[ -d "${ZSH_COMPDUMP:h}" ] || mkdir -p "${ZSH_COMPDUMP:h}"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -32,13 +33,13 @@ plugins=(git docker zsh-syntax-highlighting helm kubectl)
 source $ZSH/oh-my-zsh.sh
 
 # ----------------------------------------------------------------------------------------------------------------------
-# Tools
+# Fragments: one concern per file, sourced in name order
+#   10-path.zsh     user-level PATH entries
+#   20-tools.zsh    tool initialization (completions, shell hooks, per-tool env)
+#   30-aliases.zsh  aliases
 # ----------------------------------------------------------------------------------------------------------------------
 
-source "$HOME/.tools.zsh"
-
-# ----------------------------------------------------------------------------------------------------------------------
-# Aliases
-# ----------------------------------------------------------------------------------------------------------------------
-
-source "$HOME/.aliases.zsh"
+for fragment in "$ZDOTDIR"/conf.d/*.zsh(N); do
+    source "$fragment"
+done
+unset fragment

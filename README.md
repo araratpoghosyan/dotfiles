@@ -50,14 +50,12 @@ These tools must be installed **before** running chezmoi for the first time:
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# Add Homebrew to PATH (Apple Silicon)
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> "$HOME/.zprofile"
+# Put Homebrew on PATH for the current session (Apple Silicon; use /usr/local/bin/brew on Intel)
 eval "$(/opt/homebrew/bin/brew shellenv)"
-
-# Or for Intel Macs
-echo 'eval "$(/usr/local/bin/brew shellenv)"' >> "$HOME/.zprofile"
-eval "$(/usr/local/bin/brew shellenv)"
 ```
+
+No need to edit `~/.zprofile`: chezmoi manages `~/.config/zsh/.zprofile`, which loads Homebrew
+for every future login shell.
 
 #### 2. Install 1Password
 
@@ -339,7 +337,8 @@ Automatically managed via mise (the single owner of language runtimes — brew d
 │   ├── .chezmoiscripts/           # Automated scripts
 │   │   ├── run_before_*           # Pre-apply assertions (theme registry coverage)
 │   │   └── run_onchange_*         # Scripts that run on file changes
-│   ├── dot_*.zsh                  # Shell configuration
+│   ├── .chezmoiremove             # Old targets to delete on apply
+│   ├── dot_zshenv                 # Environment only; sets ZDOTDIR and FZF_DEFAULT_OPTS_FILE
 │   ├── dot_gitconfig.tmpl         # Git configuration
 │   ├── dot_claude/                # Claude Code settings and statusline
 │   ├── private_dot_ssh/           # SSH config (content pulled from 1Password)
@@ -347,13 +346,14 @@ Automatically managed via mise (the single owner of language runtimes — brew d
 │       ├── private_bat/           # Bat themes and config
 │       ├── private_btop/          # Btop resource monitor config and themes
 │       ├── private_eza/           # Eza themes (theme.yml generated from selection)
-│       ├── private_fzf/           # FZF themes
+│       ├── private_fzf/           # fzfrc (rendered from the active theme) and themes
 │       ├── private_ghostty/       # Ghostty terminal config
-│       ├── private_lazygit/       # Lazygit config and themes
+│       ├── private_lazygit/       # Lazygit config (theme merged in at render time) and themes
 │       ├── private_mise/          # Mise runtime versions
 │       ├── private_nvim/          # Neovim configuration
 │       ├── private_opencode/      # OpenCode config and themes
 │       ├── private_yazi/          # Yazi file manager config and flavors
+│       ├── private_zsh/           # ZDOTDIR: .zprofile, .zshrc, conf.d/ fragments
 │       └── private_zellij/        # Zellij config, layouts, and themes
 └── README.md
 ```
@@ -414,6 +414,9 @@ uuid       # Generate lowercase UUID
 All configurations respect the XDG Base Directory specification:
 
 - `$XDG_CONFIG_HOME` - Used for all config directories
+- `$ZDOTDIR` - `~/.config/zsh`; zsh reads `.zprofile`, `.zshrc` and `conf.d/` from there, so only
+  `~/.zshenv` remains in the home directory
+- `$FZF_DEFAULT_OPTS_FILE` - `~/.config/fzf/fzfrc`, rendered for the active theme
 - `$HOME` - Explicit references for non-XDG paths
 - No hardcoded paths or tilde expansion
 
@@ -482,7 +485,8 @@ After adding a theme:
 
 ### Adding Shell Aliases
 
-Edit `home/dot_aliases.zsh` and run `chezmoi apply`.
+Edit `home/private_dot_config/private_zsh/conf.d/30-aliases.zsh` and run `chezmoi apply`.
+Tool initialization lives in `20-tools.zsh`, PATH entries in `10-path.zsh`.
 
 ### Modifying Tool Configs
 
@@ -515,8 +519,8 @@ chezmoi update -v  # Verbose output
 Use chezmoi's built-in editor:
 
 ```bash
-chezmoi edit ~/.zshrc        # Opens in $EDITOR
-chezmoi edit --apply ~/.zshrc  # Apply after saving
+chezmoi edit ~/.config/zsh/.zshrc          # Opens in $EDITOR
+chezmoi edit --apply ~/.config/zsh/.zshrc  # Apply after saving
 ```
 
 ### Remove Files
@@ -550,8 +554,8 @@ chezmoi apply
 ### Shell Completions Missing
 
 ```bash
-# Reload shell configuration
-source ~/.zshrc
+# Start a fresh shell
+exec zsh
 ```
 
 ### 1Password CLI Not Working

@@ -1,3 +1,5 @@
+# Read by every zsh (login, interactive, scripts). Environment only: no aliases, no tool init.
+
 # Prefer US English and use UTF-8.
 export LANG='en_US.UTF-8';
 export LC_ALL='en_US.UTF-8';
@@ -11,5 +13,12 @@ export CLICOLOR=YES
 # Do not upgrade homebrew on every install
 export HOMEBREW_NO_AUTO_UPDATE=1
 
-# Base directory for user configuration files (XDG Base Directory spec)
+# Base directories (XDG Base Directory spec)
 export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+# zsh reads its remaining startup files (.zprofile, .zshrc, conf.d/) from here, not from $HOME
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+
+# fzf default options, rendered by chezmoi for the active theme
+export FZF_DEFAULT_OPTS_FILE="$XDG_CONFIG_HOME/fzf/fzfrc"

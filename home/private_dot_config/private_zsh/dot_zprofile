@@ -1,0 +1,24 @@
+# Login-shell PATH setup. zsh reads this from $ZDOTDIR (set in ~/.zshenv); ~/.zprofile is not read.
+# Every block is guarded so the file is safe on a machine without the tool.
+
+# Homebrew (Apple Silicon or Intel)
+if [ -x /opt/homebrew/bin/brew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x /usr/local/bin/brew ]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# Docker Desktop CLI tools
+if [ -d "$HOME/.docker/bin" ]; then
+    export PATH="$PATH:$HOME/.docker/bin"
+fi
+
+# JetBrains Toolbox scripts
+if [ -d "$HOME/Library/Application Support/JetBrains/Toolbox/scripts" ]; then
+    export PATH="$PATH:$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
+fi
+
+# OrbStack command-line tools and integration
+if [ -f "$HOME/.orbstack/shell/init.zsh" ]; then
+    source "$HOME/.orbstack/shell/init.zsh"
+fi
