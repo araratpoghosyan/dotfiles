@@ -269,6 +269,7 @@ file test; the check itself never runs in the shell.
 │   ├── dot_local/bin/             # chezmoi-drift-check
 │   ├── dot_zshenv                 # Bootstrap: sets ZDOTDIR, sources ~/.config/zsh/.zshenv
 │   ├── empty_dot_hushlogin        # Silences the login banner
+│   ├── Projects/.keep             # Creates ~/Projects (target of the `p` alias); .keep itself is not deployed
 │   ├── private_Library/LaunchAgents/  # io.chezmoi.drift-check.plist
 │   └── private_dot_ssh/           # SSH config from 1Password (optional)
 └── README.md
