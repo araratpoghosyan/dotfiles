@@ -2,6 +2,8 @@
 
 > My personal macOS development environment, managed with [chezmoi](https://www.chezmoi.io/)
 
+[![CI](https://github.com/araratpoghosyan/dotfiles/actions/workflows/ci.yml/badge.svg)](https://github.com/araratpoghosyan/dotfiles/actions/workflows/ci.yml)
+
 A curated collection of configurations for a modern, efficient, and aesthetically pleasing development setup. Features
 unified theming across all tools with multiple theme families, automated package management, and XDG Base Directory compliance.
 
@@ -104,7 +106,7 @@ If you skip this, MAS apps are skipped on the first apply and installed on a lat
 
 ```bash
 # Install chezmoi, clone the dotfiles, and generate your config
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init ararat-poghosyan
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init araratpoghosyan
 ```
 
 On first run chezmoi prompts for your theme (pick from a list), name, email, and 1Password
@@ -116,7 +118,7 @@ chezmoi diff
 chezmoi apply
 ```
 
-Or do everything in one step with `chezmoi init --apply ararat-poghosyan`.
+Or do everything in one step with `chezmoi init --apply araratpoghosyan`.
 
 ### Existing Installation
 
@@ -411,6 +413,16 @@ After prerequisites are met, scripts automatically:
 **Prerequisites** (must be installed manually):
 - Homebrew
 - 1Password and 1Password CLI (signed in), only if you set a 1Password account
+
+### Continuous Integration
+
+`.github/workflows/ci.yml` renders the whole source tree on every push and pull request, once per
+registered theme, into a scratch directory on a Linux runner (the templates have no OS
+conditions). Each run applies and verifies the tree, renders every script and checks it with
+`bash -n` and shellcheck, and syntax-checks the rendered zsh and Lua. A single macOS job repeats the
+apply and parses the rendered Brewfile with `brew bundle list`. Scripts are never executed,
+externals are skipped, and the 1Password account is left empty, so nothing touches a real machine
+and no secret is needed.
 
 ### Theme Validation
 

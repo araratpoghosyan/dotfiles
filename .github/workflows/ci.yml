@@ -1,0 +1,131 @@
+# Renders the whole source tree for every registered theme on Linux (chezmoi templates are
+# OS-independent here), then does a single macOS pass that also parses the Brewfile with brew.
+# Nothing is installed into a real home: every apply targets a scratch directory, scripts are
+# rendered but never executed, and externals are skipped.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CHEZMOI_VERSION: "2.72.0"
+
+jobs:
+  themes:
+    name: List themes
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.list.outputs.themes }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install chezmoi
+        run: |
+          curl -fsSLo chezmoi.deb "https://github.com/twpayne/chezmoi/releases/download/v${CHEZMOI_VERSION}/chezmoi_${CHEZMOI_VERSION}_linux_amd64.deb"
+          sudo dpkg -i chezmoi.deb
+      - name: Read the theme registry
+        id: list
+        run: |
+          mkdir -p ~/.config/chezmoi
+          printf '[data]\ntheme = "catppuccin-mocha"\nname = "CI"\nfullName = "CI Runner"\nemail = "ci@example.com"\nonePasswordAccount = ""\n' > ~/.config/chezmoi/chezmoi.toml
+          themes="$(chezmoi execute-template --source . '{{ keys .themes | sortAlpha | toJson }}')"
+          echo "themes=${themes}" >> "$GITHUB_OUTPUT"
+          echo "Themes: ${themes}"
+
+  render:
+    name: Render (${{ matrix.theme }})
+    needs: themes
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        theme: ${{ fromJSON(needs.themes.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install chezmoi, zsh and lua
+        run: |
+          curl -fsSLo chezmoi.deb "https://github.com/twpayne/chezmoi/releases/download/v${CHEZMOI_VERSION}/chezmoi_${CHEZMOI_VERSION}_linux_amd64.deb"
+          sudo dpkg -i chezmoi.deb
+          sudo apt-get update -q
+          sudo apt-get install -y -q zsh lua5.1
+
+      - name: Write chezmoi config for this theme
+        run: |
+          mkdir -p ~/.config/chezmoi
+          cat > ~/.config/chezmoi/chezmoi.toml <<CFG
+          [data]
+          theme = "${{ matrix.theme }}"
+          name = "CI"
+          fullName = "CI Runner"
+          email = "ci@example.com"
+          onePasswordAccount = ""
+          CFG
+
+      - name: Config template renders
+        run: chezmoi execute-template --init --source . --promptChoice "Theme=${{ matrix.theme }}" --file home/.chezmoi.toml.tmpl
+
+      - name: Apply into a scratch home
+        run: |
+          mkdir -p "$RUNNER_TEMP/home"
+          chezmoi apply --source . --destination "$RUNNER_TEMP/home" --exclude=scripts,externals --verbose
+          chezmoi verify --source . --destination "$RUNNER_TEMP/home" --exclude=scripts,externals
+          echo "Files rendered: $(find "$RUNNER_TEMP/home" -type f | wc -l)"
+
+      - name: Render scripts and check their shell syntax
+        run: |
+          mkdir -p "$RUNNER_TEMP/scripts"
+          for f in home/.chezmoiscripts/*.tmpl; do
+            out="$RUNNER_TEMP/scripts/$(basename "$f" .tmpl)"
+            chezmoi execute-template --source . --destination "$RUNNER_TEMP/home" --file "$f" > "$out"
+            if [ -s "$out" ]; then bash -n "$out"; echo "ok  $(basename "$out")"; else echo "--  $(basename "$out") renders empty (not executed)"; fi
+          done
+
+      - name: shellcheck rendered scripts (errors fail the build)
+        run: |
+          find "$RUNNER_TEMP/scripts" -type f -size +0 -print0 | xargs -0 shellcheck --severity=error
+
+      - name: shellcheck rendered scripts (warnings, informational)
+        continue-on-error: true
+        run: |
+          find "$RUNNER_TEMP/scripts" -type f -size +0 -print0 | xargs -0 shellcheck
+
+      - name: Syntax-check rendered zsh and Lua
+        run: |
+          H="$RUNNER_TEMP/home"
+          for f in "$H/.zshenv" "$H/.config/zsh/.zprofile" "$H/.config/zsh/.zshrc" "$H"/.config/zsh/conf.d/*.zsh; do
+            zsh -n "$f" && echo "ok  ${f#"$H"/}"
+          done
+          luac5.1 -p "$H"/.config/nvim/lua/plugins/*.lua "$H"/.config/nvim/lua/config/*.lua && echo "ok  nvim lua"
+
+  macos:
+    name: macOS pass
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install chezmoi
+        run: brew install chezmoi
+
+      - name: Write chezmoi config
+        run: |
+          mkdir -p ~/.config/chezmoi
+          printf '[data]\ntheme = "catppuccin-mocha"\nname = "CI"\nfullName = "CI Runner"\nemail = "ci@example.com"\nonePasswordAccount = ""\n' > ~/.config/chezmoi/chezmoi.toml
+
+      - name: Apply into a scratch home
+        run: |
+          mkdir -p "$RUNNER_TEMP/home"
+          chezmoi apply --source . --destination "$RUNNER_TEMP/home" --exclude=scripts,externals
+          chezmoi verify --source . --destination "$RUNNER_TEMP/home" --exclude=scripts,externals
+
+      - name: Brewfile parses
+        run: brew bundle list --all --file="$RUNNER_TEMP/home/.config/homebrew/Brewfile"
