@@ -70,9 +70,14 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply araratpoghosyan
 ```
 
 That installs chezmoi, clones this repository to `~/.local/share/chezmoi`, prompts once for your
-theme (from a list), name, email and 1Password account (Enter to skip), writes the answers to
+theme (from a list), name, email and 1Password account, writes the answers to
 `~/.config/chezmoi/chezmoi.toml`, and applies. To review before applying, drop `--apply` and run
 `chezmoi diff` first.
+
+On a new machine, press Enter at the 1Password prompt. The apply installs 1Password itself; sign
+in, enable the CLI integration, then set `onePasswordAccount` in `~/.config/chezmoi/chezmoi.toml`
+and run `chezmoi apply` to get the SSH config. Entering the account early does no harm either:
+1Password-backed files are skipped until the `op` CLI is on `PATH`.
 
 The first apply:
 
@@ -180,8 +185,8 @@ pinned external, runtime caches go to `~/.cache/oh-my-zsh`, completion dumps to 
 
 The only secret-backed file is `~/.ssh/config`, read from the *Dotfiles* vault with
 `onepasswordRead`. It is rendered only when `onePasswordAccount` is set in
-`~/.config/chezmoi/chezmoi.toml`; when empty, `.chezmoiignore` skips it and chezmoi never calls
-the 1Password CLI. To add another secret-backed file, add its target to the same block in
+`~/.config/chezmoi/chezmoi.toml` and the `op` CLI is on `PATH`; otherwise `.chezmoiignore` skips it
+and chezmoi never calls 1Password. To add another secret-backed file, add its target to the same block in
 `home/.chezmoiignore`.
 
 Headless machines can use a 1Password service account: set `[onepassword] mode = "service"` in
