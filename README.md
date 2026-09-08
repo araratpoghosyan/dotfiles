@@ -380,7 +380,6 @@ Automatically managed via mise (the single owner of language runtimes — brew d
 │   ├── .chezmoiremove             # Old targets to delete on apply
 │   ├── dot_zshenv                 # Environment only; sets ZDOTDIR and FZF_DEFAULT_OPTS_FILE
 │   ├── dot_gitconfig.tmpl         # Git configuration
-│   ├── dot_claude/                # Claude Code settings and statusline
 │   ├── dot_local/bin/             # chezmoi-drift-check
 │   ├── Library/LaunchAgents/      # io.chezmoi.drift-check (daily)
 │   ├── private_dot_ssh/           # SSH config (pulled from 1Password; skipped when no account is set)
