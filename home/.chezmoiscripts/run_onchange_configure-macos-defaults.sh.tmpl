@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-{{ if eq .chezmoi.os "darwin" -}}
-
 # macOS System Preferences Configuration
 # Customize macOS defaults to improve UX
 
@@ -95,5 +93,3 @@ for app in "Dock" \
 done
 
 echo "macOS defaults configured successfully!"
-
-{{ end -}}

@@ -34,7 +34,8 @@ unified theming across all tools with multiple theme families, automated package
 
 ## Prerequisites
 
-- macOS (Apple Silicon or Intel)
+- macOS (Apple Silicon or Intel). The repository is macOS-only by design: nothing is gated on the
+  operating system, and the package list and system-defaults script assume Homebrew and `defaults`.
 - Command Line Tools: `xcode-select --install`
 - Homebrew (see installation below)
 - Optional: 1Password and 1Password CLI, signed in (see installation below). Needed only if you
@@ -459,14 +460,13 @@ Edit `home/.chezmoidata/packages.yaml`:
 
 ```yaml
 packages:
-  darwin:
-    brews:
-      - "your-package-name"
-    casks:
-      - "your-app-name"
-    mas:
-      - name: "App Name"
-        id: 1234567890  # App Store ID
+  brews:
+    - "your-package-name"
+  casks:
+    - "your-app-name"
+  mas:
+    - name: "App Name"
+      id: 1234567890  # App Store ID
 ```
 
 Then run:

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-{{ if eq .chezmoi.os "darwin" -}}
-
 # Runs on every `chezmoi apply` so packages.yaml is always the source of truth.
 # `brew bundle check` keeps the common no-op case fast; the slow install path
 # only runs when something is actually missing.
@@ -15,20 +13,20 @@ fi
 
 # Homebrew refuses to load formulae/casks from untrusted third-party taps, which
 # aborts the whole bundle run. Trust exactly the taps declared in packages.yaml.
-{{ range .packages.darwin.taps -}}
+{{ range .packages.taps -}}
 brew trust --tap {{ . | quote }} >/dev/null
 {{ end }}
 BREWFILE="$(mktemp -t Brewfile)"
 trap 'rm -f "$BREWFILE"' EXIT
 
 cat >"$BREWFILE" <<'EOF'
-{{ range .packages.darwin.taps -}}
+{{ range .packages.taps -}}
 tap {{ . | quote }}
 {{ end -}}
-{{ range .packages.darwin.brews -}}
+{{ range .packages.brews -}}
 brew {{ . | quote }}
 {{ end -}}
-{{ range .packages.darwin.casks -}}
+{{ range .packages.casks -}}
 cask {{ . | quote }}
 {{ end -}}
 EOF
@@ -40,14 +38,14 @@ else
     brew bundle install --file="$BREWFILE" --no-upgrade
 fi
 
-{{ if .packages.darwin.mas -}}
+{{ if .packages.mas -}}
 if ! command -v mas &>/dev/null; then
     echo "⚠️  mas is not installed yet. Skipping Mac App Store apps."
     exit 0
 fi
 
 installed_mas="$(mas list | awk '{print $1}')"
-{{ range .packages.darwin.mas }}
+{{ range .packages.mas }}
 if ! grep -qx {{ .id | quote }} <<<"$installed_mas"; then
     echo "🍎 Installing {{ .name }} ({{ .id }})..."
     mas install {{ .id }}
@@ -56,5 +54,3 @@ fi
 {{ end -}}
 
 echo "✅ Package installation complete"
-
-{{ end -}}
