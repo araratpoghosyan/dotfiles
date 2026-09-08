@@ -48,6 +48,10 @@ browsers, chat apps, fonts, and so on) is installed but not configured by this r
 ## Requirements
 
 - macOS on Apple Silicon or Intel. The repository is macOS-only by design.
+- Preferably a fresh user account. If you bring files over with Migration Assistant, leave out
+  `~/.config`, `~/.zshenv`, `~/.oh-my-zsh` and `/Applications`: migrated copies of managed files
+  make the first apply ask about every one of them, and pre-installed apps make their casks fail.
+- Signed in to iCloud and, if you want the App Store apps, to the App Store, before you start.
 - Command Line Tools: `xcode-select --install`
 - [Homebrew](https://brew.sh/). Install it, then put it on `PATH` for the current session:
 
@@ -61,8 +65,8 @@ browsers, chat apps, fonts, and so on) is installed but not configured by this r
   is set zsh never reads `~/.zprofile` again. If you already pasted those lines, they do no harm.
 - Optional: [1Password](https://1password.com/downloads/mac/) and its CLI, signed in, with
   *Settings → Developer → Connect with 1Password CLI* enabled. Needed only for the SSH config.
-- Optional: signed in to the Mac App Store, so `brew bundle` can install App Store apps. If you
-  are not, those entries are skipped with a warning until you sign in and apply again.
+- Optional: the App Store sign-in above. Without it, App Store entries are skipped with a warning
+  until you sign in and apply again.
 
 ## Install
 
