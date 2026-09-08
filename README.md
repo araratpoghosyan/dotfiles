@@ -288,8 +288,13 @@ local one, after which `chezmoi add <path>` brings the edit into the repository.
 zsh`). bat needs its cache rebuilt, which the apply does automatically; `bat cache --build` forces
 it.
 
-**A package is not installing.** The install script runs on every apply; `chezmoi apply -v` shows
-brew's output. If an `onchange` script is stuck in a bad recorded state:
+**A package is not installing, or the first apply stopped after Homebrew.** The install script runs
+on every apply and stops the apply when a formula or cask fails, so the scripts after it (Claude
+Code, mise, bat cache, macOS defaults, drift agent) did not run on that pass. The usual cause on a
+new Mac is an app already present in `/Applications`, for example copied over by hand or by
+Migration Assistant; brew names the cask in its output. Remove that app or the cask entry, then run
+`chezmoi apply` again; everything that was skipped runs then. `chezmoi apply -v` shows brew's full
+output. If an `onchange` script is stuck in a bad recorded state:
 `chezmoi state delete-bucket --bucket=scriptState`, then apply again.
 
 **No drift notification appears.** macOS asks once whether osascript may send notifications, on
