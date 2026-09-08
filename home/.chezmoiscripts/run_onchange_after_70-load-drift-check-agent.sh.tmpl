@@ -12,7 +12,7 @@ DOMAIN="gui/$(id -u)"
 
 # No GUI session (SSH, CI runner, headless): agents in ~/Library/LaunchAgents load at next login anyway.
 if ! launchctl print "$DOMAIN" &>/dev/null; then
-    echo "⚠️  No GUI session for $DOMAIN; the drift-check agent will load at next login."
+    echo "warning: No GUI session for $DOMAIN; the drift-check agent will load at next login."
     exit 0
 fi
 
@@ -21,4 +21,4 @@ launchctl bootout "$DOMAIN" "$PLIST" 2>/dev/null || true
 launchctl bootstrap "$DOMAIN" "$PLIST"
 launchctl kickstart "$DOMAIN/$LABEL"
 
-echo "✅ Drift check agent loaded (daily at 10:00); first check started, approve the notification prompt if macOS shows one"
+echo "Drift check agent loaded (daily at 10:00); first check started, approve the notification prompt if macOS shows one"

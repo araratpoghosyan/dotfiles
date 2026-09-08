@@ -8,15 +8,15 @@
 
 set -eufo pipefail
 
-echo "📦 Running mise install..."
+echo "Running mise install..."
 
 # Check if mise is installed
 if ! command -v mise &>/dev/null; then
-    echo "⚠️  mise is not installed yet. Skipping mise install."
+    echo "warning: mise is not installed yet. Skipping mise install."
     exit 0
 fi
 
 # Run mise install to ensure all tools are installed
 mise install
 
-echo "✅ mise install completed successfully"
+echo "mise install completed successfully"

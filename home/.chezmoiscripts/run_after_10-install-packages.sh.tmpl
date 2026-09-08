@@ -11,7 +11,7 @@ set -eufo pipefail
 BREWFILE="${XDG_CONFIG_HOME:-$HOME/.config}/homebrew/Brewfile"
 
 if ! command -v brew &>/dev/null; then
-    echo "⚠️  Homebrew is not installed yet. Skipping package installation."
+    echo "warning: Homebrew is not installed yet. Skipping package installation."
     exit 0
 fi
 
@@ -21,17 +21,17 @@ fi
 brew trust --tap {{ . | quote }} >/dev/null
 {{ end }}
 if brew bundle check --file="$BREWFILE" --no-upgrade &>/dev/null; then
-    echo "✅ Homebrew packages already up to date"
+    echo "Homebrew packages already up to date"
 else
-    echo "🍺 Installing missing packages from $BREWFILE..."
+    echo "Installing missing packages from $BREWFILE..."
     # Formulae, casks and taps must succeed. App Store entries need an App Store sign-in that a
     # fresh machine may not have yet, so they are installed separately and may fail without
     # failing the apply; `brew bundle --file=-` reads a Brewfile from stdin.
     grep -v '^mas ' "$BREWFILE" | brew bundle install --file=- --no-upgrade
     if grep -q '^mas ' "$BREWFILE"; then
         grep '^mas ' "$BREWFILE" | brew bundle install --file=- --no-upgrade ||
-            echo "⚠️  App Store apps skipped: sign in to the App Store and run chezmoi apply again"
+            echo "warning: App Store apps skipped: sign in to the App Store and run chezmoi apply again"
     fi
 fi
 
-echo "✅ Package installation complete"
+echo "Package installation complete"

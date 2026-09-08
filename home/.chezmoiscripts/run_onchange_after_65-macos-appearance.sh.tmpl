@@ -8,9 +8,9 @@ set -eufo pipefail
 
 {{ $activeTheme := index .themes .theme -}}
 {{ if $activeTheme.light -}}
-echo "☀️  Theme {{ .theme }} is light: setting light appearance"
+echo "Theme {{ .theme }} is light: setting light appearance"
 defaults delete NSGlobalDomain AppleInterfaceStyle &>/dev/null || true
 {{ else -}}
-echo "🌙 Theme {{ .theme }} is dark: setting dark appearance"
+echo "Theme {{ .theme }} is dark: setting dark appearance"
 defaults write NSGlobalDomain AppleInterfaceStyle Dark
 {{ end -}}

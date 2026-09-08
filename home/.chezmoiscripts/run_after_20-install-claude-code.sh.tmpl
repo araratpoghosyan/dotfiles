@@ -9,13 +9,13 @@ if command -v claude &>/dev/null; then
     exit 0
 fi
 
-echo "📦 Installing Claude Code (stable)..."
+echo "Installing Claude Code (stable)..."
 
 # Download first so a truncated or non-script response can never execute
 installer="$(mktemp -t claude-install)"
 trap 'rm -f "$installer"' EXIT
 curl -fsSL https://claude.ai/install.sh -o "$installer"
-head -1 "$installer" | grep -q '^#!' || { echo "❌ Unexpected installer content, aborting" >&2; exit 1; }
+head -1 "$installer" | grep -q '^#!' || { echo "error: Unexpected installer content, aborting" >&2; exit 1; }
 bash "$installer" stable
 
-echo "✅ Claude Code installation complete"
+echo "Claude Code installation complete"

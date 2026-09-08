@@ -8,15 +8,15 @@
 
 set -eufo pipefail
 
-echo "🦇 Rebuilding bat cache..."
+echo "Rebuilding bat cache..."
 
 # Check if bat is installed
 if ! command -v bat &>/dev/null; then
-    echo "⚠️  bat is not installed yet. Skipping cache rebuild."
+    echo "warning: bat is not installed yet. Skipping cache rebuild."
     exit 0
 fi
 
 # Rebuild bat cache to include custom themes
 bat cache --build
 
-echo "✅ bat cache rebuilt successfully"
+echo "bat cache rebuilt successfully"
