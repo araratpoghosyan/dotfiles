@@ -66,11 +66,13 @@ browsers, chat apps, fonts, and so on) is installed but not configured by this r
 ## Install
 
 ```bash
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply araratpoghosyan
+brew install chezmoi
+chezmoi init --apply araratpoghosyan
 ```
 
-That installs chezmoi, clones this repository to `~/.local/share/chezmoi`, prompts once for your
-theme (from a list), name, email and 1Password account, writes the answers to
+Homebrew is already required, so it installs chezmoi too, and `brew upgrade` keeps it current
+along with everything else. `chezmoi init` clones this repository to `~/.local/share/chezmoi`,
+prompts once for your theme (from a list), name, email and 1Password account, writes the answers to
 `~/.config/chezmoi/chezmoi.toml`, and applies. To review before applying, drop `--apply` and run
 `chezmoi diff` first.
 
