@@ -1,11 +1,11 @@
-# oh-my-zsh itself (required by .zshrc); custom content lives in
-# ~/.config/oh-my-zsh (see ZSH_CUSTOM in .zshrc), so this stays a pure mirror
+# oh-my-zsh: cloned once by chezmoi, then updated by oh-my-zsh itself (`omz update` and its
+# periodic prompt, see `zstyle ':omz:update'` in .zshrc). No refreshPeriod on purpose: chezmoi must
+# never pull here or the two updaters would fight. Shallow clone, like oh-my-zsh's own installer.
+# Custom plugins live in ~/.config/oh-my-zsh (ZSH_CUSTOM), never inside this clone.
 [".oh-my-zsh"]
-    type = "archive"
-    url = "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
-    exact = true
-    stripComponents = 1
-    refreshPeriod = "168h"
+    type = "git-repo"
+    url = "https://github.com/ohmyzsh/ohmyzsh.git"
+    clone.args = ["--depth=1"]
 
 # ZSH Syntax Highlighting (installed into the ZSH_CUSTOM plugins dir), pinned to a release.
 # To upgrade, bump the tag; no refreshPeriod because a pinned archive never changes.

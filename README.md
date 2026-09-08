@@ -79,7 +79,7 @@ theme (from a list), name, email and 1Password account (Enter to skip), writes t
 The first apply:
 
 1. Checks the theme registry and aborts with a precise message if anything is missing.
-2. Renders every managed file, including the Brewfile and the oh-my-zsh externals.
+2. Renders every managed file, including the Brewfile, and clones oh-my-zsh.
 3. Runs `brew bundle` against the rendered Brewfile, installs Claude Code, runs `mise install`,
    rebuilds the bat theme cache, applies macOS defaults, and loads the drift-check LaunchAgent.
 
@@ -174,9 +174,10 @@ the first one. Under `~/.config/zsh`:
 | `conf.d/30-aliases.zsh` | `p` (Projects), `ls`/`ll`/`la`/`lt` (eza), `vim` (nvim), `cat` (bat), `y` (yazi), `uuid` |
 | `conf.d/40-drift-notice.zsh` | One-line notice when the last drift check found differences |
 
-oh-my-zsh itself is an exact mirror of upstream (`.chezmoiexternal.toml`); the syntax-highlighting
-plugin lives in `~/.config/oh-my-zsh`, and runtime caches go to `~/.cache`, so the mirror stays
-pristine. Completion dumps go to `~/.cache/zsh`.
+oh-my-zsh is cloned once by chezmoi (`.chezmoiexternal.toml`, shallow) and then updates itself: it
+asks in the terminal every 13 days, and `omz update` works at any time. chezmoi never pulls that
+clone, so the two never fight. The syntax-highlighting plugin lives in `~/.config/oh-my-zsh` as a
+pinned external, runtime caches go to `~/.cache/oh-my-zsh`, completion dumps to `~/.cache/zsh`.
 
 ## Secrets
 
@@ -249,7 +250,7 @@ file test; the check itself never runs in the shell.
 │   │   ├── packages.yaml          # Taps, formulae, casks, App Store apps
 │   │   ├── theme-assets.yaml      # Where each tool keeps its per-theme asset
 │   │   └── themes.yaml            # Theme registry
-│   ├── .chezmoiexternal.toml      # oh-my-zsh (rolling mirror), zsh-syntax-highlighting (pinned)
+│   ├── .chezmoiexternal.toml      # oh-my-zsh (git clone, self-updating), zsh-syntax-highlighting (pinned)
 │   ├── .chezmoiignore             # Hides inactive themes; skips secret-backed files without 1Password
 │   ├── .chezmoiremove             # Old targets removed on apply
 │   ├── .chezmoiscripts/           # Numbered scripts (see Guard rails)
@@ -292,6 +293,10 @@ the first check after install. If it was dismissed: System Settings → Notifica
 **The drift notice keeps appearing.** It reflects the last daily check. After reconciling with
 `chezmoi apply` or `chezmoi add`, run `chezmoi-drift-check` to clear it. Inspect the agent with
 `launchctl print gui/$(id -u)/io.chezmoi.drift-check`; its log is `~/.cache/chezmoi/drift-check.log`.
+
+**Apply fails on `~/.oh-my-zsh` (not a git repository).** The machine still has the old extracted
+archive from before oh-my-zsh became a git clone. Remove it once and apply again: `rm -rf
+~/.oh-my-zsh && chezmoi apply`. Nothing of yours lives in that directory.
 
 **`chezmoi diff` hangs.** With a 1Password account configured, rendering `~/.ssh/config` waits for
 the CLI to authorize. Approve the prompt, or diff specific paths: `chezmoi diff ~/.config`.
