@@ -1,9 +1,9 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-# macOS System Preferences Configuration
-# Customize macOS defaults to improve UX
+# macOS system preferences (Finder, Dock, Terminal, screenshots). Static: it never depends on
+# chezmoi data, so a theme switch does not re-run it or restart Finder and Dock.
 
-set -euo pipefail
+set -eufo pipefail
 
 echo "Configuring macOS system preferences..."
 
@@ -12,19 +12,11 @@ osascript -e 'tell application "System Settings" to quit' &>/dev/null ||
     osascript -e 'tell application "System Preferences" to quit' &>/dev/null || true
 
 # ----------------------------------------------------------------------------------------------------------------------
-# General UI/UX
+# General UI/UX (light/dark appearance itself follows the theme: see 65-macos-appearance)
 # ----------------------------------------------------------------------------------------------------------------------
 
 echo "Setting general UI/UX preferences..."
 
-{{ $activeTheme := index .themes .theme -}}
-{{ if $activeTheme.light -}}
-# Selected theme is light: use light appearance (may require logout/restart to take effect)
-defaults delete NSGlobalDomain AppleInterfaceStyle &>/dev/null || true
-{{ else -}}
-# Selected theme is dark: use dark appearance (may require logout/restart to take effect)
-defaults write NSGlobalDomain AppleInterfaceStyle Dark
-{{ end -}}
 defaults write NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically -bool false
 
 # ----------------------------------------------------------------------------------------------------------------------

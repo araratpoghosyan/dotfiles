@@ -63,7 +63,7 @@ browsers, chat apps, fonts, and so on) is installed but not configured by this r
 - Optional: [1Password](https://1password.com/downloads/mac/) and its CLI, signed in, with
   *Settings → Developer → Connect with 1Password CLI* enabled. Needed only for the SSH config.
 - Optional: signed in to the Mac App Store, so `brew bundle` can install App Store apps. If you
-  are not, those entries fail until you sign in and apply again.
+  are not, those entries are skipped with a warning until you sign in and apply again.
 
 ## Install
 
@@ -197,13 +197,14 @@ the chezmoi config and export `OP_SERVICE_ACCOUNT_TOKEN`. On a trusted personal 
 | Script | Runs | Does |
 | --- | --- | --- |
 | `run_before_00-assert-theme-coverage` | every apply, before files | Template-only. Renders to nothing when the registry is consistent; otherwise `fail` aborts the apply before anything is written |
-| `run_after_10-install-packages` | every apply | `brew bundle check`, then `brew bundle install` if needed |
-| `run_once_after_20-install-claude-code` | first apply | Official Claude Code installer |
+| `run_after_10-install-packages` | every apply | `brew bundle check`, then `brew bundle install` if needed; App Store entries may fail without failing the apply |
+| `run_after_20-install-claude-code` | every apply, exits at once when installed | Official installer, stable channel, downloaded to a file before it runs |
 | `run_onchange_after_30-mise-install` | when mise config changes | `mise install` |
 | `run_onchange_after_40-bat-rebuild-cache` | when bat config or the active theme changes | `bat cache --build` |
 | `run_onchange_after_50-prune-inactive-themes` | when the theme or registry changes | Removes the previous theme's files |
-| `run_onchange_after_60-configure-macos-defaults` | when its content changes | Finder, Dock, Terminal, screenshots; appearance follows the theme |
-| `run_onchange_after_70-load-drift-check-agent` | when the plist changes | Loads the drift-check LaunchAgent |
+| `run_onchange_after_60-configure-macos-defaults` | when its content changes | Finder, Dock, Terminal, screenshots; restarts Finder and Dock |
+| `run_onchange_after_65-macos-appearance` | when the theme's light/dark flag changes | Light or dark system appearance |
+| `run_onchange_after_70-load-drift-check-agent` | when the plist changes | Loads the drift-check LaunchAgent and runs the first check |
 
 ### Theme assertion
 
@@ -281,8 +282,12 @@ zsh`). bat needs its cache rebuilt, which the apply does automatically; `bat cac
 it.
 
 **A package is not installing.** The install script runs on every apply; `chezmoi apply -v` shows
-brew's output. If a `run_once` or `run_onchange` script is stuck in a bad recorded state:
+brew's output. If an `onchange` script is stuck in a bad recorded state:
 `chezmoi state delete-bucket --bucket=scriptState`, then apply again.
+
+**No drift notification appears.** macOS asks once whether osascript may send notifications, on
+the first check after install. If it was dismissed: System Settings → Notifications → Script Editor
+(or osascript) → Allow. The shell notice works regardless.
 
 **The drift notice keeps appearing.** It reflects the last daily check. After reconciling with
 `chezmoi apply` or `chezmoi add`, run `chezmoi-drift-check` to clear it. Inspect the agent with

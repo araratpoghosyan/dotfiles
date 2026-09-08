@@ -24,7 +24,14 @@ if brew bundle check --file="$BREWFILE" --no-upgrade &>/dev/null; then
     echo "✅ Homebrew packages already up to date"
 else
     echo "🍺 Installing missing packages from $BREWFILE..."
-    brew bundle install --file="$BREWFILE" --no-upgrade
+    # Formulae, casks and taps must succeed. App Store entries need an App Store sign-in that a
+    # fresh machine may not have yet, so they are installed separately and may fail without
+    # failing the apply; `brew bundle --file=-` reads a Brewfile from stdin.
+    grep -v '^mas ' "$BREWFILE" | brew bundle install --file=- --no-upgrade
+    if grep -q '^mas ' "$BREWFILE"; then
+        grep '^mas ' "$BREWFILE" | brew bundle install --file=- --no-upgrade ||
+            echo "⚠️  App Store apps skipped: sign in to the App Store and run chezmoi apply again"
+    fi
 fi
 
 echo "✅ Package installation complete"

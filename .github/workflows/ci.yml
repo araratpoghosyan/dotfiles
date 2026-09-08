@@ -84,7 +84,7 @@ jobs:
       - name: Render scripts and check their shell syntax
         run: |
           mkdir -p "$RUNNER_TEMP/scripts"
-          for f in home/.chezmoiscripts/*.tmpl; do
+          for f in home/.chezmoiscripts/*; do
             out="$RUNNER_TEMP/scripts/$(basename "$f" .tmpl)"
             chezmoi execute-template --source . --destination "$RUNNER_TEMP/home" --file "$f" > "$out"
             if [ -s "$out" ]; then bash -n "$out"; echo "ok  $(basename "$out")"; else echo "--  $(basename "$out") renders empty (not executed)"; fi

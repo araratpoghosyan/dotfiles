@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Light or dark system appearance, derived from the active theme's `light` flag. Kept apart from
+# 60-configure-macos-defaults so that switching themes does not restart Finder and Dock.
+# The change takes effect for new windows at once and fully at the next login.
+
+set -eufo pipefail
+
+{{ $activeTheme := index .themes .theme -}}
+{{ if $activeTheme.light -}}
+echo "☀️  Theme {{ .theme }} is light: setting light appearance"
+defaults delete NSGlobalDomain AppleInterfaceStyle &>/dev/null || true
+{{ else -}}
+echo "🌙 Theme {{ .theme }} is dark: setting dark appearance"
+defaults write NSGlobalDomain AppleInterfaceStyle Dark
+{{ end -}}

@@ -1,15 +1,24 @@
 #!/bin/bash
 
-# (Re)loads the daily drift-check LaunchAgent whenever its plist changes.
+# (Re)loads the daily drift-check LaunchAgent whenever its plist changes, then runs it once so the
+# first check happens now and macOS shows its notification-permission prompt while you are watching.
 # plist hash: {{ include "private_Library/private_LaunchAgents/io.chezmoi.drift-check.plist.tmpl" | sha256sum }}
 
 set -eufo pipefail
 
-PLIST="$HOME/Library/LaunchAgents/io.chezmoi.drift-check.plist"
+LABEL="io.chezmoi.drift-check"
+PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
 DOMAIN="gui/$(id -u)"
+
+# No GUI session (SSH, CI runner, headless): agents in ~/Library/LaunchAgents load at next login anyway.
+if ! launchctl print "$DOMAIN" &>/dev/null; then
+    echo "⚠️  No GUI session for $DOMAIN; the drift-check agent will load at next login."
+    exit 0
+fi
 
 mkdir -p "${XDG_CACHE_HOME:-$HOME/.cache}/chezmoi"
 launchctl bootout "$DOMAIN" "$PLIST" 2>/dev/null || true
 launchctl bootstrap "$DOMAIN" "$PLIST"
+launchctl kickstart "$DOMAIN/$LABEL"
 
-echo "✅ Drift check agent loaded (runs daily at 10:00; run chezmoi-drift-check to check now)"
+echo "✅ Drift check agent loaded (daily at 10:00); first check started, approve the notification prompt if macOS shows one"

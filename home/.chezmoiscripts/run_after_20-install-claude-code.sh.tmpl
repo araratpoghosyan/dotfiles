@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Installs Claude Code with its official installer, pinned to the stable channel. Runs on every
+# apply but exits immediately once `claude` is on PATH, so a removed install is put back.
+
+set -eufo pipefail
+
+if command -v claude &>/dev/null; then
+    exit 0
+fi
+
+echo "📦 Installing Claude Code (stable)..."
+
+# Download first so a truncated or non-script response can never execute
+installer="$(mktemp -t claude-install)"
+trap 'rm -f "$installer"' EXIT
+curl -fsSL https://claude.ai/install.sh -o "$installer"
+head -1 "$installer" | grep -q '^#!' || { echo "❌ Unexpected installer content, aborting" >&2; exit 1; }
+bash "$installer" stable
+
+echo "✅ Claude Code installation complete"
