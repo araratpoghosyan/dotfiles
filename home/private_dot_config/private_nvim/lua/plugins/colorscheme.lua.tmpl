@@ -1,10 +1,32 @@
-{{- $themeFile := printf "themes/nvim/%s.lua.tmpl" .theme -}}
+{{- /* LazyVim colorscheme spec, rendered from the `nvim` block of the active theme in .chezmoidata/themes.yaml */ -}}
+{{- $theme := .theme -}}
+{{- $spec := (index .themes $theme).nvim -}}
 return {
-  {{- includeTemplate $themeFile . | indent 2 -}},
+  {
+    {{ $spec.repo | quote }},
+    name = {{ $theme | quote }},
+    priority = 1000,
+{{- if hasKey $spec "lazy" }}
+    lazy = {{ $spec.lazy }},
+{{- end }}
+{{- if hasKey $spec "module" }}
+    config = function()
+{{- if hasKey $spec "opts" }}
+      require({{ $spec.module | quote }}).setup({
+{{- range $key, $value := $spec.opts }}
+        {{ $key }} = {{ if kindIs "string" $value }}{{ $value | quote }}{{ else }}{{ $value }}{{ end }},
+{{- end }}
+      })
+{{- else }}
+      require({{ $spec.module | quote }}).setup()
+{{- end }}
+    end,
+{{- end }}
+  },
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "{{ .theme }}",
+      colorscheme = {{ $theme | quote }},
     },
   },
 }

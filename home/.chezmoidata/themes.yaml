@@ -1,74 +1,114 @@
 # Theme registry, keyed by canonical theme name.
 # Consumers look up the active theme with `index .themes .theme`.
+#
+# Fields:
+#   light        true for light themes (drives delta, lazygit, macOS appearance)
+#   description  shown in the theme picker / validation errors
+#   family       upstream theme family, for grouping
+#   ghostty      theme name as ghostty spells it
+#   nvim         lazy.nvim spec for the colorscheme plugin:
+#                  repo    GitHub "owner/repo"
+#                  module  Lua module to call .setup() on (omit if the plugin needs no setup)
+#                  opts    table passed to setup() (omit for setup() with no args)
+#                  lazy    optional lazy.nvim `lazy` flag
 themes:
   # Catppuccin themes
   catppuccin-frappe:
     light: false
     description: Warm, cozy pastel theme
     family: catppuccin
-    aliases:
-      ghostty: Catppuccin Frappe
+    ghostty: Catppuccin Frappe
+    nvim:
+      repo: catppuccin/nvim
+      module: catppuccin
+      opts: { flavour: frappe }
   catppuccin-latte:
     light: true
     description: Light mode variant
     family: catppuccin
-    aliases:
-      ghostty: Catppuccin Latte
+    ghostty: Catppuccin Latte
+    nvim:
+      repo: catppuccin/nvim
+      module: catppuccin
+      opts: { flavour: latte }
   catppuccin-macchiato:
     light: false
     description: Medium contrast pastel theme
     family: catppuccin
-    aliases:
-      ghostty: Catppuccin Macchiato
+    ghostty: Catppuccin Macchiato
+    nvim:
+      repo: catppuccin/nvim
+      module: catppuccin
+      opts: { flavour: macchiato }
   catppuccin-mocha:
     light: false
     description: Dark, rich pastel theme
     family: catppuccin
-    aliases:
-      ghostty: Catppuccin Mocha
+    ghostty: Catppuccin Mocha
+    nvim:
+      repo: catppuccin/nvim
+      module: catppuccin
+      opts: { flavour: mocha }
 
   # TokyoNight themes
   tokyonight-day:
     light: true
     description: Clean light theme
     family: tokyonight
-    aliases:
-      ghostty: TokyoNight Day
+    ghostty: TokyoNight Day
+    nvim:
+      repo: folke/tokyonight.nvim
+      module: tokyonight
+      opts: { style: day }
   tokyonight-moon:
     light: false
     description: Dark theme with purple accent
     family: tokyonight
-    aliases:
-      ghostty: TokyoNight Moon
+    ghostty: TokyoNight Moon
+    nvim:
+      repo: folke/tokyonight.nvim
+      module: tokyonight
+      opts: { style: moon }
   tokyonight-night:
     light: false
     description: Deep dark theme
     family: tokyonight
-    aliases:
-      ghostty: TokyoNight Night
+    ghostty: TokyoNight Night
+    nvim:
+      repo: folke/tokyonight.nvim
+      module: tokyonight
+      opts: { style: night }
   tokyonight-storm:
     light: false
     description: Storm-inspired dark theme
     family: tokyonight
-    aliases:
-      ghostty: TokyoNight Storm
+    ghostty: TokyoNight Storm
+    nvim:
+      repo: folke/tokyonight.nvim
+      module: tokyonight
+      opts: { style: storm }
 
   # Other themes
   nord:
     light: false
     description: Arctic, north-bluish color palette
     family: nord
-    aliases:
-      ghostty: Nord
+    ghostty: Nord
+    nvim:
+      repo: gbprod/nord.nvim
+      lazy: false
   dracula:
     light: false
     description: Dark theme with vibrant colors
     family: dracula
-    aliases:
-      ghostty: Dracula
+    ghostty: Dracula
+    nvim:
+      repo: Mofiqul/dracula.nvim
   "0x96f":
     light: false
     description: Custom minimalist dark theme
     family: "0x96f"
-    aliases:
-      ghostty: "0x96f"
+    ghostty: "0x96f"
+    nvim:
+      repo: filipjanevski/0x96f.nvim
+      module: "0x96f"

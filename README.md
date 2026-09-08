@@ -197,8 +197,11 @@ themes:
     light: false
     description: Dark, rich pastel theme
     family: catppuccin
-    aliases:
-      ghostty: Catppuccin Mocha
+    ghostty: Catppuccin Mocha
+    nvim:
+      repo: catppuccin/nvim
+      module: catppuccin
+      opts: { flavour: mocha }
 ```
 
 This centralized approach eliminates if/else chains in configuration files and makes adding new themes straightforward.
@@ -330,12 +333,11 @@ Automatically managed via mise (the single owner of language runtimes — brew d
 │   ├── .chezmoi.toml.tmpl         # Config template; prompts once and writes ~/.config/chezmoi/chezmoi.toml
 │   ├── .chezmoidata/              # Data files
 │   │   ├── packages.yaml          # Package definitions
-│   │   └── themes.yaml            # Theme definitions and aliases
+│   │   └── themes.yaml            # Theme registry (light flag, ghostty name, nvim spec)
 │   ├── .chezmoiexternal.toml      # External dependencies
 │   ├── .chezmoiscripts/           # Automated scripts
 │   │   ├── run_before_*           # Pre-installation scripts (includes theme validation)
 │   │   └── run_onchange_*         # Scripts that run on file changes
-│   ├── .chezmoitemplates/         # Shared templates (per-theme neovim colorschemes)
 │   ├── dot_*.zsh                  # Shell configuration
 │   ├── dot_gitconfig.tmpl         # Git configuration
 │   ├── dot_claude/                # Claude Code settings and statusline
@@ -451,9 +453,11 @@ themes:
     light: false
     description: Your theme description
     family: your-theme-family
-    aliases:
-      ghostty: Ghostty Theme Name
-      # Add more tool aliases as needed
+    ghostty: Ghostty Theme Name
+    nvim:
+      repo: owner/your-theme.nvim
+      module: your-theme        # omit if the plugin needs no setup()
+      opts: { style: variant }  # omit for setup() with no arguments
 ```
 
 The theme structure includes:
@@ -461,12 +465,13 @@ The theme structure includes:
 - `light`: Whether the theme is a light theme (drives delta, lazygit, and macOS appearance)
 - `description`: Brief description shown in validation errors
 - `family`: Theme family for grouping
-- `aliases`: Tool-specific theme names
-  - `ghostty`: Theme name for Ghostty terminal
+- `ghostty`: Theme name as Ghostty spells it
+- `nvim`: lazy.nvim spec for the colorscheme plugin (`repo`, optional `module`, `opts`, `lazy`);
+  the Neovim colorscheme file is rendered from this, no per-theme Lua file is needed
 
 After adding a theme:
 
-1. Add corresponding theme files to tool directories (bat, eza, lazygit, etc.)
+1. Add corresponding theme files to tool directories (bat, btop, eza, fzf, lazygit, opencode, yazi, zellij)
 2. Run `chezmoi apply` to regenerate configurations
 3. The theme picker and the validation script pick up the new theme automatically
 
