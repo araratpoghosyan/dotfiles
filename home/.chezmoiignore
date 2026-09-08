@@ -13,3 +13,11 @@
 {{-     end }}
 {{-   end }}
 {{- end }}
+
+{{- /*
+  1Password-backed files. Ignored entries are never rendered, so with no account configured
+  chezmoi makes no 1Password call at all and the apply completes without the CLI installed.
+*/ -}}
+{{- if not .onePasswordAccount }}
+.ssh/config
+{{- end }}

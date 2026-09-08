@@ -37,8 +37,9 @@ unified theming across all tools with multiple theme families, automated package
 - macOS (Apple Silicon or Intel)
 - Command Line Tools: `xcode-select --install`
 - Homebrew (see installation below)
-- 1Password and 1Password CLI, signed in (see installation below — required during the first
-  apply because the SSH config is pulled from 1Password)
+- Optional: 1Password and 1Password CLI, signed in (see installation below). Needed only if you
+  want the SSH config, which is pulled from 1Password. Leave the 1Password account empty at
+  `chezmoi init` to skip it; everything else applies normally.
 - Signed in to the Mac App Store (for MAS apps; the `mas` CLI itself installs automatically)
 
 ### Manual Installation Steps
@@ -57,7 +58,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 No need to edit `~/.zprofile`: chezmoi manages `~/.config/zsh/.zprofile`, which loads Homebrew
 for every future login shell.
 
-#### 2. Install 1Password
+#### 2. Install 1Password (optional)
 
 Download and install from [1password.com](https://1password.com/downloads/mac/):
 
@@ -68,7 +69,7 @@ brew install --cask 1password
 
 **Important:** Launch 1Password and sign in to your account before proceeding.
 
-#### 3. Install and Configure 1Password CLI
+#### 3. Install and Configure 1Password CLI (optional)
 
 ```bash
 # Install 1Password CLI
@@ -106,7 +107,8 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init ararat-poghosyan
 ```
 
 On first run chezmoi prompts for your theme (pick from a list), name, email, and 1Password
-account, and writes the answers to `~/.config/chezmoi/chezmoi.toml`. Then preview and apply:
+account (press Enter to skip 1Password), and writes the answers to `~/.config/chezmoi/chezmoi.toml`.
+Then preview and apply:
 
 ```bash
 chezmoi diff
@@ -136,7 +138,7 @@ Your personal settings live in `~/.config/chezmoi/chezmoi.toml`. The file is gen
 
 - Your chosen theme (chosen from the list in `home/.chezmoidata/themes.yaml`)
 - Personal information (name, full name, email)
-- 1Password account
+- 1Password account (empty skips every 1Password-backed file)
 
 To change a value later, edit `~/.config/chezmoi/chezmoi.toml` directly and run `chezmoi apply`.
 Re-running `chezmoi init` only asks for keys that are missing from the existing config.
@@ -269,6 +271,27 @@ api_key = "{{ onepasswordRead "op://Private/MyApp/api-key" }}"
 token: {{ onepasswordRead "op://Work/ServiceToken/credential" }}
 ```
 
+#### Skipping 1Password
+
+`home/.chezmoiignore` ignores every 1Password-backed target (currently `~/.ssh/config`) when
+`onePasswordAccount` is empty. Ignored templates are never rendered, so no 1Password call is made
+and the apply completes on a machine without the CLI. To turn it on later, set the account in
+`~/.config/chezmoi/chezmoi.toml` and run `chezmoi apply`.
+
+When adding a new 1Password-backed file, add its target path to the same block in `.chezmoiignore`.
+
+#### Headless machines
+
+For CI or ephemeral machines, use a 1Password service account instead of biometric unlock. Add to
+`~/.config/chezmoi/chezmoi.toml`:
+
+```toml
+[onepassword]
+mode = "service"
+```
+
+and export `OP_SERVICE_ACCOUNT_TOKEN` in the environment before running `chezmoi apply`.
+
 #### Configuration
 
 To disable interactive prompts (useful for automated workflows), add to `~/.config/chezmoi/chezmoi.toml`:
@@ -311,8 +334,9 @@ Essential macOS applications:
 - **Media**: Spotify, VLC
 - **Utilities**: AppCleaner, Cyberduck, Tower (Git client)
 
-> **Note**: The 1Password casks are declared in `packages.yaml` for completeness, but 1Password
-> and its CLI must be installed and signed in manually **before** the first apply (see Prerequisites)
+> **Note**: The 1Password casks are declared in `packages.yaml` for completeness. If you want the
+> 1Password-backed SSH config on the first apply, install and sign in to 1Password and its CLI
+> manually beforehand (see Prerequisites); otherwise leave the account empty and let brew install them.
 
 ### Runtime Versions (mise)
 
@@ -347,7 +371,7 @@ Automatically managed via mise (the single owner of language runtimes — brew d
 │   ├── dot_zshenv                 # Environment only; sets ZDOTDIR and FZF_DEFAULT_OPTS_FILE
 │   ├── dot_gitconfig.tmpl         # Git configuration
 │   ├── dot_claude/                # Claude Code settings and statusline
-│   ├── private_dot_ssh/           # SSH config (content pulled from 1Password)
+│   ├── private_dot_ssh/           # SSH config (pulled from 1Password; skipped when no account is set)
 │   └── private_dot_config/        # Application configs
 │       ├── private_bat/           # Bat config and themes (active one deployed)
 │       ├── private_btop/          # Btop resource monitor config and themes (active one deployed)
@@ -377,7 +401,7 @@ After prerequisites are met, scripts automatically:
 
 **Prerequisites** (must be installed manually):
 - Homebrew
-- 1Password and 1Password CLI (signed in)
+- 1Password and 1Password CLI (signed in), only if you set a 1Password account
 
 ### Theme Validation
 
