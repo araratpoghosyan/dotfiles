@@ -17,6 +17,10 @@
 {{- end -}}
 # Rendered by chezmoi: base settings plus themes/herdr/{{ .theme }}.toml. Edit the source template, not this file.
 
+# herdr writes this itself once the first-run notification setup has been dismissed; keeping it
+# here stops the rendered file from drifting from the template.
+onboarding = false
+
 [theme]
 {{ include (printf .themeAssets.herdr.source .theme) -}}
 
