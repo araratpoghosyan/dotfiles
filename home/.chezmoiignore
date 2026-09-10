@@ -14,11 +14,3 @@
 {{-   end }}
 {{- end }}
 
-{{- /*
-  1Password-backed files. Ignored entries are never rendered, so chezmoi makes no 1Password call
-  when no account is configured, or when the CLI is not installed yet (first apply on a new
-  machine, before Homebrew has installed 1Password). They appear on the next apply once `op` exists.
-*/ -}}
-{{- if or (not .onePasswordAccount) (not (lookPath "op")) }}
-.ssh/config
-{{- end }}

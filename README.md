@@ -21,8 +21,6 @@ the repository from quietly diverging.
 - **Guard rails.** A template-time assertion refuses to apply a broken theme registry, CI renders
   the whole tree for every theme on each push, and a daily LaunchAgent reports drift between the
   machine and the source.
-- **Secrets stay in 1Password**, and 1Password is optional: leave the account empty and every
-  secret-backed file is skipped.
 
 ## What's inside
 
@@ -39,7 +37,6 @@ the repository from quietly diverging.
 | [mise](https://mise.jdx.dev/) | Node 24.9, Go, Rust, .NET 8 and 9, Lua 5.1, and global npm tools |
 | [neovim](https://neovim.io/) | [LazyVim](https://www.lazyvim.org/) with language extras; colorscheme rendered from the theme registry |
 | [opencode](https://opencode.ai/) | AI coding agent, themed |
-| ssh | `~/.ssh/config` pulled from 1Password (optional) |
 | [yazi](https://github.com/sxyazi/yazi) | Terminal file manager, themed flavor |
 | zsh | [oh-my-zsh](https://ohmyz.sh/) (git, docker, helm, kubectl, syntax highlighting), [zoxide](https://github.com/ajeetdsouza/zoxide) as `cd` |
 
@@ -64,8 +61,6 @@ browsers, chat apps, fonts, and so on) is installed but not configured by this r
   Ignore the installer's closing "Next steps" about `~/.zprofile`. chezmoi manages
   `~/.config/zsh/.zprofile`, which loads Homebrew for every future login shell, and once `ZDOTDIR`
   is set zsh never reads `~/.zprofile` again. If you already pasted those lines, they do no harm.
-- Optional: [1Password](https://1password.com/downloads/mac/) and its CLI, signed in, with
-  *Settings → Developer → Connect with 1Password CLI* enabled. Needed only for the SSH config.
 - Optional: the App Store sign-in above. Without it, App Store entries are skipped with a warning
   until you sign in and apply again.
 
@@ -78,14 +73,9 @@ chezmoi init --apply araratpoghosyan
 
 Homebrew is already required, so it installs chezmoi too, and `brew upgrade` keeps it current
 along with everything else. `chezmoi init` clones this repository to `~/.local/share/chezmoi`,
-prompts once for your theme (from a list), name, email and 1Password account, writes the answers to
+prompts once for your theme (from a list), name and email, writes the answers to
 `~/.config/chezmoi/chezmoi.toml`, and applies. To review before applying, drop `--apply` and run
 `chezmoi diff` first.
-
-On a new machine, press Enter at the 1Password prompt. The apply installs 1Password itself; sign
-in, enable the CLI integration, then set `onePasswordAccount` in `~/.config/chezmoi/chezmoi.toml`
-and run `chezmoi apply` to get the SSH config. Entering the account early does no harm either:
-1Password-backed files are skipped until the `op` CLI is on `PATH`.
 
 The first apply:
 
@@ -97,8 +87,8 @@ The first apply:
 Expect the first apply to take 30 to 90 minutes, most of it Homebrew downloading casks and mise
 downloading runtimes, and stay near the keyboard: some cask installers ask for your password, the
 drift check's first run makes macOS ask whether it may send notifications (allow it), and the
-defaults script restarts the Dock and Finder near the end. If 1Password is configured, Touch ID is
-requested once for the SSH config. Should Homebrew stop on a package, see Troubleshooting; a second
+defaults script restarts the Dock and Finder near the end. Should Homebrew stop on a package, see
+Troubleshooting; a second
 `chezmoi apply` picks up where it left off.
 
 Open a new terminal when it finishes.
@@ -196,18 +186,6 @@ asks in the terminal every 13 days, and `omz update` works at any time. chezmoi 
 clone, so the two never fight. The syntax-highlighting plugin lives in `~/.config/oh-my-zsh` as a
 pinned external, runtime caches go to `~/.cache/oh-my-zsh`, completion dumps to `~/.cache/zsh`.
 
-## Secrets
-
-The only secret-backed file is `~/.ssh/config`, read from the *Dotfiles* vault with
-`onepasswordRead`. It is rendered only when `onePasswordAccount` is set in
-`~/.config/chezmoi/chezmoi.toml` and the `op` CLI is on `PATH`; otherwise `.chezmoiignore` skips it
-and chezmoi never calls 1Password. To add another secret-backed file, add its target to the same block in
-`home/.chezmoiignore`.
-
-Headless machines can use a 1Password service account: set `[onepassword] mode = "service"` in
-the chezmoi config and export `OP_SERVICE_ACCOUNT_TOKEN`. On a trusted personal machine,
-`[onepassword] prompt = false` removes the confirmation prompt.
-
 ## Guard rails
 
 ### Scripts, in execution order
@@ -243,14 +221,14 @@ chezmoi: template: ... error calling fail: theme registry has themes without ass
 `.github/workflows/ci.yml` renders the tree once per theme on a Linux runner into a scratch
 directory: apply, verify, render every script and check it with `bash -n` and shellcheck,
 syntax-check the rendered zsh and Lua. A single macOS job repeats the apply, parses the
-Brewfile with `brew bundle list`, and runs `stylua --check` on the Lua sources. Scripts never execute, externals are skipped, and no 1Password
-account is configured, so CI needs no secrets and touches no real machine.
+Brewfile with `brew bundle list`, and runs `stylua --check` on the Lua sources. Scripts never execute
+and externals are skipped, so CI needs no secrets and touches no real machine.
 
 ### Drift detection
 
 The LaunchAgent `io.chezmoi.drift-check` runs `~/.local/bin/chezmoi-drift-check` daily at 10:00
-(or at the next wake). It runs `chezmoi status` over every managed target except `~/.ssh`, so it
-never prompts for 1Password, and catches both local edits that never reached the repository and
+(or at the next wake). It runs `chezmoi status` over every managed target and catches both local
+edits that never reached the repository and
 pulled changes not yet applied. On drift it posts a notification, writes the list to
 `~/.cache/chezmoi/drift`, and the next shell prints a one-line notice. The shell cost is a single
 file test; the check itself never runs in the shell.
@@ -269,7 +247,7 @@ file test; the check itself never runs in the shell.
 │   │   ├── theme-assets.yaml      # Where each tool keeps its per-theme asset
 │   │   └── themes.yaml            # Theme registry
 │   ├── .chezmoiexternal.toml      # oh-my-zsh (git clone, self-updating), zsh-syntax-highlighting (pinned)
-│   ├── .chezmoiignore             # Hides inactive themes; skips secret-backed files without 1Password
+│   ├── .chezmoiignore             # Hides inactive themes
 │   ├── .chezmoiremove             # Old targets removed on apply
 │   ├── .chezmoiscripts/           # Numbered scripts (see Guard rails)
 │   ├── .chezmoitemplates/themes/  # eza, fzf, lazygit theme inputs (merged, never deployed)
@@ -282,14 +260,13 @@ file test; the check itself never runs in the shell.
 │   ├── dot_zshenv                 # Bootstrap: sets ZDOTDIR, sources ~/.config/zsh/.zshenv
 │   ├── empty_dot_hushlogin        # Silences the login banner
 │   ├── Projects/.keep             # Creates ~/Projects (target of the `p` alias); .keep itself is not deployed
-│   ├── private_Library/LaunchAgents/  # io.chezmoi.drift-check.plist
-│   └── private_dot_ssh/           # SSH config from 1Password (optional)
+│   └── private_Library/LaunchAgents/  # io.chezmoi.drift-check.plist
 └── README.md
 ```
 
 Conventions: data files under `.chezmoidata` describe *what*, templates describe *how*, scripts
-describe *when*. Only `~/.ssh` and `~/Library` carry the `private_` attribute; they are the
-directories macOS itself keeps at 0700.
+describe *when*. Only `~/Library` carries the `private_` attribute; it is a directory macOS itself
+keeps at 0700.
 
 ## Troubleshooting
 
@@ -321,13 +298,6 @@ the first check after install. If it was dismissed: System Settings → Notifica
 **Apply fails on `~/.oh-my-zsh` (not a git repository).** The machine still has the old extracted
 archive from before oh-my-zsh became a git clone. Remove it once and apply again: `rm -rf
 ~/.oh-my-zsh && chezmoi apply`. Nothing of yours lives in that directory.
-
-**`chezmoi diff` hangs.** With a 1Password account configured, rendering `~/.ssh/config` waits for
-the CLI to authorize. Approve the prompt, or diff specific paths: `chezmoi diff ~/.config`.
-
-**1Password CLI errors.** `op account list` shows whether you are signed in; `op signin` fixes it.
-Biometric unlock must be enabled in *Settings → Developer*. To stop using 1Password entirely,
-empty `onePasswordAccount` in the chezmoi config.
 
 ## Acknowledgments
 

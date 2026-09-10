@@ -37,7 +37,7 @@ jobs:
         id: list
         run: |
           mkdir -p ~/.config/chezmoi
-          printf '[data]\ntheme = "catppuccin-mocha"\nname = "CI"\nfullName = "CI Runner"\nemail = "ci@example.com"\nonePasswordAccount = ""\n' > ~/.config/chezmoi/chezmoi.toml
+          printf '[data]\ntheme = "catppuccin-mocha"\nname = "CI"\nfullName = "CI Runner"\nemail = "ci@example.com"\n' > ~/.config/chezmoi/chezmoi.toml
           themes="$(chezmoi execute-template --source . '{{ keys .themes | sortAlpha | toJson }}')"
           echo "themes=${themes}" >> "$GITHUB_OUTPUT"
           echo "Themes: ${themes}"
@@ -70,7 +70,6 @@ jobs:
           name = "CI"
           fullName = "CI Runner"
           email = "ci@example.com"
-          onePasswordAccount = ""
           CFG
 
       - name: Config template renders
@@ -124,7 +123,7 @@ jobs:
       - name: Write chezmoi config
         run: |
           mkdir -p ~/.config/chezmoi
-          printf '[data]\ntheme = "catppuccin-mocha"\nname = "CI"\nfullName = "CI Runner"\nemail = "ci@example.com"\nonePasswordAccount = ""\n' > ~/.config/chezmoi/chezmoi.toml
+          printf '[data]\ntheme = "catppuccin-mocha"\nname = "CI"\nfullName = "CI Runner"\nemail = "ci@example.com"\n' > ~/.config/chezmoi/chezmoi.toml
 
       - name: Apply into a scratch home
         run: |

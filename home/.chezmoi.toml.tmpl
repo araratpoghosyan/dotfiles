@@ -13,7 +13,6 @@
 {{- $name     := promptStringOnce . "name" "Short name (used in prompts and greetings)" -}}
 {{- $fullName := promptStringOnce . "fullName" "Full name (used for git commits)" -}}
 {{- $email    := promptStringOnce . "email" "Email (used for git commits)" -}}
-{{- $opAcct   := promptStringOnce . "onePasswordAccount" "1Password account (leave empty to skip 1Password-backed files such as ~/.ssh/config)" "" -}}
 
 [data]
 # Theme for all the tools that support it (see .chezmoidata/themes.yaml)
@@ -23,7 +22,3 @@ theme = {{ $theme | quote }}
 name = {{ $name | quote }}
 fullName = {{ $fullName | quote }}
 email = {{ $email | quote }}
-
-# 1Password account used by onepasswordRead. Empty disables every 1Password-backed file
-# (see .chezmoiignore), so a machine without 1Password still gets a complete apply.
-onePasswordAccount = {{ $opAcct | quote }}
