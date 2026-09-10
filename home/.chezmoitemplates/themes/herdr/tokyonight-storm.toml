@@ -1,0 +1,22 @@
+# TokyoNight Storm on top of herdr's TokyoNight Night base; every token remapped to the Storm palette.
+name = "tokyo-night"
+
+[theme.custom]
+accent = "#7aa2f7"        # blue
+panel_bg = "#24283b"      # bg
+active_row_bg = "#292e42" # bg_highlight
+selection_bg = "#283457"  # bg_visual
+surface0 = "#292e42"      # bg_highlight
+surface1 = "#414868"      # terminal_black
+surface_dim = "#24283b"   # bg
+overlay0 = "#565f89"      # comment
+overlay1 = "#737aa2"      # dark5
+text = "#c0caf5"          # fg
+subtext0 = "#a9b1d6"      # fg_dark
+mauve = "#bb9af7"         # magenta
+green = "#9ece6a"
+yellow = "#e0af68"
+red = "#f7768e"
+blue = "#7aa2f7"
+teal = "#7dcfff"          # cyan
+peach = "#ff9e64"         # orange

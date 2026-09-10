@@ -1,0 +1,22 @@
+# TokyoNight Moon on top of herdr's TokyoNight Night base; every token remapped to the Moon palette.
+name = "tokyo-night"
+
+[theme.custom]
+accent = "#82aaff"        # blue
+panel_bg = "#222436"      # bg
+active_row_bg = "#2f334d" # bg_highlight
+selection_bg = "#2d3f76"  # bg_visual
+surface0 = "#2f334d"      # bg_highlight
+surface1 = "#444a73"      # terminal_black
+surface_dim = "#222436"   # bg
+overlay0 = "#636da6"      # comment
+overlay1 = "#737aa2"      # dark5
+text = "#c8d3f5"          # fg
+subtext0 = "#828bb8"      # fg_dark
+mauve = "#c099ff"         # magenta
+green = "#c3e88d"
+yellow = "#ffc777"
+red = "#ff757f"
+blue = "#82aaff"
+teal = "#86e1fc"          # cyan
+peach = "#ff966c"         # orange

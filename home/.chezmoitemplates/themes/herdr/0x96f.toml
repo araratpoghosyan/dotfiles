@@ -1,0 +1,25 @@
+# 0x96f is not a herdr built-in and herdr accepts only built-in names here, so the palette lives in
+# [theme.custom]. The `terminal` base makes any token not listed below fall back to the host
+# terminal's ANSI colors, which ghostty already renders in 0x96f. Colors match the fzf, lazygit
+# and opencode assets.
+name = "terminal"
+
+[theme.custom]
+accent = "#ffd271"        # yellow, the accent used by the fzf, lazygit and yazi assets
+panel_bg = "#1a1819"      # bg darker
+active_row_bg = "#2f2d30" # bg lighter
+selection_bg = "#464447"  # bg highlight
+surface0 = "#2f2d30"
+surface1 = "#464447"
+surface_dim = "#262427"   # bg
+overlay0 = "#a5a5a5"      # inactive
+overlay1 = "#d4d4d4"      # fg muted
+text = "#fcfcfc"
+subtext0 = "#d4d4d4"
+mauve = "#bd93f9"         # purple
+green = "#c6e472"
+yellow = "#ffd271"
+red = "#ff8787"
+blue = "#baebf6"
+teal = "#89dceb"          # cyan
+peach = "#ffb86c"         # orange

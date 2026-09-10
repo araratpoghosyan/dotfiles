@@ -9,7 +9,7 @@
 # Path convention across the tree: shell scripts use $HOME at run time; formats with no variable
 # expansion (plist, JSON, TOML) use {{ .chezmoi.homeDir }} at render time.
 #
-# Tools without a target (eza, fzf, lazygit) get the theme merged into their main config at
+# Tools without a target (eza, fzf, herdr, lazygit) get the theme merged into their main config at
 # render time, so their assets are template inputs under .chezmoitemplates/themes/ and never
 # reach $HOME on their own.
 themeAssets:
@@ -29,5 +29,7 @@ themeAssets:
     source: .chezmoitemplates/themes/eza/%s.yaml
   fzf:
     source: .chezmoitemplates/themes/fzf/%s.fzfrc
+  herdr:
+    source: .chezmoitemplates/themes/herdr/%s.toml
   lazygit:
     source: .chezmoitemplates/themes/lazygit/%s.yaml

@@ -35,6 +35,7 @@ packages:
     - "graphviz"
     - "helm"
     - "helmfile"
+    - "herdr"
     - "htop"
     - "httpie"
     - "imagemagick"

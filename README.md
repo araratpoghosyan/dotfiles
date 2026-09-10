@@ -11,7 +11,7 @@ the repository from quietly diverging.
 ## Highlights
 
 - **One theme, eleven choices.** Pick from Catppuccin, TokyoNight, Nord, Dracula or 0x96f once;
-  bat, btop, eza, fzf, ghostty, lazygit, neovim, opencode, yazi, delta and the macOS
+  bat, btop, eza, fzf, ghostty, herdr, lazygit, neovim, opencode, yazi, delta and the macOS
   appearance all follow. Only the active theme's files are deployed.
 - **Declarative packages.** `packages.yaml` renders a Brewfile (3 taps, 60 formulae, 31 casks,
   1 App Store app) that `brew bundle` applies on every `chezmoi apply`. Language runtimes come
@@ -34,6 +34,7 @@ the repository from quietly diverging.
 | [fzf](https://github.com/junegunn/fzf) | Fuzzy finder with eza/bat previews, colors from a themed options file |
 | [ghostty](https://ghostty.org/) | Terminal, JetBrains Mono Nerd Font, themed |
 | [git](https://git-scm.com/) + [delta](https://github.com/dandavison/delta) | Side-by-side diffs; light or dark follows the theme |
+| [herdr](https://herdr.dev/) | Agent session manager, themed; palettes herdr lacks are built from its custom color tokens |
 | [lazygit](https://github.com/jesseduffield/lazygit) | Git TUI with delta paging, theme merged into its config |
 | [mise](https://mise.jdx.dev/) | Node 24.9, Go, Rust, .NET 8 and 9, Lua 5.1, and global npm tools |
 | [neovim](https://neovim.io/) | [LazyVim](https://www.lazyvim.org/) with language extras; colorscheme rendered from the theme registry |
@@ -144,7 +145,7 @@ Available: `catppuccin-frappe`, `catppuccin-latte` (light), `catppuccin-macchiat
 | Mechanism | Tools |
 | --- | --- |
 | Theme file deployed next to the tool's config; the tool selects it by name | bat, btop, opencode, yazi |
-| Theme merged into the tool's config at render time | eza, fzf, lazygit |
+| Theme merged into the tool's config at render time | eza, fzf, herdr, lazygit |
 | Value read straight from the registry | ghostty (`ghostty`), neovim (`nvim`), delta and macOS appearance (`light`) |
 
 Only the active theme's files reach `~/.config`. `home/.chezmoiignore` hides the other ten, and

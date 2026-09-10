@@ -1,0 +1,22 @@
+# Catppuccin Frappe on top of herdr's Catppuccin Mocha base; every token remapped to the Frappe palette.
+name = "catppuccin"
+
+[theme.custom]
+accent = "#8caaee"        # blue
+panel_bg = "#292c3c"      # mantle
+active_row_bg = "#303446" # base
+selection_bg = "#414559"  # surface0
+surface0 = "#414559"
+surface1 = "#51576d"
+surface_dim = "#303446"   # base
+overlay0 = "#737994"
+overlay1 = "#838ba7"
+text = "#c6d0f5"
+subtext0 = "#a5adce"
+mauve = "#ca9ee6"
+green = "#a6d189"
+yellow = "#e5c890"
+red = "#e78284"
+blue = "#8caaee"
+teal = "#81c8be"
+peach = "#ef9f76"
