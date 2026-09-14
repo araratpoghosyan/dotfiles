@@ -26,6 +26,7 @@ packages:
     - "figlet"
     - "fzf"
     - "gemini-cli"
+    - "gh"
     - "ghostscript"
     - "git-delta"
     - "glab"

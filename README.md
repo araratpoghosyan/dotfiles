@@ -13,7 +13,7 @@ the repository from quietly diverging.
 - **One theme, eleven choices.** Pick from Catppuccin, TokyoNight, Nord, Dracula or 0x96f once;
   bat, btop, eza, fzf, ghostty, herdr, lazygit, neovim, opencode, yazi, delta and the macOS
   appearance all follow. Only the active theme's files are deployed.
-- **Declarative packages.** `packages.yaml` renders a Brewfile (3 taps, 60 formulae, 31 casks,
+- **Declarative packages.** `packages.yaml` renders a Brewfile (3 taps, 62 formulae, 31 casks,
   1 App Store app) that `brew bundle` applies on every `chezmoi apply`. Language runtimes come
   from mise.
 - **XDG-native shell.** A two-line `~/.zshenv` hands over to `~/.config/zsh`, where the
