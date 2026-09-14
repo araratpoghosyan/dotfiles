@@ -34,7 +34,7 @@ the repository from quietly diverging.
 | [git](https://git-scm.com/) + [delta](https://github.com/dandavison/delta) | Side-by-side diffs; light or dark follows the theme |
 | [herdr](https://herdr.dev/) | Agent session manager, themed; palettes herdr lacks are built from its custom color tokens |
 | [lazygit](https://github.com/jesseduffield/lazygit) | Git TUI with delta paging, theme merged into its config |
-| [mise](https://mise.jdx.dev/) | Node 24.9, Go, Rust, .NET 8 and 9, Lua 5.1, and global npm tools |
+| [mise](https://mise.jdx.dev/) | Node 24.21, Go, Rust, .NET 8 and 9, Lua 5.1, and global npm tools |
 | [neovim](https://neovim.io/) | [LazyVim](https://www.lazyvim.org/) with language extras; colorscheme rendered from the theme registry |
 | [opencode](https://opencode.ai/) | AI coding agent, themed |
 | [yazi](https://github.com/sxyazi/yazi) | Terminal file manager, themed flavor |
