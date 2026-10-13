@@ -1,6 +1,9 @@
 # Dotfiles
 
 > My macOS development environment, managed with [chezmoi](https://www.chezmoi.io/).
+>
+> This is my personal setup, published for reference. I don't take contributions or feature
+> requests; fork it if you want to change it.
 
 [![CI](https://github.com/araratpoghosyan/dotfiles/actions/workflows/ci.yml/badge.svg)](https://github.com/araratpoghosyan/dotfiles/actions/workflows/ci.yml)
 
