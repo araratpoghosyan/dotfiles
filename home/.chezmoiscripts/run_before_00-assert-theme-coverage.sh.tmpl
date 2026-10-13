@@ -4,7 +4,8 @@
   On success this file renders to nothing, so chezmoi never runs it as a script.
   On failure `fail` aborts the whole apply before any file is written. Checks:
     1. the selected theme exists in .chezmoidata/themes.yaml
-    2. every registered theme has an asset for every themed tool
+    2. every registered theme has an asset for every themed tool (eza and lazygit assets must
+       also parse as YAML, since they are merged into configs at render time)
     3. no tool has a theme asset that is missing from the registry (orphan)
 */ -}}
 {{- $src := .chezmoi.sourceDir -}}
@@ -33,6 +34,9 @@
 {{-     $path := printf $asset.source $name -}}
 {{-     if not (stat (joinPath $src $path)) -}}
 {{-       $missing = append $missing (printf "  - %-22s %-9s %s" $name $tool $path) -}}
+{{-     else if has $tool (list "eza" "lazygit") -}}
+{{- /* merged as YAML at render time; a malformed asset must fail here, not in the tool */ -}}
+{{-       $_ := include $path | fromYaml -}}
 {{-     end -}}
 {{-   end -}}
 {{-   range $fields -}}
