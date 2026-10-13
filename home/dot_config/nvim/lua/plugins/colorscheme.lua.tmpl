@@ -6,6 +6,7 @@
 */ -}}
 {{- $theme := .theme -}}
 {{- $spec := (index .themes $theme).nvim -}}
+{{- $light := (index .themes $theme).light -}}
 return {
   {
     {{ $spec.repo | quote }},
@@ -14,8 +15,10 @@ return {
 {{- if hasKey $spec "lazy" }}
     lazy = {{ $spec.lazy }},
 {{- end }}
-{{- if hasKey $spec "module" }}
     config = function()
+      -- Some plugins never set 'background' (kanagawa, onedark.nvim); lualine and friends read it.
+      vim.o.background = {{ ternary "light" "dark" $light | quote }}
+{{- if hasKey $spec "module" }}
 {{- if hasKey $spec "opts" }}
       require({{ $spec.module | quote }}).setup({
 {{- range $key, $value := $spec.opts }}
@@ -25,8 +28,8 @@ return {
 {{- else }}
       require({{ $spec.module | quote }}).setup()
 {{- end }}
-    end,
 {{- end }}
+    end,
   },
   {
     "LazyVim/LazyVim",
