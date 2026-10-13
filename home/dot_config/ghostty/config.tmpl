@@ -20,10 +20,13 @@ window-padding-balance = true
 
 window-inherit-working-directory = false
 
-window-theme = "ghostty"
-
 # macOS specific settings
 macos-option-as-alt = true
+
+# Custom titlebar with the tab bar inside it, painted in the terminal background. The default
+# "transparent" style leaves the native tab bar in system colors once a window has several tabs.
+# Renders broken on Ghostty 1.3.1 with macOS 27, hence the tip build in packages.yaml.
+macos-titlebar-style = tabs
 
 # Cursor
 cursor-style = block
