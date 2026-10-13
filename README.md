@@ -100,8 +100,8 @@ Open a new terminal when it finishes.
 | Pull and apply the latest repository state | `chezmoi update` |
 | Preview what an apply would change | `chezmoi diff` |
 | Edit a managed file in place and apply | `chezmoi edit --apply ~/.config/zsh/.zshrc` |
-| Change a personal value or the theme | edit `~/.config/chezmoi/chezmoi.toml`, then `chezmoi apply` |
-| Pick the theme from the list again | delete the `theme` line, then `chezmoi init --apply` |
+| Change the theme | `theme` (fzf picker) or `theme <name>`; `theme <Tab>` completes the names |
+| Change a personal value | edit `~/.config/chezmoi/chezmoi.toml`, then `chezmoi apply` |
 | Anything declared but not installed? | `brew bundle check` |
 | Anything installed but not declared? | `brew bundle cleanup --dry-run` |
 | Is the machine drifting from the repo? | `chezmoi-drift-check` (exit 1 means yes; see below) |
@@ -152,6 +152,15 @@ script and the bat cache hash all read it.
    tool has one.
 
 The theme picker at `chezmoi init` reads the registry, so nothing else needs updating.
+
+### Switching
+
+`theme` (in `~/.local/bin`) is the one front door: it records the choice in
+`~/.config/chezmoi/chezmoi.toml`, forgets chezmoi's records of the target theme's pruned assets
+(otherwise apply asks, per file, before rewriting a file it remembers writing), runs
+`chezmoi apply`, reloads running herdr, Ghostty and Neovim instances live, and lists the
+tools that need a restart. Tools' own theme pickers are not used: four of the eight themed tools
+have none, and anything switched inside a tool is overwritten by the next apply.
 
 ## Packages
 

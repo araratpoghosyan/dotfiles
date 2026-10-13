@@ -44,6 +44,16 @@ if command -v fzf &>/dev/null; then
     source <(fzf --zsh)
 fi
 
+# theme switcher (~/.local/bin/theme): complete the registered theme names
+if command -v theme &>/dev/null; then
+    _theme() {
+        local names
+        names="$(theme --list | tr '\n' ' ')"
+        _arguments "1:theme:($names)" '--list[print registered theme names]' '--current[print the active theme]'
+    }
+    compdef _theme theme
+fi
+
 # eza reads its theme from $EZA_CONFIG_DIR/theme.yml (rendered for the active theme)
 if command -v eza &>/dev/null; then
     export EZA_CONFIG_DIR="$XDG_CONFIG_HOME/eza"

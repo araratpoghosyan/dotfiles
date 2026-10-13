@@ -1,0 +1,159 @@
+#!/bin/bash
+# Switches the chezmoi-managed theme for every themed tool in one step: records the choice in
+# ~/.config/chezmoi/chezmoi.toml, applies, and reloads what can be reloaded live. The registry
+# (home/.chezmoidata/themes.yaml) is read through `chezmoi data`, so the list of names is never
+# duplicated here.
+#
+#   theme             pick from the registry with fzf
+#   theme <name>      switch directly
+#   theme --list      print the registry names, one per line (used by the zsh completion)
+#   theme --current   print the active theme
+#
+# Exit status: 0 switched or nothing to do, 1 bad name or failed apply, 2 a dependency is missing.
+
+set -euo pipefail
+
+config="${XDG_CONFIG_HOME:-$HOME/.config}/chezmoi/chezmoi.toml"
+
+usage() {
+    sed -n '2,/^$/p' "$0" | sed 's/^# \{0,1\}//'
+}
+
+require() {
+    for tool in "$@"; do
+        if ! command -v "$tool" &>/dev/null; then
+            echo "theme: $tool is not on PATH" >&2
+            exit 2
+        fi
+    done
+}
+
+require chezmoi jq
+data="$(chezmoi data --format json)"
+current="$(jq -r '.theme' <<<"$data")"
+
+names() {
+    jq -r '.themes | keys[]' <<<"$data"
+}
+
+# name, light/dark, description; tab-separated for fzf
+rows() {
+    jq -r '.themes | to_entries[] | [.key, (if .value.light then "light" else "dark" end), .value.description] | @tsv' <<<"$data"
+}
+
+pick() {
+    require fzf
+    rows | fzf --delimiter='\t' --with-nth=1,2,3 --tabstop=22 \
+        --header="Active: $current" --prompt='theme > ' --height='~40%' --layout=reverse \
+        --query="${1:-}" --select-1 --exit-0 | cut -f1
+}
+
+case "${1:-}" in
+    -h|--help) usage; exit 0 ;;
+    --list)    names; exit 0 ;;
+    --current) echo "$current"; exit 0 ;;
+    -*)        echo "theme: unknown option $1" >&2; usage >&2; exit 1 ;;
+    "")        target="$(pick)" ;;
+    *)         target="$1" ;;
+esac
+
+if [ -z "$target" ]; then
+    echo "theme: nothing picked"
+    exit 0
+fi
+
+if ! names | grep -qx -- "$target"; then
+    echo "theme: unknown theme '$target'. Registered themes:" >&2
+    rows | sed 's/^/  /' >&2
+    exit 1
+fi
+
+if [ "$target" = "$current" ]; then
+    echo "theme: $target is already active"
+    exit 0
+fi
+
+if ! grep -q '^theme = "' "$config"; then
+    echo "theme: no 'theme = \"...\"' line in $config; run 'chezmoi init' first" >&2
+    exit 1
+fi
+
+# chezmoi records every file it writes and later asks, per file, before overwriting one that
+# "has changed since chezmoi last wrote it". The prune script removes the previous theme's
+# assets behind its back, so switching back to a theme used before would prompt for each of
+# them. Forget the records of the target theme's assets that are no longer on disk.
+forget_pruned() {
+    local state missing
+    state="$(chezmoi state dump --format json)"
+    missing="$(jq -r --arg t "$target" '.themeAssets[] | select(.target) | .target | sub("%s"; $t)' <<<"$data" \
+        | while read -r rel; do [ -e "$HOME/$rel" ] || echo "$HOME/$rel"; done)"
+    [ -n "$missing" ] || return 0
+    jq -r --arg m "$missing" '($m | split("\n")) as $prefixes
+        | .entryState | keys[] | . as $k
+        | select([$prefixes[] | . as $p | ($k == $p or ($k | startswith($p + "/")))] | any)' <<<"$state" \
+        | while read -r key; do chezmoi state delete --bucket=entryState --key="$key"; done
+}
+
+forget_pruned
+sed -i '' "s/^theme = \".*\"/theme = \"$target\"/" "$config"
+echo "theme: $current -> $target, applying"
+if ! chezmoi apply; then
+    echo "theme: chezmoi apply failed. $target is recorded in $config; fix the error above, then run 'chezmoi apply' to finish the switch" >&2
+    exit 1
+fi
+
+# Live reloads for apps that support one. Everything else reads the theme on its next launch.
+reload_herdr() {
+    [ -S "${XDG_CONFIG_HOME:-$HOME/.config}/herdr/herdr.sock" ] || return 0
+    herdr server reload-config >/dev/null 2>&1 && echo "theme: herdr reloaded" \
+        || echo "theme: herdr reload failed; restart it to pick up $target" >&2
+}
+
+# Ghostty exposes its keybind actions over AppleScript; the config is global, so one surface is
+# enough. First use from a new host app triggers a one-time macOS Automation prompt.
+reload_ghostty() {
+    pgrep -xq ghostty || return 0
+    osascript -e 'tell application "Ghostty" to perform action "reload_config" on first terminal' >/dev/null 2>&1 \
+        && echo "theme: ghostty reloaded" \
+        || echo "theme: ghostty reload failed; press cmd+shift+, in a Ghostty window" >&2
+}
+
+# Every Neovim instance listens on a socket in its run directory. The work is scheduled off the
+# RPC request so lazy.nvim's install of a not-yet-cloned colorscheme plugin can make progress;
+# the rendered colorscheme spec names both the plugin and the colorscheme after the theme.
+reload_nvim() {
+    local sock lua n=0
+    for sock in "${TMPDIR:-/tmp}"/nvim."$USER"/*/nvim.*.0; do
+        [ -S "$sock" ] || continue
+        lua="$(mktemp -t theme-nvim).lua"
+        cat >"$lua" <<LUA
+vim.schedule(function()
+  local ok, err = pcall(function()
+    local lazy = require("lazy")
+    lazy.install({ show = false, wait = true, plugins = { "$target" } })
+    lazy.load({ plugins = { "$target" } })
+    vim.cmd.colorscheme("$target")
+  end)
+  if ok then vim.notify("theme: switched to $target") else vim.notify("theme: " .. tostring(err), vim.log.levels.WARN) end
+  os.remove("$lua")
+end)
+return "ok"
+LUA
+        if nvim --server "$sock" --remote-expr "luaeval(\"dofile('$lua')\")" >/dev/null 2>&1; then
+            n=$((n + 1))
+        else
+            rm -f "$lua"
+        fi
+    done
+    [ "$n" -gt 0 ] && echo "theme: neovim reload sent to $n instance(s)"
+    return 0
+}
+
+reload_herdr
+reload_ghostty
+command -v nvim &>/dev/null && reload_nvim
+
+cat <<MSG
+theme: $target is active. bat, delta, eza, fzf and yazi read it on their next run.
+       Already-open lazygit, btop, yazi and opencode sessions need a restart.
+MSG
