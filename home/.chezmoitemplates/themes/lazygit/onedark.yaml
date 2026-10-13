@@ -1,0 +1,29 @@
+# One Dark for lazygit, built from the official palette: https://github.com/atom/atom one-dark-syntax and one-light-syntax colors.less (MIT).
+gui:
+  theme:
+    activeBorderColor:
+      - "#61afef"
+      - bold
+    inactiveBorderColor:
+      - "#828997"
+    searchingActiveBorderColor:
+      - "#56b6c2"
+      - bold
+    optionsTextColor:
+      - "#61afef"
+    selectedLineBgColor:
+      - "#3e4452"
+    inactiveViewSelectedLineBgColor:
+      - bold
+    cherryPickedCommitFgColor:
+      - "#282c34"
+    cherryPickedCommitBgColor:
+      - "#56b6c2"
+    markedBaseCommitFgColor:
+      - "#282c34"
+    markedBaseCommitBgColor:
+      - "#e5c07b"
+    unstagedChangesColor:
+      - "#e06c75"
+    defaultFgColor:
+      - "#abb2bf"

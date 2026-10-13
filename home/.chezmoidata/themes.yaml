@@ -121,6 +121,25 @@ themes:
     nvim:
       repo: rebelot/kanagawa.nvim
 
+  # Atom One themes
+  onedark:
+    light: false
+    description: Atom's One Dark
+    ghostty: Atom One Dark
+    nvim:
+      repo: navarasu/onedark.nvim
+      module: onedark
+      opts: { style: dark }
+  onelight:
+    light: true
+    description: Atom's One Light
+    ghostty: Atom One Light
+    nvim:
+      repo: navarasu/onedark.nvim
+      module: onedark
+      opts: { style: light }
+      colorscheme: onedark
+
   # Other themes
   nord:
     light: false
