@@ -1,0 +1,23 @@
+# Kanagawa Dragon is not a herdr built-in: every token is remapped to the Dragon palette on top of herdr's Kanagawa (Wave) base.
+name = "kanagawa"
+
+[theme.custom]
+accent = "#687982"        # #8ba4b0 blended 70/30 with the background: softer pane frames, same hue
+sidebar_bg = "#0d0c0c"
+panel_bg = "#0d0c0c"
+active_row_bg = "#282727"
+selection_bg = "#393836"
+surface0 = "#282727"
+surface1 = "#393836"
+surface_dim = "#181616"
+overlay0 = "#737c73"
+overlay1 = "#c8c093"
+text = "#c5c9c5"
+subtext0 = "#c8c093"
+mauve = "#a292a3"
+green = "#8a9a7b"
+yellow = "#c4b28a"
+red = "#c4746e"
+blue = "#8ba4b0"
+teal = "#8ea4a2"
+peach = "#b6927b"

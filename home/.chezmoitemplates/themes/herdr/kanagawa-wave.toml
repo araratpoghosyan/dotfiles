@@ -1,0 +1,9 @@
+# Kanagawa Wave is herdr's built-in kanagawa; only the sidebar surfaces are shaped (bg_dim under the sidebar, tab bar and popups, bg_p1 for the active row, bg_p2 for the navigate cursor).
+name = "kanagawa"
+
+[theme.custom]
+accent = "#6176a3"        # #7e9cd8 blended 70/30 with the background: softer pane frames, same hue
+sidebar_bg = "#16161d"
+panel_bg = "#16161d"
+active_row_bg = "#2a2a37"
+selection_bg = "#363646"

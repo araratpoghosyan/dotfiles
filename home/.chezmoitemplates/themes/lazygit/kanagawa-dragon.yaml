@@ -1,0 +1,29 @@
+# Kanagawa Dragon for lazygit, built from the official palette: https://github.com/rebelot/kanagawa.nvim lua/kanagawa/colors.lua (MIT).
+gui:
+  theme:
+    activeBorderColor:
+      - "#8ba4b0"
+      - bold
+    inactiveBorderColor:
+      - "#c8c093"
+    searchingActiveBorderColor:
+      - "#8ea4a2"
+      - bold
+    optionsTextColor:
+      - "#8ba4b0"
+    selectedLineBgColor:
+      - "#282727"
+    inactiveViewSelectedLineBgColor:
+      - bold
+    cherryPickedCommitFgColor:
+      - "#181616"
+    cherryPickedCommitBgColor:
+      - "#8ea4a2"
+    markedBaseCommitFgColor:
+      - "#181616"
+    markedBaseCommitBgColor:
+      - "#c4b28a"
+    unstagedChangesColor:
+      - "#c4746e"
+    defaultFgColor:
+      - "#c5c9c5"

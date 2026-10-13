@@ -1,0 +1,29 @@
+# Kanagawa Wave for lazygit, built from the official palette: https://github.com/rebelot/kanagawa.nvim lua/kanagawa/colors.lua (MIT).
+gui:
+  theme:
+    activeBorderColor:
+      - "#7e9cd8"
+      - bold
+    inactiveBorderColor:
+      - "#c8c093"
+    searchingActiveBorderColor:
+      - "#7aa89f"
+      - bold
+    optionsTextColor:
+      - "#7e9cd8"
+    selectedLineBgColor:
+      - "#2a2a37"
+    inactiveViewSelectedLineBgColor:
+      - bold
+    cherryPickedCommitFgColor:
+      - "#1f1f28"
+    cherryPickedCommitBgColor:
+      - "#7aa89f"
+    markedBaseCommitFgColor:
+      - "#1f1f28"
+    markedBaseCommitBgColor:
+      - "#e6c384"
+    unstagedChangesColor:
+      - "#c34043"
+    defaultFgColor:
+      - "#dcd7ba"

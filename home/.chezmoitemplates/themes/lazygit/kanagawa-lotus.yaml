@@ -1,0 +1,29 @@
+# Kanagawa Lotus for lazygit, built from the official palette: https://github.com/rebelot/kanagawa.nvim lua/kanagawa/colors.lua (MIT).
+gui:
+  theme:
+    activeBorderColor:
+      - "#4d699b"
+      - bold
+    inactiveBorderColor:
+      - "#43436c"
+    searchingActiveBorderColor:
+      - "#597b75"
+      - bold
+    optionsTextColor:
+      - "#4d699b"
+    selectedLineBgColor:
+      - "#e7dba0"
+    inactiveViewSelectedLineBgColor:
+      - bold
+    cherryPickedCommitFgColor:
+      - "#f2ecbc"
+    cherryPickedCommitBgColor:
+      - "#597b75"
+    markedBaseCommitFgColor:
+      - "#f2ecbc"
+    markedBaseCommitBgColor:
+      - "#77713f"
+    unstagedChangesColor:
+      - "#c84053"
+    defaultFgColor:
+      - "#545464"

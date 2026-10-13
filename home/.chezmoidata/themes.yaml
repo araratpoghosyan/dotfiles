@@ -101,6 +101,26 @@ themes:
     nvim:
       repo: Shatur/neovim-ayu
 
+  # Kanagawa themes
+  kanagawa-wave:
+    light: false
+    description: Kanagawa's default dark ink palette
+    ghostty: Kanagawa Wave
+    nvim:
+      repo: rebelot/kanagawa.nvim
+  kanagawa-dragon:
+    light: false
+    description: Darker, muted Kanagawa for late nights
+    ghostty: Kanagawa Dragon
+    nvim:
+      repo: rebelot/kanagawa.nvim
+  kanagawa-lotus:
+    light: true
+    description: Light Kanagawa on warm paper
+    ghostty: Kanagawa Lotus
+    nvim:
+      repo: rebelot/kanagawa.nvim
+
   # Other themes
   nord:
     light: false
