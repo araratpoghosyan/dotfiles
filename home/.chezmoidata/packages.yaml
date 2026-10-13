@@ -51,7 +51,7 @@ packages:
     - "mongodb-atlas-cli"
     - "mysql-client"
     - "neovim"
-    - "anomalyco/tap/opencode"
+    - "anomalyco/tap/opencode-v2"
     - "php@8.2"
     - "protobuf"
     - "rclone"
