@@ -121,7 +121,6 @@ themes:
   catppuccin-mocha:
     light: false                   # drives delta, lazygit and macOS appearance
     description: Dark, rich pastel theme
-    bat: catppuccin-mocha          # name inside the .tmTheme file; bat selects by that, not by file name
     ghostty: Catppuccin Mocha      # name as ghostty spells it
     nvim:                          # lazy.nvim spec; the colorscheme file is rendered from this
       repo: catppuccin/nvim
@@ -137,7 +136,7 @@ Available: `catppuccin-frappe`, `catppuccin-latte` (light), `catppuccin-macchiat
 
 | Mechanism | Tools |
 | --- | --- |
-| Theme file deployed next to the tool's config; the tool selects it by name | bat, btop, opencode, yazi |
+| Theme file deployed next to the tool's config; the tool selects it by file name | bat, btop, opencode, yazi |
 | Theme merged into the tool's config at render time | eza, fzf, herdr, lazygit |
 | Value read straight from the registry | ghostty (`ghostty`), neovim (`nvim`), delta and macOS appearance (`light`) |
 
@@ -217,7 +216,7 @@ pinned external, runtime caches go to `~/.cache/oh-my-zsh`, completion dumps to 
 ### Theme assertion
 
 Before any file is written, the assertion checks that the selected theme is registered, that
-every registered theme has an asset for every tool in `theme-assets.yaml` plus the `bat`,
+every registered theme has an asset for every tool in `theme-assets.yaml` plus the
 `ghostty` and `nvim` fields, and that no tool directory holds an asset for an unregistered
 theme. Failure looks like:
 
