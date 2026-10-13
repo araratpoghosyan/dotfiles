@@ -108,18 +108,27 @@ themes:
     ghostty: Kanagawa Wave
     nvim:
       repo: rebelot/kanagawa.nvim
+      module: kanagawa
+      # Kanagawa paints the gutter by default; keep the editor flat (the plugin's own recipe).
+      opts: { colors: { theme: { all: { ui: { bg_gutter: none } } } } }
   kanagawa-dragon:
     light: false
     description: Darker, muted Kanagawa for late nights
     ghostty: Kanagawa Dragon
     nvim:
       repo: rebelot/kanagawa.nvim
+      module: kanagawa
+      # Kanagawa paints the gutter by default; keep the editor flat (the plugin's own recipe).
+      opts: { colors: { theme: { all: { ui: { bg_gutter: none } } } } }
   kanagawa-lotus:
     light: true
     description: Light Kanagawa on warm paper
     ghostty: Kanagawa Lotus
     nvim:
       repo: rebelot/kanagawa.nvim
+      module: kanagawa
+      # Kanagawa paints the gutter by default; keep the editor flat (the plugin's own recipe).
+      opts: { colors: { theme: { all: { ui: { bg_gutter: none } } } } }
 
   # Atom One themes
   onedark:

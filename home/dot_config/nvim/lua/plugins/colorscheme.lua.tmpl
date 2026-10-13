@@ -7,6 +7,16 @@
 {{- $theme := .theme -}}
 {{- $spec := (index .themes $theme).nvim -}}
 {{- $light := (index .themes $theme).light -}}
+{{- /* a Lua table literal: nested maps render inline, strings quoted, everything else raw */ -}}
+{{- define "luaValue" -}}
+{{- if kindIs "map" . -}}
+{ {{ range $k, $v := . }}{{ $k }} = {{ template "luaValue" $v }}, {{ end }}}
+{{- else if kindIs "string" . -}}
+{{ . | quote }}
+{{- else -}}
+{{ . }}
+{{- end -}}
+{{- end -}}
 return {
   {
     {{ $spec.repo | quote }},
@@ -22,7 +32,7 @@ return {
 {{- if hasKey $spec "opts" }}
       require({{ $spec.module | quote }}).setup({
 {{- range $key, $value := $spec.opts }}
-        {{ $key }} = {{ if kindIs "string" $value }}{{ $value | quote }}{{ else }}{{ $value }}{{ end }},
+        {{ $key }} = {{ template "luaValue" $value }},
 {{- end }}
       })
 {{- else }}
