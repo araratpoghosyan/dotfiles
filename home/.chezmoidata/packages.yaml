@@ -81,7 +81,7 @@ packages:
     - "fliqlo"
     - "font-jetbrains-mono"
     - "font-jetbrains-mono-nerd-font"
-    - "ghostty@tip"
+    - "ghostty"
     - "google-chrome"
     - "iterm2"
     - "jetbrains-toolbox"
