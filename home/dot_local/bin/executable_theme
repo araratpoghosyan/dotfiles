@@ -118,6 +118,21 @@ reload_ghostty() {
         || echo "theme: ghostty reload failed; press cmd+shift+, in a Ghostty window" >&2
 }
 
+# herdr paints every pane with the host terminal palette it queried at attach time, so after a
+# Ghostty reload the window keeps the old colors until a client re-queries. SIGWINCH makes a
+# client redraw and re-read the palette (herdr documents this for theme switchers); the server
+# is skipped. Clients are the herdr processes whose command line is not "herdr server".
+repaint_herdr() {
+    local pid pids=""
+    for pid in $(pgrep -x herdr); do
+        ps -o args= -p "$pid" | grep -q ' server$' || pids="$pids $pid"
+    done
+    [ -n "$pids" ] || return 0
+    sleep 0.3 # let Ghostty finish applying the new palette before herdr asks for it
+    # shellcheck disable=SC2086
+    kill -WINCH $pids 2>/dev/null && echo "theme: herdr repainted"
+}
+
 # Every Neovim instance listens on a socket in its run directory. The work is scheduled off the
 # RPC request so lazy.nvim's install of a not-yet-cloned colorscheme plugin can make progress;
 # the rendered colorscheme spec names both the plugin and the colorscheme after the theme.
@@ -151,6 +166,7 @@ LUA
 
 reload_herdr
 reload_ghostty
+repaint_herdr
 command -v nvim &>/dev/null && reload_nvim
 
 cat <<MSG

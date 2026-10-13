@@ -158,7 +158,7 @@ The theme picker at `chezmoi init` reads the registry, so nothing else needs upd
 `theme` (in `~/.local/bin`) is the one front door: it records the choice in
 `~/.config/chezmoi/chezmoi.toml`, forgets chezmoi's records of the target theme's pruned assets
 (otherwise apply asks, per file, before rewriting a file it remembers writing), runs
-`chezmoi apply`, reloads running herdr, Ghostty and Neovim instances live, and lists the
+`chezmoi apply`, reloads running herdr, Ghostty and Neovim instances live (herdr clients are nudged with SIGWINCH so panes repaint in the new palette), and lists the
 tools that need a restart. Tools' own theme pickers are not used: four of the eight themed tools
 have none, and anything switched inside a tool is overwritten by the next apply.
 
