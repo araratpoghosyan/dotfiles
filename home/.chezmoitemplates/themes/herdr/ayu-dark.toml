@@ -1,0 +1,23 @@
+# ayu dark is not a herdr built-in: every token is remapped to the ayu dark palette on top of herdr's TokyoNight base.
+name = "tokyo-night"
+
+[theme.custom]
+accent = "#a4823e"        # #e6b450 blended 70/30 with the background: softer pane frames, same hue
+sidebar_bg = "#0f131a"
+panel_bg = "#0f131a"
+active_row_bg = "#181a1f"
+selection_bg = "#1b3a5b"
+surface0 = "#181a1f"
+surface1 = "#1b3a5b"
+surface_dim = "#0b0e14"
+overlay0 = "#636a72"
+overlay1 = "#626975"
+text = "#bfbdb6"
+subtext0 = "#626975"
+mauve = "#d2a6ff"
+green = "#aad94c"
+yellow = "#e6b450"
+red = "#f07178"
+blue = "#59c2ff"
+teal = "#39bae6"
+peach = "#ff8f40"

@@ -81,6 +81,26 @@ themes:
       module: tokyonight
       opts: { style: storm }
 
+  # ayu themes
+  ayu-dark:
+    light: false
+    description: Deep, high-contrast dark ayu
+    ghostty: Ayu
+    nvim:
+      repo: Shatur/neovim-ayu
+  ayu-mirage:
+    light: false
+    description: Softer blue-gray dark ayu
+    ghostty: Ayu Mirage
+    nvim:
+      repo: Shatur/neovim-ayu
+  ayu-light:
+    light: true
+    description: Light ayu
+    ghostty: Ayu Light
+    nvim:
+      repo: Shatur/neovim-ayu
+
   # Other themes
   nord:
     light: false

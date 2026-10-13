@@ -1,0 +1,29 @@
+# ayu dark for lazygit, built from the official palette: https://github.com/ayu-theme/ayu-colors (MIT).
+gui:
+  theme:
+    activeBorderColor:
+      - "#e6b450"
+      - bold
+    inactiveBorderColor:
+      - "#626975"
+    searchingActiveBorderColor:
+      - "#39bae6"
+      - bold
+    optionsTextColor:
+      - "#59c2ff"
+    selectedLineBgColor:
+      - "#1b3a5b"
+    inactiveViewSelectedLineBgColor:
+      - bold
+    cherryPickedCommitFgColor:
+      - "#0b0e14"
+    cherryPickedCommitBgColor:
+      - "#39bae6"
+    markedBaseCommitFgColor:
+      - "#0b0e14"
+    markedBaseCommitBgColor:
+      - "#e6b450"
+    unstagedChangesColor:
+      - "#f07178"
+    defaultFgColor:
+      - "#bfbdb6"

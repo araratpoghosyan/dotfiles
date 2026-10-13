@@ -1,0 +1,158 @@
+# ayu dark for yazi, built from the official palette: https://github.com/ayu-theme/ayu-colors (MIT).
+# : Manager {{{
+
+[mgr]
+cwd = { fg = "#39bae6" }
+
+hovered = { reversed = true }
+preview_hovered = { underline = true }
+
+find_keyword = { fg = "#e6b450", bold = true, italic = true, underline = true }
+find_position = { fg = "#d2a6ff", bg = "reset", bold = true, italic = true }
+
+marker_copied = { fg = "#aad94c", bg = "#aad94c" }
+marker_cut = { fg = "#f07178", bg = "#f07178" }
+marker_marked = { fg = "#39bae6", bg = "#39bae6" }
+marker_selected = { fg = "#e6b450", bg = "#e6b450" }
+
+tab_active = { reversed = true }
+tab_inactive = { fg = "#636a72" }
+tab_width = 1
+
+count_copied = { fg = "#0b0e14", bg = "#aad94c" }
+count_cut = { fg = "#0b0e14", bg = "#f07178" }
+count_selected = { fg = "#0b0e14", bg = "#e6b450" }
+
+border_symbol = "│"
+border_style = { fg = "#11151c" }
+
+# : }}}
+
+
+# : Tabs {{{
+
+[tabs]
+active = { fg = "#0b0e14", bg = "#e6b450", bold = true }
+inactive = { fg = "#e6b450", bg = "#0f131a" }
+
+# : }}}
+
+
+# : Mode {{{
+
+[mode]
+normal_main = { fg = "#0b0e14", bg = "#e6b450", bold = true }
+normal_alt = { fg = "#e6b450", bg = "#0f131a" }
+
+select_main = { fg = "#0b0e14", bg = "#aad94c", bold = true }
+select_alt = { fg = "#aad94c", bg = "#0f131a" }
+
+unset_main = { fg = "#0b0e14", bg = "#f07178", bold = true }
+unset_alt = { fg = "#f07178", bg = "#0f131a" }
+
+# : }}}
+
+
+# : Status bar {{{
+
+[status]
+perm_sep = { fg = "#636a72" }
+perm_type = { fg = "#59c2ff" }
+perm_read = { fg = "#e6b450" }
+perm_write = { fg = "#f07178" }
+perm_exec = { fg = "#aad94c" }
+
+progress_label = { fg = "#bfbdb6", bold = true }
+progress_normal = { fg = "#59c2ff", bg = "#1b3a5b" }
+progress_error = { fg = "#f07178", bg = "#1b3a5b" }
+
+# : }}}
+
+
+# : Pick {{{
+
+[pick]
+border = { fg = "#59c2ff" }
+active = { fg = "#d2a6ff", bold = true }
+inactive = { fg = "#bfbdb6" }
+
+# : }}}
+
+
+# : Input {{{
+
+[input]
+border = { fg = "#59c2ff" }
+title = { fg = "#bfbdb6" }
+value = { fg = "#bfbdb6" }
+selected = { reversed = true }
+
+# : }}}
+
+
+# : Completion {{{
+
+[cmp]
+border = { fg = "#59c2ff" }
+
+# : }}}
+
+
+# : Tasks {{{
+
+[tasks]
+border = { fg = "#59c2ff" }
+title = { fg = "#bfbdb6" }
+hovered = { fg = "#d2a6ff", underline = true }
+
+# : }}}
+
+
+# : Which {{{
+
+[which]
+mask = { bg = "#0f131a" }
+cand = { fg = "#39bae6" }
+rest = { fg = "#636a72" }
+desc = { fg = "#d2a6ff" }
+separator = "  "
+separator_style = { fg = "#11151c" }
+
+# : }}}
+
+
+# : Help {{{
+
+[help]
+on = { fg = "#39bae6" }
+run = { fg = "#d2a6ff" }
+hovered = { reversed = true, bold = true }
+footer = { fg = "#0b0e14", bg = "#bfbdb6" }
+
+# : }}}
+
+
+# : Notify {{{
+
+[notify]
+title_info = { fg = "#aad94c" }
+title_warn = { fg = "#e6b450" }
+title_error = { fg = "#f07178" }
+
+# : }}}
+
+
+# : File-specific styles {{{
+
+[filetype]
+
+rules = [
+  { mime = "image/*", fg = "#39bae6" },
+  { mime = "{audio,video}/*", fg = "#e6b450" },
+  { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#d2a6ff" },
+  { mime = "application/{pdf,doc,rtf,odt,docx,xlsx,pptx}", fg = "#aad94c" },
+  { name = "*", fg = "#bfbdb6" },
+  { name = "*/", fg = "#59c2ff", bold = true },
+]
+
+# : }}}

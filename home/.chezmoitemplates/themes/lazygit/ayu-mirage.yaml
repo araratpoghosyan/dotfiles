@@ -1,0 +1,29 @@
+# ayu mirage for lazygit, built from the official palette: https://github.com/ayu-theme/ayu-colors (MIT).
+gui:
+  theme:
+    activeBorderColor:
+      - "#ffcc66"
+      - bold
+    inactiveBorderColor:
+      - "#757b84"
+    searchingActiveBorderColor:
+      - "#5ccfe6"
+      - bold
+    optionsTextColor:
+      - "#73d0ff"
+    selectedLineBgColor:
+      - "#274364"
+    inactiveViewSelectedLineBgColor:
+      - bold
+    cherryPickedCommitFgColor:
+      - "#1f2430"
+    cherryPickedCommitBgColor:
+      - "#5ccfe6"
+    markedBaseCommitFgColor:
+      - "#1f2430"
+    markedBaseCommitBgColor:
+      - "#ffcc66"
+    unstagedChangesColor:
+      - "#f28779"
+    defaultFgColor:
+      - "#cccac2"
