@@ -1,34 +1,20 @@
 {{- /*
-  herdr keeps its theme in the [theme] table of its single config file, so the active theme's
-  asset (the body of that table: a built-in `name`, plus [theme.custom] overrides for palettes
-  herdr does not ship) is included here at render time. `herdr --default-config` lists every
-  built-in theme and option.
-
-  pane_borders: herdr < 0.9.0 only accepts a boolean and frames a pane only when its tab is split.
-  0.9.0 adds "always", which frames a lone pane too. The installed version decides which form is
-  rendered; without a herdr binary (CI, first apply) the boolean is used.
+  herdr runs on its own defaults (`herdr --default-config` documents them); only the theme is
+  ours. The other four keys are ones herdr writes into this file itself: onboarding once the
+  first-run setup is dismissed, auto_switch on a manual theme pick in Settings, status_indicators
+  and toast delivery when Settings changes them. Without them here every apply would strip them
+  and the drift check would flag the file; all but onboarding are the defaults anyway.
 */ -}}
-{{- $paneBorders := "true" -}}
-{{- if lookPath "herdr" -}}
-{{-   $herdrVersion := output "herdr" "--version" | trim | trimPrefix "herdr " -}}
-{{-   if semverCompare ">= 0.9.0" $herdrVersion -}}
-{{-     $paneBorders = `"always"` -}}
-{{-   end -}}
-{{- end -}}
-# Rendered by chezmoi: base settings plus themes/herdr/{{ .theme }}.toml. Edit the source template, not this file.
+# Rendered by chezmoi: herdr defaults plus themes/herdr/{{ .theme }}.toml. Edit the source template, not this file.
 
-# herdr writes this itself once the first-run notification setup has been dismissed; keeping it
-# here stops the rendered file from drifting from the template.
 onboarding = false
 
 [theme]
+auto_switch = false
 {{ include (printf .themeAssets.herdr.source .theme) -}}
 
 [ui]
-agent_panel_sort = "spaces"
+status_indicators = "dots"
 
-# Pane frames: every pane gets its own frame (accent color when focused), including the outer
-# edge, with a one-cell gap between neighbours instead of shared divider lines.
-pane_borders = {{ $paneBorders }}
-pane_outer_borders = true
-pane_gaps = true
+[ui.toast]
+delivery = "off"
