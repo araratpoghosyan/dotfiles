@@ -13,7 +13,8 @@ the repository from quietly diverging.
 
 ## Highlights
 
-- **One theme, eleven choices.** Pick from Catppuccin, TokyoNight, Nord, Dracula or 0x96f once;
+- **One theme, nineteen choices.** Pick from Catppuccin, TokyoNight, ayu, Kanagawa, Atom One, Nord,
+  Dracula or 0x96f once;
   bat, btop, eza, fzf, ghostty, herdr, lazygit, neovim, opencode, yazi, delta and the macOS
   appearance all follow. Only the active theme's files are deployed.
 - **Declarative packages.** `packages.yaml` renders a Brewfile (3 taps, 62 formulae, 31 casks,
@@ -131,7 +132,9 @@ themes:
 
 Available: `catppuccin-frappe`, `catppuccin-latte` (light), `catppuccin-macchiato`,
 `catppuccin-mocha`, `tokyonight-day` (light), `tokyonight-moon`, `tokyonight-night`,
-`tokyonight-storm`, `nord`, `dracula`, `0x96f`.
+`tokyonight-storm`, `ayu-dark`, `ayu-mirage`, `ayu-light` (light), `kanagawa-wave`,
+`kanagawa-dragon`, `kanagawa-lotus` (light), `onedark`, `onelight` (light), `nord`, `dracula`,
+`0x96f`.
 
 ### How each tool gets its theme
 
@@ -141,20 +144,26 @@ Available: `catppuccin-frappe`, `catppuccin-latte` (light), `catppuccin-macchiat
 | Theme merged into the tool's config at render time | eza, fzf, herdr, lazygit |
 | Value read straight from the registry | ghostty (`ghostty`), neovim (`nvim`), delta and macOS appearance (`light`) |
 
-Only the active theme's files reach `~/.config`. `home/.chezmoiignore` hides the other ten, and
+Only the active theme's files reach `~/.config`. `home/.chezmoiignore` hides the other eighteen, and
 a script removes the previous theme's files after a switch. `home/.chezmoidata/theme-assets.yaml`
 records where each tool keeps its per-theme asset; the assertion, the ignore file, the prune
 script and the bat cache hash all read it.
 
 ### Adding a theme
 
-1. Add an entry to `themes.yaml` with every field shown above.
+1. Add an entry to `themes.yaml` with every field shown above. The key is also the Neovim
+   `:colorscheme` name, so it must be a colorscheme the plugin ships; when the plugin selects
+   the variant through `setup()` options instead, name the colorscheme with `nvim.colorscheme`.
 2. Add the theme's asset for each tool listed in `theme-assets.yaml`, named exactly like the
-   registry key.
+   registry key (bat, btop, opencode and yazi select by file name). Two rules the assertion does
+   not check: a yazi flavor also needs a `tmtheme.xml` beside its `flavor.toml` (a copy of the
+   bat theme works), and the herdr asset's `name` must be one of herdr's built-in themes, with
+   anything else remapped under `[theme.custom]`.
 3. Run `chezmoi apply`. The coverage assertion fails, listing each missing asset, until every
-   tool has one.
+   tool has one; eza and lazygit assets must also parse as YAML.
 
-The theme picker at `chezmoi init` reads the registry, so nothing else needs updating.
+The theme picker at `chezmoi init` reads the registry, so nothing else needs updating. Assets
+copied from another project carry a first-line comment naming the source and its licence.
 
 ### Switching
 
@@ -315,7 +324,16 @@ archive from before oh-my-zsh became a git clone. Remove it once and apply again
 
 [chezmoi](https://www.chezmoi.io/) · [LazyVim](https://www.lazyvim.org/) · [oh-my-zsh](https://ohmyz.sh/) ·
 [Catppuccin](https://catppuccin.com/) · [TokyoNight](https://github.com/folke/tokyonight.nvim) ·
-[Nord](https://www.nordtheme.com/) · [Dracula](https://draculatheme.com/) ·
-[0x96f](https://github.com/filipjanevski/0x96f.nvim)
+[ayu](https://github.com/ayu-theme/ayu-colors) · [Kanagawa](https://github.com/rebelot/kanagawa.nvim) ·
+[Atom One](https://github.com/navarasu/onedark.nvim) · [Nord](https://www.nordtheme.com/) ·
+[Dracula](https://draculatheme.com/) · [0x96f](https://github.com/filipjanevski/0x96f.nvim)
+
+Theme ports from [ayu-bat](https://github.com/mathiasdonoso/ayu-bat), [btop](https://github.com/aristocratos/btop),
+[eza-themes](https://github.com/eza-community/eza-themes), [onehalf](https://github.com/sonph/onehalf),
+[opencode](https://github.com/anomalyco/opencode) and the yazi flavors by
+[kmlupreti](https://github.com/kmlupreti/ayu-dark.yazi), [dangooddd](https://github.com/dangooddd/kanagawa.yazi),
+[marcosvnmelo](https://github.com/marcosvnmelo/kanagawa-dragon.yazi),
+[muratoffalex](https://github.com/muratoffalex/kanagawa-lotus.yazi) and
+[damjee](https://github.com/damjee/onedark.yazi); each file names its source.
 
 MIT licensed. Take whatever is useful.
