@@ -1,9 +1,12 @@
 {{- /*
-  herdr runs on its own defaults (`herdr --default-config` documents them); only the theme is
-  ours. The other four keys are ones herdr writes into this file itself: onboarding once the
-  first-run setup is dismissed, auto_switch on a manual theme pick in Settings, status_indicators
-  and toast delivery when Settings changes them. Without them here every apply would strip them
-  and the drift check would flag the file; all but onboarding are the defaults anyway.
+  Everything not listed here follows `herdr --default-config`. The [theme] body is the active
+  theme's asset from themes/herdr/; herdr only knows built-in theme names, so palettes it lacks
+  are remapped through [theme.custom] there, and every asset shapes the sidebar surfaces.
+
+  Four keys are ones herdr writes into this file itself: onboarding once the first-run setup is
+  dismissed, auto_switch on a manual theme pick in Settings, status_indicators and toast delivery
+  when Settings changes them. They are pinned here so an apply does not strip them and the drift
+  check stays quiet. Keybindings are herdr's defaults; prefix+? lists them.
 */ -}}
 # Rendered by chezmoi: herdr defaults plus themes/herdr/{{ .theme }}.toml. Edit the source template, not this file.
 
@@ -11,10 +14,47 @@ onboarding = false
 
 [theme]
 auto_switch = false
-{{ include (printf .themeAssets.herdr.source .theme) -}}
-
+{{ include (printf .themeAssets.herdr.source .theme) }}
 [ui]
-status_indicators = "dots"
+# The tab row's right edge shows a ZOOM pill while the tab is zoomed, then the clock.
+tab_bar_right = [
+  { type = "zoom" },
+  { type = "datetime", format = "%a %H:%M" },
+]
+tab_bar_right_separator = "  "
+# Window title shown in Ghostty's titlebar; the hostname is noise on a single machine.
+window_title = "{workspace} · {tab}"
+# Agent states by shape as well as color.
+status_indicators = "symbols"
+# Every pane gets a frame, a lone one too, so content never sits flush against the sidebar or
+# the tab row; split panes are separated by a one-cell gap and carry the agent name in their frame.
+pane_borders = "always"
+show_agent_labels_on_pane_borders = true
 
+# Agent rows: who and what state first, then where, dimmed. Claude Code reports a one-line
+# summary of its task as the terminal title, so its rows show that in between.
+[ui.sidebar.agents]
+row_gap = 0
+rows = [
+  ["state_icon", { token = "agent", bold = true }, { token = "state_text", dim = true }],
+  [{ token = "machine", dim = true }, { token = "workspace", dim = true }, { token = "tab", dim = true }],
+]
+
+[ui.sidebar.agents.rows_by_agent]
+claude = [
+  ["state_icon", { token = "agent", bold = true }, { token = "state_text", dim = true }],
+  [{ token = "terminal_title_stripped", dim = true }],
+  [{ token = "machine", dim = true }, { token = "workspace", dim = true }, { token = "tab", dim = true }],
+]
+
+[ui.sidebar.spaces]
+row_gap = 0
+rows = [
+  ["state_icon", { token = "workspace", bold = true }],
+  ["branch", "git_status"],
+]
+
+# Background agents that finish or need input raise a macOS notification through Ghostty, which
+# focuses the window when clicked. The active tab never notifies.
 [ui.toast]
-delivery = "off"
+delivery = "terminal"

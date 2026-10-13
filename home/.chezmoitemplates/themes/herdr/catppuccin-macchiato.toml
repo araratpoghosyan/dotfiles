@@ -1,11 +1,14 @@
-# Catppuccin Macchiato on top of herdr's Catppuccin Mocha base; every token remapped to the Macchiato palette.
+# Catppuccin Macchiato on top of herdr's Catppuccin Mocha base; every token remapped to the
+# Macchiato palette. The sidebar, tab bar and popups sit on
+# mantle, the active row on surface0, the navigate cursor on surface1.
 name = "catppuccin"
 
 [theme.custom]
-accent = "#8aadf4"        # blue
+accent = "#6b85bc"        # #8aadf4 blended 70/30 with the background: softer pane frames, same hue
+sidebar_bg = "#1e2030"    # mantle
 panel_bg = "#1e2030"      # mantle
-active_row_bg = "#24273a" # base
-selection_bg = "#363a4f"  # surface0
+active_row_bg = "#363a4f" # surface0
+selection_bg = "#494d64"  # surface1
 surface0 = "#363a4f"
 surface1 = "#494d64"
 surface_dim = "#24273a"   # base

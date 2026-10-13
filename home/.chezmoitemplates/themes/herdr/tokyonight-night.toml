@@ -1,1 +1,11 @@
+# TokyoNight Night is herdr's built-in base. The sidebar, tab
+# bar and popups sit on bg_dark, the active row on bg_highlight, the navigate cursor on bg_visual.
+# The accent is softened for the pane frames.
 name = "tokyo-night"
+
+[theme.custom]
+accent = "#5d7ab8"        # #7aa2f7 blended 70/30 with the background: softer pane frames, same hue
+sidebar_bg = "#16161e"    # bg_dark
+panel_bg = "#16161e"      # bg_dark
+active_row_bg = "#292e42" # bg_highlight
+selection_bg = "#283457"  # bg_visual

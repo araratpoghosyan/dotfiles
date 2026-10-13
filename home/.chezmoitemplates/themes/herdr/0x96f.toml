@@ -1,5 +1,13 @@
-# 0x96f is not a herdr built-in and herdr accepts only built-in names here. `terminal` makes every
-# color token follow the host terminal's ANSI palette, which ghostty already renders in 0x96f.
-# Deliberately no [theme.custom] block: herdr layers that table over whichever theme is picked in
-# its Settings screen, so overriding every token made every in-app pick invisible.
+# 0x96f is not a herdr built-in and herdr accepts only built-in names here. `terminal` makes the
+# color tokens follow the host terminal's ANSI palette, which ghostty already renders in 0x96f.
+# Only the panel surfaces and the accent are pinned, because the terminal base leaves them unset
+# (no navigate cursor, no panel shade). Everything else stays on the terminal palette, so a theme
+# picked in herdr's Settings still shows; the full remap that hid in-app picks is gone.
 name = "terminal"
+
+[theme.custom]
+accent = "#be9e5b"        # #ffd271 blended 70/30 with the background: softer pane frames, same hue
+sidebar_bg = "#1a1819"    # bg darker
+panel_bg = "#1a1819"      # bg darker
+active_row_bg = "#2f2d30" # bg lighter
+selection_bg = "#464447"  # bg highlight

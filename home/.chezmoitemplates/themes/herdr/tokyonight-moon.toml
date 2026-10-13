@@ -1,9 +1,12 @@
-# TokyoNight Moon on top of herdr's TokyoNight Night base; every token remapped to the Moon palette.
+# TokyoNight Moon on top of herdr's TokyoNight Night base; every token remapped to the Moon
+# palette. The sidebar, tab bar and popups sit on bg_dark, the
+# active row on bg_highlight, the navigate cursor on bg_visual.
 name = "tokyo-night"
 
 [theme.custom]
-accent = "#82aaff"        # blue
-panel_bg = "#222436"      # bg
+accent = "#6582c3"        # #82aaff blended 70/30 with the background: softer pane frames, same hue
+sidebar_bg = "#1e2030"    # bg_dark
+panel_bg = "#1e2030"      # bg_dark
 active_row_bg = "#2f334d" # bg_highlight
 selection_bg = "#2d3f76"  # bg_visual
 surface0 = "#2f334d"      # bg_highlight

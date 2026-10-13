@@ -1,1 +1,11 @@
+# Catppuccin Latte is a herdr built-in. The sidebar, tab bar and
+# popups sit on mantle, the active row on surface0, the navigate cursor on surface1, mirroring the
+# dark flavors. The accent is softened for the pane frames.
 name = "catppuccin-latte"
+
+[theme.custom]
+accent = "#5d90f5"        # #1e66f5 blended 70/30 with the background: softer pane frames, same hue
+sidebar_bg = "#e6e9ef"    # mantle
+panel_bg = "#e6e9ef"      # mantle
+active_row_bg = "#ccd0da" # surface0
+selection_bg = "#bcc0cc"  # surface1

@@ -1,11 +1,14 @@
-# TokyoNight Storm on top of herdr's TokyoNight Night base; every token remapped to the Storm palette.
+# TokyoNight Storm on top of herdr's TokyoNight Night base; every token remapped to the Storm
+# palette. The sidebar, tab bar and popups sit on bg_dark, the
+# active row on bg_highlight, the navigate cursor on bg_visual.
 name = "tokyo-night"
 
 [theme.custom]
-accent = "#7aa2f7"        # blue
-panel_bg = "#24283b"      # bg
+accent = "#607dbf"        # #7aa2f7 blended 70/30 with the background: softer pane frames, same hue
+sidebar_bg = "#1f2335"    # bg_dark
+panel_bg = "#1f2335"      # bg_dark
 active_row_bg = "#292e42" # bg_highlight
-selection_bg = "#283457"  # bg_visual
+selection_bg = "#2e3c64"  # bg_visual
 surface0 = "#292e42"      # bg_highlight
 surface1 = "#414868"      # terminal_black
 surface_dim = "#24283b"   # bg

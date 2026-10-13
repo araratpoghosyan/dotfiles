@@ -1,11 +1,14 @@
-# Catppuccin Frappe on top of herdr's Catppuccin Mocha base; every token remapped to the Frappe palette.
+# Catppuccin Frappe on top of herdr's Catppuccin Mocha base; every token remapped to the Frappe
+# palette. The sidebar, tab bar and popups sit on mantle, the
+# active row on surface0, the navigate cursor on surface1.
 name = "catppuccin"
 
 [theme.custom]
-accent = "#8caaee"        # blue
+accent = "#7087bc"        # #8caaee blended 70/30 with the background: softer pane frames, same hue
+sidebar_bg = "#292c3c"    # mantle
 panel_bg = "#292c3c"      # mantle
-active_row_bg = "#303446" # base
-selection_bg = "#414559"  # surface0
+active_row_bg = "#414559" # surface0
+selection_bg = "#51576d"  # surface1
 surface0 = "#414559"
 surface1 = "#51576d"
 surface_dim = "#303446"   # base
