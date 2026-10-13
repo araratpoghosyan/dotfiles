@@ -10,6 +10,8 @@
 #                  module  Lua module to call .setup() on (omit if the plugin needs no setup)
 #                  opts    table passed to setup() (omit for setup() with no args)
 #                  lazy    optional lazy.nvim `lazy` flag
+#                  colorscheme  optional `:colorscheme` name when it differs from the key (the
+#                          plugin picks the variant through opts instead of a colorscheme file)
 themes:
   # Catppuccin themes
   catppuccin-frappe:

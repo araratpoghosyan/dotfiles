@@ -137,7 +137,9 @@ repaint_herdr() {
 # RPC request so lazy.nvim's install of a not-yet-cloned colorscheme plugin can make progress;
 # the rendered colorscheme spec names both the plugin and the colorscheme after the theme.
 reload_nvim() {
-    local sock lua n=0
+    local sock lua n=0 colorscheme
+    # The plugin is registered under the theme key; the colorscheme command may differ.
+    colorscheme="$(jq -r --arg t "$target" '.themes[$t].nvim.colorscheme // $t' <<<"$data")"
     for sock in "${TMPDIR:-/tmp}"/nvim."$USER"/*/nvim.*.0; do
         [ -S "$sock" ] || continue
         lua="$(mktemp -t theme-nvim).lua"
@@ -147,7 +149,7 @@ vim.schedule(function()
     local lazy = require("lazy")
     lazy.install({ show = false, wait = true, plugins = { "$target" } })
     lazy.load({ plugins = { "$target" } })
-    vim.cmd.colorscheme("$target")
+    vim.cmd.colorscheme("$colorscheme")
   end)
   if ok then vim.notify("theme: switched to $target") else vim.notify("theme: " .. tostring(err), vim.log.levels.WARN) end
   os.remove("$lua")

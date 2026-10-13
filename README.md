@@ -126,6 +126,7 @@ themes:
       repo: catppuccin/nvim
       module: catppuccin
       opts: { flavour: mocha }
+      # colorscheme: name      # only when the `:colorscheme` name differs from the key
 ```
 
 Available: `catppuccin-frappe`, `catppuccin-latte` (light), `catppuccin-macchiato`,

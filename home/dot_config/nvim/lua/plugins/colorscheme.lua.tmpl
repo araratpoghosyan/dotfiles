@@ -1,4 +1,9 @@
-{{- /* LazyVim colorscheme spec, rendered from the `nvim` block of the active theme in .chezmoidata/themes.yaml */ -}}
+{{- /*
+  LazyVim colorscheme spec, rendered from the `nvim` block of the active theme in
+  .chezmoidata/themes.yaml. The plugin is registered under the theme's key; the colorscheme
+  command is the key too unless the entry names a different one (plugins that select a variant
+  through setup() options rather than a colorscheme file).
+*/ -}}
 {{- $theme := .theme -}}
 {{- $spec := (index .themes $theme).nvim -}}
 return {
@@ -26,7 +31,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = {{ $theme | quote }},
+      colorscheme = {{ get $spec "colorscheme" | default $theme | quote }},
     },
   },
 }
